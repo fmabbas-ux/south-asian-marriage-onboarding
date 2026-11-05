@@ -2,11 +2,11 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Aaghaaz Tamasha | Dehleez</title>
 <meta name="description" content="Play your first year of marriage before you live it. A blocky isometric family game by Dehleez. Play solo or online with your partner.">
 <meta property="og:title" content="Aaghaaz Tamasha: play your first year before you live it">
-<meta property="og:description" content="A blocky family house, an aunty next door, a parrot and 12 real first-year situations. Play with your partner online.">
+<meta property="og:description" content="A blocky family house, an aunty next door, a parrot and 40 real first-year situations. Play with your partner online.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8D%B2%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@500;700&display=swap" rel="stylesheet">
@@ -14,62 +14,94 @@
 :root{--bg:#fff6e6;--card:#fffdf8;--ink:#2b1a1f;--mute:#7a6a6a;--maroon:#7a1f3d;--gold:#f2a900;--teal:#12756e;--red:#c0392b;--line:#ecd9bd;--good:#1f8a4c;--bad:#c0392b}
 @media (prefers-color-scheme:dark){:root{--bg:#1c1216;--card:#2a1c22;--ink:#f7ebe0;--mute:#b9a59c;--maroon:#e58aa6;--gold:#f6bd3a;--teal:#4fc3b6;--line:#43303a;--good:#59d08a;--bad:#ff8a7a}}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
-#stage{position:sticky;top:0;z-index:5;max-width:560px;margin:0 auto;background:linear-gradient(#bfe3f3,#f6efe0);border-radius:0 0 18px 18px;overflow:hidden;box-shadow:0 4px 14px rgba(0,0,0,.2)}
-#cv{display:block;width:100%;height:270px}
-@media (max-height:640px){#cv{height:200px}}
-#app{max-width:560px;margin:0 auto;padding:12px 16px 24px}
-h1,h2,h3{line-height:1.2;margin:0 0 .4em}
-h1{font-size:2.1rem;color:var(--maroon)}
-.ur{font-family:"Noto Nastaliq Urdu","Jameel Noori Nastaleeq",serif;direction:rtl;line-height:2}
-.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin:10px 0}
-.btn{display:block;width:100%;text-align:left;border:2px solid var(--line);background:var(--card);color:var(--ink);padding:12px 14px;border-radius:12px;font:inherit;margin:8px 0;cursor:pointer}
+html,body{margin:0;height:100%;overflow:hidden;background:#bfe3f3;color:var(--ink);font:16px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-tap-highlight-color:transparent}
+body.ur .bub,body.ur .sheet,body.ur #hud{direction:rtl;font-family:"Noto Nastaliq Urdu","Jameel Noori Nastaleeq",serif;line-height:2}
+body.ur .ltr{direction:ltr;text-align:left;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;line-height:1.45}
+#game{position:fixed;inset:0}
+#cv{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:manipulation}
+#topbar{position:absolute;top:0;left:0;right:0;display:flex;gap:6px;align-items:center;padding:calc(6px + env(safe-area-inset-top)) 8px 4px;z-index:8;pointer-events:none}
+#topbar>*{pointer-events:auto}
+.chip{background:rgba(255,253,248,.92);color:#2b1a1f;border-radius:99px;padding:3px 12px;font-size:.8rem;font-weight:700;box-shadow:0 1px 4px rgba(0,0,0,.2)}
+.ib{border:0;background:rgba(255,253,248,.92);color:#2b1a1f;border-radius:99px;min-width:34px;height:30px;padding:0 10px;font:700 .85rem system-ui;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,.2)}
+.bub{position:absolute;z-index:5;background:var(--card);color:var(--ink);border:2px solid #3a2020;border-radius:18px;padding:10px 14px;box-shadow:0 6px 18px rgba(0,0,0,.28);left:50%;transform:translateX(-50%);width:min(620px,calc(100% - 16px));overflow:auto}
+#narr{top:calc(42px + env(safe-area-inset-top));max-height:44dvh}
+#opts{bottom:calc(66px + env(safe-area-inset-bottom));max-height:60dvh;overflow:visible}
+#opts .in{max-height:56dvh;overflow:auto}
+#opts::before{content:"";position:absolute;top:-12px;left:var(--tx,50%);margin-left:-9px;border:9px solid transparent;border-top:0;border-bottom:12px solid #3a2020}
+.bub[hidden],#menu[hidden],#hud[hidden],.chip[hidden]{display:none}
+.bub h2{font-size:1.15rem;margin:.1em 0 .25em;color:var(--maroon)}
+.bub p{margin:.3em 0}
+.tag{display:inline-block;background:var(--gold);color:#2b1a1f;font-weight:700;font-size:.72rem;padding:1px 9px;border-radius:99px}
+.mute{color:var(--mute);font-size:.85rem}
+.hint{margin-top:8px;display:flex;gap:8px;align-items:center;justify-content:space-between;font-weight:700;color:var(--maroon)}
+.btn{display:block;width:100%;text-align:start;border:2px solid var(--line);background:var(--card);color:var(--ink);padding:10px 12px;border-radius:12px;font:inherit;margin:7px 0;cursor:pointer}
 .btn:hover,.btn:focus{border-color:var(--gold)}
 .btn.main{background:var(--maroon);color:#fff;border-color:var(--maroon);text-align:center;font-weight:700}
 .btn.alt{text-align:center;font-weight:600}
+.btn.on{border-color:var(--gold);background:rgba(242,169,0,.18)}
 .btn[disabled]{opacity:.45;cursor:not-allowed}
 a.btn{text-decoration:none}
-.tag{display:inline-block;background:var(--gold);color:#2b1a1f;font-weight:700;font-size:.75rem;padding:2px 10px;border-radius:99px}
-.mute{color:var(--mute);font-size:.9rem}
-.meters{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:4px 0 8px}
-.m{font-size:.7rem;color:var(--mute)}
-.bar{height:8px;background:var(--line);border-radius:6px;overflow:hidden;margin-top:2px}
-.bar i{display:block;height:100%;background:var(--teal)}
-.bar.s i{background:var(--red)}
-.chips span{display:inline-block;margin:2px 4px 2px 0;padding:2px 8px;border-radius:8px;font-size:.8rem;background:var(--line)}
-.up{color:var(--good)}.dn{color:var(--bad)}
-.rate{display:flex;gap:8px}.rate button{flex:1;padding:10px;border-radius:10px;border:2px solid var(--line);background:var(--card);color:var(--ink);font:inherit;cursor:pointer}
+.sm{display:inline-block;width:auto;margin:0;padding:6px 16px}
+.rate{display:flex;gap:8px;margin:8px 0}.rate button{flex:1;padding:10px;border-radius:10px;border:2px solid var(--line);background:var(--card);color:var(--ink);font:inherit;cursor:pointer}
 .rate button.on{background:var(--gold);border-color:var(--gold);color:#2b1a1f;font-weight:700}
-.k{background:var(--maroon);color:#fff;border-radius:16px;padding:20px 14px;text-align:center;margin:10px 0}
-.k h2{font-size:1.7rem;color:#fff}.k .ur{font-size:1.4rem}
-input{width:100%;padding:10px;border-radius:10px;border:2px solid var(--line);background:var(--card);color:var(--ink);font:inherit;text-transform:uppercase;letter-spacing:.2em;text-align:center;font-size:1.3rem}
-.code{font-family:ui-monospace,Consolas,monospace;font-size:2rem;letter-spacing:.3em;text-align:center;background:var(--bg);border:2px dashed var(--gold);padding:10px;border-radius:10px}
-.two{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.two .card{margin:6px 0}
-.warn{background:#fff0cc;color:#5a4200;border-radius:10px;padding:8px 12px;margin:8px 0;font-size:.9rem}
-.foot{text-align:center;margin:20px 0 8px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:6px}.two>div{background:var(--bg);border-radius:10px;padding:6px 8px;font-size:.88rem}
+.chips span{display:inline-block;margin:2px 4px 2px 0;padding:1px 8px;border-radius:8px;font-size:.8rem;background:var(--line)}
+.up{color:var(--good)}.dn{color:var(--bad)}
+.warn{background:#fff0cc;color:#5a4200;border-radius:10px;padding:6px 10px;margin:6px 0;font-size:.85rem}
+.k{background:var(--maroon);color:#fff;border-radius:12px;padding:8px 10px;text-align:center;margin-bottom:6px}.k h2{color:#fff;margin:0;font-size:1.3rem}
+.card{background:var(--bg);border-radius:12px;padding:8px 12px;margin:8px 0}
+#hud{position:absolute;left:0;right:0;bottom:0;z-index:5;display:grid;grid-template-columns:repeat(6,1fr);gap:6px;padding:16px 8px calc(6px + env(safe-area-inset-bottom));background:linear-gradient(transparent,rgba(30,15,20,.55));pointer-events:none}
+.hm{background:rgba(255,253,248,.94);color:#2b1a1f;border-radius:9px;padding:3px 5px 4px;position:relative;font-size:.62rem;line-height:1.25;min-width:0}
+.hm .hl{font-size:.9rem;line-height:1.1}.hm .hn{font-size:.6rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:1px}
+.hm .bar{height:6px;background:#ecd9bd;border-radius:4px;overflow:hidden;margin-top:2px}.hm .bar i{display:block;height:100%;background:var(--teal);transition:width .8s}
+.hm .bar.s i{background:#c0392b}
+.hm b{position:absolute;right:5px;top:4px;font-size:.78rem}
+.hm .dl{position:absolute;right:2px;top:-14px;background:#fff;border-radius:6px;padding:0 5px;font-weight:800;font-size:.72rem;box-shadow:0 1px 3px rgba(0,0,0,.3);animation:pop .4s}
+@keyframes pop{from{transform:scale(.4);opacity:0}to{transform:none;opacity:1}}
+#menu{position:absolute;inset:0;z-index:7;display:flex;justify-content:center;align-items:center;background:linear-gradient(rgba(255,246,230,.55),rgba(255,246,230,.8));padding:44px 10px 10px}
+#menu.bot{align-items:flex-end;background:linear-gradient(transparent 35%,rgba(255,246,230,.55))}
+@media (prefers-color-scheme:dark){#menu{background:linear-gradient(rgba(28,18,22,.5),rgba(28,18,22,.8))}#menu.bot{background:linear-gradient(transparent 35%,rgba(28,18,22,.55))}}
+.sheet{background:var(--card);border:2px solid #3a2020;border-radius:20px;padding:14px;width:min(560px,100%);max-height:100%;overflow:auto;box-shadow:0 10px 30px rgba(0,0,0,.3)}
+.sheet h1{font-size:2rem;margin:.2em 0 0;color:var(--maroon);line-height:1.15}
+.sheet h2{margin:.1em 0 .3em;color:var(--maroon)}
+.sheet input{width:100%;padding:10px;border-radius:10px;border:2px solid var(--line);background:var(--card);color:var(--ink);font:inherit;text-transform:uppercase;letter-spacing:.2em;text-align:center;font-size:1.3rem}
+.code{font-family:ui-monospace,Consolas,monospace;font-size:2rem;letter-spacing:.3em;text-align:center;background:var(--bg);border:2px dashed var(--gold);padding:8px;border-radius:10px}
+.how{background:var(--bg);border-radius:12px;padding:8px 12px;margin:10px 0;font-size:.88rem}.how ol{margin:4px 0;padding-inline-start:20px}.how li{margin:3px 0}
+.foot{text-align:center;margin:10px 0 2px}
 </style>
 </head>
 <body>
-<div id="stage"><canvas id="cv"></canvas></div>
-<div id="app"></div>
+<div id="game">
+<canvas id="cv"></canvas>
+<div id="topbar"><span class="chip" id="chip" hidden></span><span style="flex:1"></span><button class="ib" id="lg" onclick="toggleLang()">اردو</button><button class="ib" id="hb" onclick="goHome()" aria-label="Home">☰</button></div>
+<div id="narr" class="bub" hidden></div>
+<div id="opts" class="bub" hidden></div>
+<div id="hud" hidden></div>
+<div id="menu" hidden><div class="sheet" id="sheet"></div></div>
+</div>
+<script src="scenarios.js"></script>
+<script src="scenarios2.js"></script>
+<script>
+var LG="en";try{LG=localStorage.getItem("aat_lg")||"en"}catch(e){}
+</script>
+<script src="i18n.js"></script>
 <script>
 /* ===================== DATA ===================== */
-var MN=[["Trust","🤝"],["Self","🧍"],["Parents","🏠"],["Standing","👪"],["Money","💰"],["Stress","😵"]];
-var SN={k:"Skilled",r:"Reactive",a:"Avoidant",p:"Pleaser"};
+var MN=["🤝","🧍","🏠","👪","💰","😵"];
 var EM={k:"😊",r:"😠",a:"😐",p:"😔"};
 var CH={
-bride:{n:"Bride",col:[196,30,80],hair:[35,22,22],sk:[240,200,172],dup:[232,90,130]},
-groom:{n:"Groom",col:[30,122,156],hair:[35,22,22],sk:[236,196,162]},
-mil:{n:"Ammi-ji",col:[122,72,152],hair:[225,225,225],sk:[236,196,166],dup:[236,236,240]},
-fil:{n:"Abbu-ji",col:[156,112,62],hair:[228,228,228],sk:[226,186,152]},
-sana:{n:"Sana",col:[232,122,172],hair:[40,26,26],sk:[240,202,176],dup:[250,172,202]},
-hamza:{n:"Hamza",col:[236,152,40],hair:[40,26,26],sk:[240,202,172],sc:.82},
-bmom:{n:"Her mom",col:[40,152,102],hair:[72,52,42],sk:[236,196,166],dup:[92,192,142]},
-bdad:{n:"Her dad",col:[92,102,132],hair:[130,130,130],sk:[226,186,152]},
-aunty:{n:"Aunty",col:[232,202,50],hair:[62,42,42],sk:[236,196,166],dup:[250,228,92]}};
-var HOME={bride:[2.4,2.6],groom:[3.6,3.2],mil:[7,2.2],fil:[8.4,3.2],sana:[6.6,6.6],hamza:[8.2,7.2],bmom:[10.5,2.6],bdad:[10.5,3.6],aunty:[10.5,6.6]};
-var RM={bed:{x:1,y:1,w:4,h:4,c:[238,188,198],n:"Bedroom"},liv:{x:5,y:1,w:5,h:4,c:[136,192,182],n:"Living room"},kit:{x:1,y:5,w:4,h:4,c:[244,216,134],n:"Kitchen"},yard:{x:5,y:5,w:5,h:4,c:[170,202,142],n:"Aangan"}};
+bride:{n:"Bride",u:"دلہن",col:[196,30,80],hair:[35,22,22],sk:[240,200,172],dup:[232,90,130]},
+groom:{n:"Groom",u:"دولہا",col:[30,122,156],hair:[35,22,22],sk:[236,196,162]},
+mil:{n:"Ammi-ji",u:"امی جی",col:[122,72,152],hair:[225,225,225],sk:[236,196,166],dup:[236,236,240]},
+fil:{n:"Abbu-ji",u:"ابو جی",col:[156,112,62],hair:[228,228,228],sk:[226,186,152]},
+sana:{n:"Sana",u:"ثناء",col:[232,122,172],hair:[40,26,26],sk:[240,202,176],dup:[250,172,202]},
+hamza:{n:"Hamza",u:"حمزہ",col:[236,152,40],hair:[40,26,26],sk:[240,202,172],sc:.82},
+bmom:{n:"Her mom",u:"دلہن کی امی",col:[40,152,102],hair:[72,52,42],sk:[236,196,166],dup:[92,192,142]},
+bdad:{n:"Her dad",u:"دلہن کے ابو",col:[92,102,132],hair:[130,130,130],sk:[226,186,152]},
+aunty:{n:"Aunty",u:"آنٹی",col:[232,202,50],hair:[62,42,42],sk:[236,196,166],dup:[250,228,92]},
+kid:{n:"Zain",u:"زین",col:[60,170,230],hair:[30,20,20],sk:[240,200,170],sc:.62}};
+var HOME={bride:[2.4,2.6],groom:[3.6,3.2],mil:[7,2.2],fil:[8.4,3.2],sana:[6.6,6.6],hamza:[8.2,7.2],bmom:[10.5,2.6],bdad:[10.5,3.6],aunty:[10.5,6.6],kid:[7.8,5.6]};
+var RM={bed:{x:1,y:1,w:4,h:4,c:[238,188,198]},liv:{x:5,y:1,w:5,h:4,c:[136,192,182]},kit:{x:1,y:5,w:4,h:4,c:[244,216,134]},yard:{x:5,y:5,w:5,h:4,c:[170,202,142]}};
 var RL={
 mil:{k:"Hmm... sahi baat hai, beta.",r:"Hai Allah! Yeh din bhi dekhna tha!",a:"(sips chai, says nothing)",p:"Chalo, sab theek hai na?"},
 fil:{k:"Samajhdar bachay hain.",r:"Awaaz neechi! Ghar ki izzat hai.",a:"(turns the newspaper page)",p:"Theek hai, theek hai."},
@@ -77,136 +109,26 @@ sana:{k:"Aww, you two are cute!",r:"Uff, drama shuru!",a:"(typing on her phone)"
 hamza:{k:"Cool! Respect, bhai.",r:"Oops. Sorry bhai...",a:"(slowly backs away)",p:"Koi baat nahi, bhai."},
 bmom:{k:"Mashallah, meri beti samajhdar hai.",r:"Hai, meri bachi...",a:"(whispers to her husband)",p:"Sab theek? Main aa jaun?"},
 bdad:{k:"Sahi faisla, beta.",r:"Gussa kam karo, beta.",a:"(adjusts his glasses)",p:"Bas khush raho."},
-aunty:{k:"Ohoo, samajhdar jori!",r:"Sab ko pata chal jayega...",a:"(whispers to someone)",p:"Hmm, chalo chalo."}};
+aunty:{k:"Ohoo, samajhdar jori!",r:"Sab ko pata chal jayega...",a:"(whispers to someone)",p:"Hmm, chalo chalo."},
+kid:{k:"Theek hai... aap acchi hain.",r:"(runs to his room)",a:"(stares at his tablet)",p:"Mujhe kuch nahi chahiye."}};
 var PL={k:"Shabash! Shabash!",r:"Lado mat! Lado mat!",a:"Chup! Chup!",p:"Ji ji! Ji ji!"};
-var SC=[
-{r:"bed",x:[],w:"Wedding night",t:"Night one",
-b:"It's 2 a.m. after a fourteen-hour wedding. Your feet hurt, the jewellery is heavy, and the man beside you is still half a stranger. Everyone said tonight is 'special'. You mostly want to sleep, and you also don't want to disappoint him.",
-g:"It's 2 a.m. You've smiled at six hundred guests and your friends have been winking all week. Your wife looks exhausted. You feel an unspoken pressure about tonight and you're not sure what she expects.",
-o:[{t:"Go along with what you think is expected, and say nothing.",s:"p",e:[-1,-3,0,0,0,2],c:"The night passes. Neither of you knows what the other really wanted, and a quiet distance begins."},
-{t:"Say it out loud: 'I'm exhausted and nervous. Can we just talk and sleep tonight?'",s:"k",e:[3,2,0,0,0,-3],c:"A pause, then relief on both sides. You laugh about the day together. First private joke unlocked."},
-{t:"Make a joke, change the subject, and never come back to it.",s:"a",e:[0,-1,0,0,0,1],c:"The joke lands. The question stays unanswered and returns on night three."},
-{t:"Get irritated that the evening isn't going as imagined.",s:"r",e:[-3,-1,0,0,0,3],c:"Your tone chills the room. The first night is remembered for the wrong reason."}],
-n:"Exhaustion is not rejection. One calm sentence about how you feel beats guessing what the other expects. Closeness grows from talking first."},
-
-{r:"liv",x:["hamza"],say:["hamza","Bhai, shop ke paise ka shukriya!"],w:"Month 3",t:"The family-money surprise",
-b:"You find out your husband sent money to his brother's shop without telling you. It's his salary, but it's also your household. You feel like a guest in your own finances.",
-g:"Your brother asked for help and it felt natural to send it. Your wife seems upset about something you consider family duty, and you feel judged.",
-o:[{t:"Demand that all support to the extended family stops.",s:"r",e:[-3,0,-2,-1,1,3],c:"It lands as 'your family doesn't matter'. Words sharpen, and by evening a parent has heard about it."},
-{t:"Say nothing and quietly start hiding some of your own money.",s:"a",e:[-3,0,0,0,-1,1],c:"Secrets become the new currency. Trust is what they cost."},
-{t:"Say: 'Helping family is good. Let's agree an amount together and tell each other first.'",s:"k",e:[3,1,0,0,2,-2],c:"A rule instead of a fight. The monthly money chat becomes a habit that saves you later."},
-{t:"Agree to anything and resent it quietly.",s:"p",e:[-1,-3,1,0,-1,2],c:"You keep the peace on the surface, and the resentment compounds like interest."}],
-n:"Money fights are rarely about money; they're about who counts. Agree an amount and a 'tell each other first' rule instead of arguing over whose family deserves what."},
-
-{r:"bed",x:[],cat:1,w:"Month 2",t:"The silent two days",
-b:"A small argument at dinner about Friday plans. He stops answering and turns on the TV. By the second day you feel invisible and you're rehearsing speeches in your head.",
-g:"After the dinner argument you went quiet because you didn't want to say something you'd regret. You think you're being calm. Two days later the house feels heavy and you don't know how to restart.",
-o:[{t:"Keep the silence going until the other person apologises first.",s:"r",e:[-3,0,0,0,0,3],c:"Day four. Nobody is winning, and both of you are lonely in the same flat."},
-{t:"Apologise for everything just to end it.",s:"p",e:[1,-3,0,0,0,-1],c:"Peace returns fast, but the real issue is buried and you feel a little smaller."},
-{t:"Act as if nothing happened and carry on.",s:"a",e:[-1,0,0,0,0,1],c:"Life resumes politely. The Friday issue is still sitting there."},
-{t:"Say: 'I need twenty minutes, then I want to finish this talk,' and actually come back.",s:"k",e:[3,1,0,0,0,-2],c:"You both return. Twenty minutes of calm does what two days of silence couldn't."}],
-n:"Taking a break is a skill; vanishing is a punishment. Say how long you need and come back at that time."},
-
-{r:"bed",x:["mil"],say:["mil","Beta, chai piyogi?"],w:"Day 9",t:"The 7 a.m. knock",
-b:"Your mother-in-law opens your bedroom door without knocking to ask if you want tea. You were changing. You smile, but your chest is tight, and you don't know if this is normal in this house.",
-g:"Your mother has always walked into your room, and you've never thought about it. Your wife has gone quiet at breakfast and you don't know why.",
-o:[{t:"Say nothing and hope it stops.",s:"p",e:[-1,-2,1,0,0,2],c:"It happens again on day twelve. The resentment grows quietly."},
-{t:"Lock the door every time.",s:"a",e:[0,0,-2,-1,0,1],c:"The locked door gets read as a message, and the family notices."},
-{t:"Turn it into blame.",tb:"Tell your husband his mother has no manners.",tg:"Tell your wife she's overreacting.",s:"r",e:[-2,0,-2,-1,0,2],c:"Now the conversation is about blame, not the door. Someone gets defensive."},
-{t:"Handle it kindly.",tb:"Pick a calm moment, share how it felt, and ask your husband to warmly raise a 'knock first' habit with his mother.",tg:"Ask your wife what's bothering her, listen, then warmly raise a 'knock first' habit with your mother yourself.",s:"k",e:[3,1,0,0,0,-1],c:"It's raised kindly by her own child, the habit changes, and nobody loses face."}],
-n:"Name the behaviour and the feeling. The parent's own child carries the message and gives the parent a way to say yes."},
-
-{r:"kit",x:["mil","sana"],say:["mil","Namak thora zyada hai... aur roti moti."],w:"Week 3",t:"The cooking commentary",
-b:"Every meal you cook gets a verdict from your mother-in-law: too much salt, not how her son likes it. You're cooking for twelve people for the first time. You laugh it off, but you're counting.",
-g:"Your mother has opinions on every dish, as she did for everyone. You think it's harmless. Your wife has started eating less at the table.",
-o:[{t:"Laugh along and keep serving.",s:"a",e:[-1,-2,0,0,0,1],c:"It stays 'light' until it isn't."},
-{t:"Cook only exactly the way she says from now on.",s:"p",e:[0,-3,1,1,0,2],c:"Fewer comments, and a growing feeling that your hands are not your own."},
-{t:"Handle it warmly.",tb:"Ask your husband to thank his mother, give her a dish she owns (her Friday biryani), and tell her plainly that your cooking suits your home.",tg:"Thank your mother warmly, give her a dish she owns (her Friday biryani), and tell her plainly your wife's cooking suits you.",s:"k",e:[2,1,2,1,0,-2],c:"Your mother (or mother-in-law) gets a role to shine in, and the comments thin out. The kitchen starts to feel shared."},
-{t:"Stop cooking altogether.",s:"r",e:[-1,1,-3,-2,0,2],c:"The kitchen goes cold and every relative has an opinion about it."}],
-n:"Give a critic a role, not a fight. A warm 'it suits us' from the husband or son does more than any debate."},
-
-{r:"yard",x:["mil","bmom"],say:["bmom","Eid pe ghar aana, beta!"],w:"Month 4",t:"Whose Eid first?",
-b:"Chand raat. Your parents expect you home for Eid morning. His family expects everyone at their house. Your husband says 'let's see'.",
-g:"Both families have called twice. You're hoping it sorts itself out, and your wife is waiting for you to say something.",
-o:[{t:"Let both families push and go with whoever pushes hardest.",s:"a",e:[-1,0,-1,-1,0,2],c:"The loudest family wins and the other feels forgotten. Both of you feel carried, not chosen."},
-{t:"Announce you're going to your own family and expect your spouse to follow.",s:"r",e:[-3,0,-2,0,0,3],c:"Your spouse follows with a stony face. The story gets retold at the next gathering."},
-{t:"Give up your own family's Eid to keep everyone calm.",s:"p",e:[-1,-3,-1,1,0,2],c:"One family is happy. You are not, and your own parents hear it in your voice."},
-{t:"Agree a fair plan together (morning here, afternoon there, swap next year), then tell both families 'we've decided'.",s:"k",e:[3,1,1,1,0,-2],c:"Both families grumble briefly, then adapt. 'We've decided' is a sentence they learn to accept."}],
-n:"Decide as a couple first and announce second. A rotating, written plan beats bargaining case by case."},
-
-{r:"liv",x:["fil"],say:["fil","Beta, tankhwah ghar ke kharche mein, theek?"],w:"Month 5",t:"The salary question",
-b:"You overhear it: your father-in-law expects his son's whole salary to go into the household kitty. You earn too and had hoped to save a little. Your husband hasn't said a word.",
-g:"Your father assumes your salary goes to the house, as his did. Your wife has hinted at saving. You're caught between respecting your father and starting your own life.",
-o:[{t:"Hand over everything and say nothing more.",s:"p",e:[-2,-3,2,1,-2,2],c:"The elders are delighted. By month six you can't afford anything that's yours."},
-{t:"Agree a clear split together (household, parents' support, your savings), then share it respectfully with the elders and ask for their dua.",s:"k",e:[3,1,0,0,3,-2],c:"A plan, not a rebellion. Elders accept a number delivered with respect far more easily than a surprise."},
-{t:"Announce your money is your own, full stop.",s:"r",e:[-2,1,-3,-2,1,3],c:"The house hears 'we don't trust you'. Your father stops talking to you for a week."},
-{t:"Delay the talk until someone explodes.",s:"a",e:[-1,-1,-1,0,-1,2],c:"The explosion comes at a wedding, with an audience."}],
-n:"Present a plan, not a position. Elders often reject ultimatums and accept clear plans delivered with respect."},
-
-{r:"liv",x:["hamza","sana"],say:["hamza","Bhai... meri fees due hain."],w:"Month 6",t:"The younger brother's fees",
-b:"Your husband's younger brother needs semester fees. The family glances at your husband, and a little at your salary.",
-g:"Your younger brother's fees are due and everyone looks at you. You want to help, but you haven't spoken to your wife about it.",
-o:[{t:"Refuse: 'It's not our responsibility.'",s:"r",e:[-1,0,-3,-3,1,3],c:"The word 'stingy' travels fast. Your spouse is embarrassed in front of the family."},
-{t:"Agree a limit together (an amount and a duration), then tell the family kindly and clearly.",s:"k",e:[3,1,1,0,2,-2],c:"The family gets a clear yes with a boundary. The fee is covered, and everyone knows it isn't unlimited."},
-{t:"Say 'we'll see' and leave it hanging.",s:"a",e:[-1,0,-1,-1,-1,2],c:"The deadline passes. Someone else pays, and you carry the shame."},
-{t:"Pay the whole thing and don't discuss it.",s:"p",e:[-2,-2,2,2,-3,2],c:"The fee gets paid, and a quiet debt opens in your marriage."}],
-n:"Support to relatives is a couple decision with a number and a time limit. A clear 'yes, up to here' protects both love and budget."},
-
-{r:"yard",x:["aunty","sana"],say:["aunty","Koi khushkhabri?"],w:"Month 4",t:"Koi khushkhabri?",
-b:"At a cousin's dholki, three aunties ask 'Koi khushkhabri?' You smile through the third. In the car afterwards, nobody asks how you felt.",
-g:"At the same dholki an uncle jokes about your 'delay'. You laugh with the others, but your wife stiffens beside you.",
-o:[{t:"Skip the next few gatherings.",s:"a",e:[0,0,-1,-2,0,1],c:"A quiet month, then the questions return with 'why aren't you coming?' added."},
-{t:"Snap: 'It's none of your business.'",s:"r",e:[0,1,-1,-3,0,3],c:"Silence at the table. By night the whole family has opinions about your attitude."},
-{t:"Start a baby sooner than you want, just to stop the questions.",s:"p",e:[-1,-3,1,2,0,3],c:"The questions stop. The pressure inside doesn't."},
-{t:"Prepare a short, warm answer together ('When Allah wills, you'll be the first to know!') and say it smiling, as a team.",s:"k",e:[3,2,0,1,0,-3],c:"The auntie laughs and moves on. Your spouse squeezes your hand under the table."}],
-n:"Three standard questions get three standard answers, said warmly and together. The aim is to close the topic, not win it."},
-
-{r:"liv",x:["bdad","mil"],say:["groom","Mujhe bahar se job offer aaya hai!"],w:"Month 8",t:"The offer abroad",
-b:"Your husband has an offer to work abroad. It's a big chance. Your parents are getting older and your own career is just beginning. He's already half-telling his friends.",
-g:"You've got an offer abroad, a real chance. You're excited and a little scared. Your parents want you close, her parents are ageing, and you haven't yet asked what she wants.",
-o:[{t:"Announce your decision and expect your spouse to follow.",s:"r",e:[-3,0,-2,-1,0,3],c:"The ticket gets booked and the trust gets cancelled."},
-{t:"Sit down together: list what each of you wants, set a trial period with a review date, then tell both families the plan.",s:"k",e:[3,2,0,0,1,-2],c:"'Let's try 18 months and then decide' lowers fear on both sides, and both families get a clear story."},
-{t:"Quietly drop your own wishes to avoid trouble.",s:"p",e:[-1,-3,1,1,0,2],c:"No fight happens. A small piece of you is missing at every future celebration."},
-{t:"Keep the options open and avoid answering anyone.",s:"a",e:[-1,0,-1,-1,0,3],c:"Everyone waits, rumours begin, and the offer expires."}],
-n:"Big moves are joint decisions with a review date. A trial period turns an ultimatum into an experiment."},
-
-{r:"bed",x:[],cat:1,w:"Month 3",t:"The quiet sadness",
-b:"Nothing is wrong, exactly. But some evenings you cry in the bathroom and then feel guilty: you have a kind husband and a nice home, so why this?",
-g:"Your wife has been quiet and flat for weeks. You've tried jokes and small gifts. Nothing lands, and you wonder if it's something you did.",
-o:[{t:"Cover it up.",tb:"Hide it so nobody worries and keep performing.",tg:"Keep joking and assume it will pass.",s:"p",e:[-1,-2,0,0,0,2],c:"It doesn't pass. It goes underground."},
-{t:"Fill every evening with guests and events so there's no quiet.",s:"a",e:[-1,-1,0,1,0,2],c:"The calendar is full, and so is the loneliness."},
-{t:"Name it, and listen.",tb:"Say: 'This is a big change and I'm struggling. I don't need fixing, just listening.' If it lingers, ask for a counsellor.",tg:"Ask gently, listen without fixing, and offer to find a counsellor together if it lingers.",s:"k",e:[3,3,0,0,0,-3],c:"The heaviness has a name now. Being heard does more than any gift could."},
-{t:"Lash out.",tb:"Snap: 'You don't understand anything.'",tg:"Say: 'What more do you want? I'm trying.'",s:"r",e:[-3,-1,0,0,0,3],c:"The sadness is now also a fight."}],
-n:"Post-wedding sadness is common: you lost routines, people and a home. Naming it and being listened to without being 'fixed' is step one; a counsellor is step two."},
-
-{r:"liv",x:["mil","fil","sana","aunty"],say:["sana","Bhai... aap ne kya kaha?"],w:"Month 10",t:"A sharp word at dinner",
-b:"At a family dinner he snaps at you over something small, in front of everyone. A cousin looks away. Your face burns.",
-g:"At a family dinner you snap at your wife over something small, in front of everyone. A cousin looks away. You knew it was wrong the second it left your mouth, but there's an audience.",
-o:[{t:"Escalate.",tb:"Snap back loudly.",tg:"Double down: 'Well, I wasn't wrong.'",s:"r",e:[-3,0,-1,-2,0,3],c:"The dinner becomes a family story, and not a flattering one."},
-{t:"Pretend.",tb:"Smile, say nothing, and go quiet for days.",tg:"Act as though nothing happened.",s:"a",e:[-1,-1,0,0,0,2],c:"The evening ends politely. The hurt goes home with you."},
-{t:"Brush it off.",tb:"Apologise yourself to keep the peace.",tg:"Blame the stress and laugh it off.",s:"p",e:[-1,-3,0,0,0,1],c:"It ends the moment and teaches both of you that this is how it goes."},
-{t:"Repair it.",tb:"Stay composed, then that night say: 'That hurt in front of everyone. I need an apology and a different way.'",tg:"Apologise that night, plainly and without a 'but', and do a small warm repair in front of the family too.",s:"k",e:[3,2,0,1,0,-3],c:"A clear apology and a clear request. Trust comes out stronger than it went in."}],
-n:"Repair is fast, private first, specific, and has no 'but'. Public sharpness damages trust more than the topic itself."}
-];
 var KO=[
-{t:"Sit down with your spouse first, just the two of you.",e:[8,3,0,0,0,-8],c:"One conversation untangles more than five phone calls."},
-{t:"Call a family meeting and settle everyone at once.",e:[-2,0,3,3,0,4],c:"Everyone feels heard, but your spouse feels like a topic, not a partner."},
-{t:"Sort the money mess first.",e:[2,0,0,0,8,-2],c:"A clear budget calms one thread, but the people threads are still tangled."},
-{t:"Take a quick holiday and distract yourselves.",e:[1,0,0,0,-2,-4],c:"The trip is lovely. The khichdi is waiting when you get home."}];
-var ENDS=[
-{n:"Pulled Apart",d:"By month 12 you are living in the same house but different stories. This is the version the course exists to prevent: it often starts with small silences, not big fights.",f:function(m){return m[0]<=35}},
-{n:"Team Tamasha",d:"You turned the drama into a team sport. Families still have opinions, but you answer as 'we', and your spouse knows they are on your side.",f:function(m){return m[0]>=65&&m[5]<=45}},
-{n:"Strong but Tired",d:"The two of you are solid, and so is the pile of family demands. Your bond is working; protect it with boundaries and rest before burnout takes the credit.",f:function(m){return m[0]>=60}},
-{n:"The Great Adjuster",d:"Everyone around you is happy, and you have quietly shrunk. Adjusting is a gift, but only when it's chosen, not when it's the only move you have.",f:function(m){return m[1]<=35}},
-{n:"Parallel Lives",d:"Polite and peaceful, but you've stopped really sharing. Two people living side by side, managing the household together and the inner life alone.",f:function(m){return m[0]<50}},
-{n:"Still Figuring It Out",d:"A mixed first year: some wins, some khichdi. That is the normal shape of year one. A weekly check-in and one hard conversation could tip it in your favour.",f:function(){return true}}];
-var PAT={k:"You mostly chose the skilled response. Keep practising these as scripts: they get easier with every use.",r:"Your instinct under pressure is to react. Practise the 20-minute break: say 'I need twenty minutes, then I'll come back'.",a:"Your instinct under pressure is to avoid. Silence feels safe but leaves the problem alone. Practise naming one feeling in one sentence.",p:"Your instinct under pressure is to please. Keeping peace has a price: you. Practise one small honest 'I'd prefer...' a day."};
+{e:[8,3,0,0,0,-8],c:"One conversation untangles more than five phone calls."},
+{e:[-2,0,3,3,0,4],c:"Everyone feels heard, but your spouse feels like a topic, not a partner."},
+{e:[2,0,0,0,8,-2],c:"A clear budget calms one thread, but the people threads are still tangled."},
+{e:[1,0,0,0,-2,-4],c:"The trip is lovely. The khichdi is waiting when you get home."}];
+var ENDS=[function(m){return m[0]<=35},function(m){return m[0]>=65&&m[5]<=45},function(m){return m[0]>=60},function(m){return m[1]<=35},function(m){return m[0]<50},function(){return true}];
+function nm(id){return LG=="ur"&&CH[id].u?CH[id].u:CH[id].n}
+function rn(r){return t("r_"+r)}
+function sn(s){return t("s_"+s)}
+function en(x){return LG=="ur"?'<div class="ltr">'+x+"</div>":x}
+function title(c){return LG=="ur"&&c.u?c.u:c.t}
 
 /* ===================== RENDERER (isometric blocks) ===================== */
-var TW=44,T=0,cv=document.getElementById("cv"),g=cv.getContext("2d"),W=300,H=270,DPR=1;
-var cam={x:7.5,y:4.5,z:.6},ct={x:7.5,y:4.5,z:.6},stage={room:null,kh:0,shake:0,jt:0};
-function rs(){DPR=Math.min(2,window.devicePixelRatio||1);W=cv.clientWidth||300;H=cv.clientHeight||270;cv.width=W*DPR;cv.height=H*DPR}
-function P(x,y,z){var s=TW*cam.z;return[W/2+(x-cam.x-(y-cam.y))*s/2,H/2+(x-cam.x+y-cam.y)*s/4-z*s*.55]}
+var TW=44,T0=0,cv=document.getElementById("cv"),g=cv.getContext("2d"),W=300,H=500,DPR=1;
+var cam={x:8,y:5,z:.6,oy:0},ct={x:8,y:5,z:.6,oy:0},stage={room:null,kh:0,shake:0,jt:0,foc:{cx:8,cy:5,w:16,h:10}},hint=null;
+function rs(){DPR=Math.min(2,window.devicePixelRatio||1);W=cv.clientWidth||300;H=cv.clientHeight||500;cv.width=W*DPR;cv.height=H*DPR}
+function P(x,y,z){var s=TW*cam.z;return[W/2+(x-cam.x-(y-cam.y))*s/2,H/2+cam.oy+(x-cam.x+y-cam.y)*s/4-z*s*.55]}
 function K(c,f){return"rgb("+(c[0]*f|0)+","+(c[1]*f|0)+","+(c[2]*f|0)+")"}
 function pl(pts,fill,stroke){g.beginPath();g.moveTo(pts[0][0],pts[0][1]);for(var i=1;i<pts.length;i++)g.lineTo(pts[i][0],pts[i][1]);g.closePath();g.fillStyle=fill;g.fill();if(stroke!==false){g.strokeStyle="rgba(40,20,20,.22)";g.lineWidth=1;g.stroke()}}
 function box(x,y,z,w,d,h,c){var A=P(x,y,z+h),B=P(x+w,y,z+h),C=P(x+w,y+d,z+h),D=P(x,y+d,z+h),E=P(x,y+d,z),F=P(x+w,y+d,z),G=P(x+w,y,z);pl([D,C,F,E],K(c,.8));pl([B,C,F,G],K(c,.62));pl([A,B,C,D],K(c,1))}
@@ -219,34 +141,30 @@ for(i=1;i<=9;i++)B(i,.85,0,1,.15,1.8,wl);
 for(i=1;i<=8;i++)B(.85,i,0,.15,1,1.8,wl2);
 [1,4].forEach(function(y){B(4.9,y,0,.12,1,.7,lw)});[5,8].forEach(function(y){B(4.9,y,0,.12,1,.7,lw)});
 [1,4].forEach(function(x){B(x,4.9,0,1,.12,.7,lw)});[5,8,9].forEach(function(x){B(x,4.9,0,1,.12,.7,lw)});
-/* bedroom */
 B(1.5,1.3,0,2,.1,.95,[110,62,42]);B(1.5,1.4,0,2,2.3,.45,[160,62,92]);B(1.5,1.4,.45,2,2.3,.1,[250,242,236]);B(1.6,1.5,.55,.7,.4,.14,[255,255,255]);B(2.7,1.5,.55,.7,.4,.14,[255,255,255]);
 B(1.1,4.0,0,.6,.9,1.5,[132,92,62]);B(3.7,1.4,0,.4,.4,.4,[140,100,70]);
-/* living */
 B(6,1.2,0,3,.15,1.05,[150,50,45]);B(6,1.3,0,3,.9,.55,[192,72,62]);B(6,2.6,0,2.8,1.6,.04,[222,172,62]);B(6.8,2.8,0,1.2,.8,.4,[142,102,72]);
 B(9.4,2,0,.4,1.6,.5,[92,72,62]);B(9.5,2.2,.5,.12,1.2,.7,[32,32,42]);B(9.25,1.45,0,.08,.08,.9,[130,90,60]);
-/* kitchen */
 B(1.2,5.3,0,.8,3.2,.75,[212,212,218]);B(1.25,6.0,.75,.6,.7,.1,[40,40,46]);B(1.2,8.1,0,.8,.7,1.5,[236,242,246]);
 B(2.8,6.3,0,1.4,1.2,.5,[172,122,82]);B(2.35,6.5,0,.35,.35,.3,[120,80,60]);B(4.25,6.5,0,.35,.35,.3,[120,80,60]);
-/* yard */
 B(6,6.2,.25,1.5,2.4,.1,[202,152,72]);[[6,6.2],[7.35,6.2],[6,8.4],[7.35,8.4]].forEach(function(p){B(p[0],p[1],0,.15,.15,.25,[110,80,50])});
 B(9,5.4,0,.3,.3,1,[110,76,52]);B(8.55,5,1,1.2,1.2,.9,[72,142,72]);B(5.4,8.4,0,.3,.3,.3,[202,102,62]);B(5.45,8.45,.3,.2,.2,.3,[62,152,72]);
-/* neighbours */
 B(11.3,1.2,0,3.2,3.2,1.8,[246,226,192]);B(11.1,1,1.8,3.6,3.6,.35,[162,62,62]);B(12.2,4.4,0,.5,.05,.9,[82,52,42]);
 B(11.3,5.2,0,3.2,3.2,1.8,[192,216,242]);B(11.1,5,1.8,3.6,3.6,.35,[62,92,152]);B(12.2,8.4,0,.5,.05,.9,[82,52,42]);
 B(10.15,8.3,0,.7,1.3,.4,[222,222,228]);B(10.2,8.55,.4,.6,.8,.35,[162,202,232]);
 B(.2,9.1,0,.3,.3,.9,[110,76,52]);B(-.1,8.8,.9,.9,.9,.8,[72,142,72]);B(15,.3,0,.3,.3,.9,[110,76,52]);B(14.65,0,.9,.9,.9,.8,[72,142,72]);
 })();
 function ground(){
-var pulse=.18+.1*Math.sin(T*3);
-for(var y=0;y<10;y++)for(var x=0;x<16;x++){var c,k=(x+y)%2?.96:1;
-if(x==10)c=[122,124,132];else if(x>=1&&x<=9&&y>=1&&y<=8)c=RM[roomAt(x,y)].c;else if(x<=9&&(x==0||y==0||y==9))c=[228,216,192];else c=[152,202,122];
+var pulse=.2+.1*Math.sin(T0*3);
+for(var y=0;y<10;y++)for(var x=0;x<16;x++){var c,k=(x+y)%2?.96:1,inH=x>=1&&x<=9&&y>=1&&y<=8;
+if(x==10)c=[122,124,132];else if(inH)c=RM[roomAt(x,y)].c;else if(x<=9&&(x==0||y==0||y==9))c=[228,216,192];else c=[152,202,122];
+if(stage.room){if(inH&&roomAt(x,y)!=stage.room)k*=.74;else if(!inH)k*=.82}
 pl([P(x,y,0),P(x+1,y,0),P(x+1,y+1,0),P(x,y+1,0)],K(c,k),false)}
 if(stage.room){var r=RM[stage.room];pl([P(r.x,r.y,.02),P(r.x+r.w,r.y,.02),P(r.x+r.w,r.y+r.h,.02),P(r.x,r.y+r.h,.02)],"rgba(255,230,120,"+pulse+")",false)}}
 var CHR={},cat={x:6.5,y:6.5,tx:6.5,ty:6.5,t:0,emo:"",et:0,walk:0},parrot={say:"",st:0};
-Object.keys(CH).forEach(function(id){var h=HOME[id];CHR[id]={x:h[0],y:h[1],tx:h[0],ty:h[1],emo:"",et:0,say:"",st:0,ph:Math.random()*6,walk:0,mood:""}});
+Object.keys(CH).forEach(function(id){var h=HOME[id];CHR[id]={x:h[0],y:h[1],tx:h[0],ty:h[1],emo:"",et:0,say:"",st:0,ph:Math.random()*6,walk:0,mood:"",show:id!="kid"}});
 function eye(x,y,z){var p=P(x,y,z);g.beginPath();g.arc(p[0],p[1],Math.max(1,1.6*cam.z),0,7);g.fill()}
-function fig(id){var d=CH[id],c=CHR[id],s=d.sc||1,bob=c.walk?Math.abs(Math.sin(T*9+c.ph))*.06:Math.sin(T*2+c.ph)*.012,x=c.x-.17*s,y=c.y-.17*s,z=bob,dk=[52,52,72];
+function fig(id){var d=CH[id],c=CHR[id],s=d.sc||1,bob=c.walk?Math.abs(Math.sin(T0*9+c.ph))*.06:Math.sin(T0*2+c.ph)*.012,x=c.x-.17*s,y=c.y-.17*s,z=bob,dk=[52,52,72];
 box(x+.03*s,y+.02*s,z,.15*s,.12*s,.34*s,dk);box(x+.03*s,y+.2*s,z,.15*s,.12*s,.34*s,dk);
 box(x,y-.02*s,z+.34*s,.34*s,.38*s,.46*s,d.col);
 box(x+.08*s,y-.12*s,z+.38*s,.14*s,.12*s,.36*s,d.col);box(x+.08*s,y+.36*s,z+.38*s,.14*s,.12*s,.36*s,d.col);
@@ -257,132 +175,166 @@ var fx=hx+.34*s;g.fillStyle="#222";eye(fx,hy+.09*s,hz+.19*s);eye(fx,hy+.25*s,hz+
 var m=c.mood,a=P(fx,hy+.1*s,hz+.08*s),b=P(fx,hy+.25*s,hz+.08*s);g.strokeStyle="#222";g.lineWidth=Math.max(1,1.2*cam.z);g.beginPath();g.moveTo(a[0],a[1]);
 if(m=="k"||m=="h")g.quadraticCurveTo((a[0]+b[0])/2,a[1]+4*cam.z,b[0],b[1]);else if(m=="r"||m=="p"||m=="s")g.quadraticCurveTo((a[0]+b[0])/2,a[1]-3*cam.z,b[0],b[1]);else g.lineTo(b[0],b[1]);g.stroke();
 if(m=="r"){var q=P(fx,hy+.05*s,hz+.26*s),q2=P(fx,hy+.15*s,hz+.23*s),q3=P(fx,hy+.2*s,hz+.23*s),q4=P(fx,hy+.3*s,hz+.26*s);g.beginPath();g.moveTo(q[0],q[1]);g.lineTo(q2[0],q2[1]);g.moveTo(q3[0],q3[1]);g.lineTo(q4[0],q4[1]);g.stroke()}}
-function drawCat(){var c=cat,b=c.walk?Math.sin(T*10)*.03:0;box(c.x-.15,c.y-.08,b,.32,.17,.16,[238,150,60]);box(c.x+.12,c.y-.09,b+.1,.16,.18,.17,[238,150,60]);box(c.x-.27,c.y-.02,b+.1,.14,.06,.07,[238,150,60]);box(c.x+.22,c.y-.07,b+.25,.04,.05,.07,[200,110,40]);box(c.x+.22,c.y+.05,b+.25,.04,.05,.07,[200,110,40])}
+function drawCat(){var c=cat,b=c.walk?Math.sin(T0*10)*.03:0;box(c.x-.15,c.y-.08,b,.32,.17,.16,[238,150,60]);box(c.x+.12,c.y-.09,b+.1,.16,.18,.17,[238,150,60]);box(c.x-.27,c.y-.02,b+.1,.14,.06,.07,[238,150,60]);box(c.x+.22,c.y-.07,b+.25,.04,.05,.07,[200,110,40]);box(c.x+.22,c.y+.05,b+.25,.04,.05,.07,[200,110,40])}
 function drawParrot(){box(9.2,1.4,.9,.18,.18,.22,[60,190,90]);box(9.3,1.43,1.1,.12,.12,.12,[60,190,90]);box(9.42,1.46,1.15,.05,.06,.05,[230,60,60]);box(9.13,1.42,.92,.07,.12,.18,[30,130,200])}
-function drawPot(){var x=6.2,y=6.2;box(x,y,0,.9,.9,.5,[60,60,66]);box(x+.1,y+.1,.5,.7,.7,.08,[236,170,50]);for(var i=0;i<3;i++){var p=P(x+.45,y+.45,.7+i*.3+Math.sin(T*4+i)*.08);g.fillStyle="rgba(255,255,255,.55)";g.beginPath();g.arc(p[0]+Math.sin(T*3+i)*3,p[1],3*cam.z+1,0,7);g.fill()}}
-function bubble(txt,px,py,col){g.font="600 "+Math.max(11,Math.round(11.5))+"px system-ui,sans-serif";var words=txt.split(" "),lines=[],cur="";words.forEach(function(w){var t2=cur?cur+" "+w:w;if(g.measureText(t2).width>128&&cur){lines.push(cur);cur=w}else cur=t2});lines.push(cur);
-var bw=0;lines.forEach(function(l){bw=Math.max(bw,g.measureText(l).width)});bw+=14;var bh=lines.length*14+8,bx=Math.max(3,Math.min(W-bw-3,px-bw/2)),by=Math.max(3,py-bh);
-g.fillStyle=col||"#fff";g.strokeStyle="#333";g.lineWidth=1.2;g.beginPath();if(g.roundRect)g.roundRect(bx,by,bw,bh,8);else g.rect(bx,by,bw,bh);g.fill();g.stroke();g.fillStyle="#222";g.textAlign="left";lines.forEach(function(l,i){g.fillText(l,bx+7,by+15+i*14)})}
+function drawPot(){var x=6.2,y=6.2;box(x,y,0,.9,.9,.5,[60,60,66]);box(x+.1,y+.1,.5,.7,.7,.08,[236,170,50]);for(var i=0;i<3;i++){var p=P(x+.45,y+.45,.7+i*.3+Math.sin(T0*4+i)*.08);g.fillStyle="rgba(255,255,255,.55)";g.beginPath();g.arc(p[0]+Math.sin(T0*3+i)*3,p[1],3*cam.z+1,0,7);g.fill()}}
+function bubble(txt,px,py,col){g.font="600 12px system-ui,sans-serif";var words=txt.split(" "),lines=[],cur="";words.forEach(function(w){var t2=cur?cur+" "+w:w;if(g.measureText(t2).width>132&&cur){lines.push(cur);cur=w}else cur=t2});lines.push(cur);
+var bw=0;lines.forEach(function(l){bw=Math.max(bw,g.measureText(l).width)});bw+=14;var bh=lines.length*15+8,bx=Math.max(3,Math.min(W-bw-3,px-bw/2)),by=Math.max(3,py-bh);
+g.fillStyle=col||"#fff";g.strokeStyle="#333";g.lineWidth=1.2;g.beginPath();if(g.roundRect)g.roundRect(bx,by,bw,bh,8);else g.rect(bx,by,bw,bh);g.fill();g.stroke();g.fillStyle="#222";g.textAlign="left";lines.forEach(function(l,i){g.fillText(l,bx+7,by+15+i*15)})}
 function labels(){
 var ids=Object.keys(CHR).filter(function(i){return CHR[i].show});
-ids.forEach(function(id){var c=CHR[id],d=CH[id],s=d.sc||1,p=P(c.x,c.y,1.2*s+.1);g.font="700 10px system-ui,sans-serif";g.textAlign="center";var w=g.measureText(d.n).width+8;g.fillStyle="rgba(255,255,255,.88)";g.fillRect(p[0]-w/2,p[1]-13,w,13);g.fillStyle="#3a2020";g.fillText(d.n,p[0],p[1]-3);
-if(c.emo){g.font="18px system-ui,sans-serif";g.fillText(c.emo,p[0],p[1]-17)}});
-ids.forEach(function(id){var c=CHR[id];if(c.say){var s=CH[id].sc||1,p=P(c.x,c.y,1.2*s+.1);bubble(c.say,p[0],p[1]-(c.emo?38:20))}});
+ids.forEach(function(id){var c=CHR[id],d=CH[id],s=d.sc||1,p=P(c.x,c.y,1.2*s+.1);g.font="700 11px system-ui,sans-serif";g.textAlign="center";var lab=nm(id),w=g.measureText(lab).width+8;g.fillStyle="rgba(255,255,255,.9)";g.fillRect(p[0]-w/2,p[1]-14,w,14);g.fillStyle="#3a2020";g.fillText(lab,p[0],p[1]-3);
+if(c.emo){g.font="20px system-ui,sans-serif";g.fillText(c.emo,p[0],p[1]-18)}});
+ids.forEach(function(id){var c=CHR[id];if(c.say){var s=CH[id].sc||1,p=P(c.x,c.y,1.2*s+.1);bubble(c.say,p[0],p[1]-(c.emo?42:22))}});
 if(parrot.say){var p=P(9.3,1.5,1.4);bubble(parrot.say,p[0],p[1]-6,"#d9f7d4")}
-if(cat.emo){var p=P(cat.x,cat.y,.4);g.font="16px system-ui,sans-serif";g.textAlign="center";g.fillText(cat.emo,p[0],p[1]-6)}
-g.font="700 10px system-ui,sans-serif";g.textAlign="center";[["Her parents",12.9,2.8,2.5],["Aunty's house",12.9,6.8,2.5]].forEach(function(l){var p=P(l[1],l[2],l[3]);g.fillStyle="rgba(255,255,255,.85)";var w=g.measureText(l[0]).width+8;g.fillRect(p[0]-w/2,p[1]-10,w,13);g.fillStyle="#3a2020";g.fillText(l[0],p[0],p[1])});
-if(stage.room){var r=RM[stage.room],p=P(r.x+r.w/2,r.y+r.h/2,0);}}
-function update(dt){T+=dt;var k=1-Math.pow(.002,dt);cam.x+=(ct.x-cam.x)*k;cam.y+=(ct.y-cam.y)*k;cam.z+=(ct.z-cam.z)*k;
-Object.keys(CHR).forEach(function(id){var c=CHR[id],dx=c.tx-c.x,dy=c.ty-c.y,dd=Math.sqrt(dx*dx+dy*dy);if(dd>.04){var sp=Math.min(2.5*dt,dd);c.x+=dx/dd*sp;c.y+=dy/dd*sp;c.walk=1}else c.walk=0;c.et-=dt;if(c.et<=0)c.emo="";c.st-=dt;if(c.st<=0)c.say=""});
-if(stage.kh){stage.jt-=dt;if(stage.jt<=0){stage.jt=.8;Object.keys(CHR).forEach(function(id){if(CHR[id].show&&id!="bmom"&&id!="bdad"&&id!="aunty"){CHR[id].tx=4+Math.random()*5;CHR[id].ty=3+Math.random()*5}})}}
+if(cat.emo){var p2=P(cat.x,cat.y,.4);g.font="18px system-ui,sans-serif";g.textAlign="center";g.fillText(cat.emo,p2[0],p2[1]-6)}
+if(!stage.room&&!stage.kh){g.font="700 11px system-ui,sans-serif";g.textAlign="center";[["Her parents",12.9,2.8,2.5],["Aunty's house",12.9,6.8,2.5]].forEach(function(l){var p3=P(l[1],l[2],l[3]);g.fillStyle="rgba(255,255,255,.88)";var w=g.measureText(l[0]).width+8;g.fillRect(p3[0]-w/2,p3[1]-11,w,14);g.fillStyle="#3a2020";g.fillText(l[0],p3[0],p3[1])})}
+hint=null;
+if(S&&V=="round"&&S.role){var pc=CHR[S.role=="B"?"bride":"groom"],pp=P(pc.x,pc.y,.7);hint={x:pp[0],y:pp[1]};
+if(S.phase=="intro"){var bb=Math.sin(T0*5)*4;g.strokeStyle="rgba(242,169,0,.95)";g.lineWidth=3;g.beginPath();g.ellipse(pp[0],pp[1]+.385*TW*cam.z,26+Math.sin(T0*5)*3,11,0,0,7);g.stroke();g.font="26px system-ui,sans-serif";g.textAlign="center";g.fillStyle="#000";g.fillText("👇",pp[0],pp[1]-52*cam.z-bb-12)}}}
+function update(dt){T0+=dt;var k=1-Math.pow(.004,dt);["x","y","z","oy"].forEach(function(q){cam[q]+=(ct[q]-cam[q])*k});
+Object.keys(CHR).forEach(function(id){var c=CHR[id],dx=c.tx-c.x,dy=c.ty-c.y,dd=Math.sqrt(dx*dx+dy*dy);if(dd>.04){var sp=Math.min(2.6*dt,dd);c.x+=dx/dd*sp;c.y+=dy/dd*sp;c.walk=1}else c.walk=0;c.et-=dt;if(c.et<=0)c.emo="";c.st-=dt;if(c.st<=0)c.say=""});
+if(stage.kh){stage.jt-=dt;if(stage.jt<=0){stage.jt=.8;Object.keys(CHR).forEach(function(id){if(CHR[id].show&&id!="bmom"&&id!="bdad"&&id!="aunty"){CHR[id].tx=3+Math.random()*6;CHR[id].ty=2+Math.random()*6}})}}
 cat.t-=dt;if(cat.t<=0&&!stage.catPin){cat.t=3+Math.random()*3;cat.tx=2+Math.random()*7;cat.ty=2+Math.random()*6}
-var cdx=cat.tx-cat.x,cdy=cat.ty-cat.y,cd=Math.sqrt(cdx*cdx+cdy*cdy);if(cd>.05){var cs=Math.min(1.1*dt,cd);cat.x+=cdx/cd*cs;cat.y+=cdy/cd*cs;cat.walk=1}else cat.walk=0;cat.et-=dt;if(cat.et<=0)cat.emo="";parrot.st-=dt;if(parrot.st<=0)parrot.say=""}
-function draw(){g.setTransform(DPR,0,0,DPR,0,0);g.clearRect(0,0,W,H);var sh=stage.shake;if(sh>0){g.translate((Math.random()-.5)*10*sh,(Math.random()-.5)*10*sh);stage.shake=Math.max(0,sh-.015)}
+var cdx=cat.tx-cat.x,cdy=cat.ty-cat.y,cd=Math.sqrt(cdx*cdx+cdy*cdy);if(cd>.05){var cs=Math.min(1.2*dt,cd);cat.x+=cdx/cd*cs;cat.y+=cdy/cd*cs;cat.walk=1}else cat.walk=0;cat.et-=dt;if(cat.et<=0)cat.emo="";parrot.st-=dt;if(parrot.st<=0)parrot.say=""}
+function draw(){g.setTransform(DPR,0,0,DPR,0,0);g.clearRect(0,0,W,H);var sh=stage.shake;g.save();if(sh>0){g.translate((Math.random()-.5)*10*sh,(Math.random()-.5)*10*sh);stage.shake=Math.max(0,sh-.012)}
 ground();var L=STAT.slice();
 Object.keys(CHR).forEach(function(id){var c=CHR[id];if(c.show)L.push([c.x+c.y+.3,function(){fig(id)}])});
 L.push([cat.x+cat.y+.2,drawCat]);L.push([9.3+1.5,drawParrot]);if(stage.kh)L.push([6.6+6.6,drawPot]);
-L.sort(function(a,b){return a[0]-b[0]});L.forEach(function(q){q[1]()});labels()}
-var last=0;function frame(t){var dt=Math.min(.05,(t-last)/1000||0);last=t;update(dt);draw();requestAnimationFrame(frame)}
-window.addEventListener("resize",function(){rs();camTarget()});
-function fitZ(){return Math.min(1.1,1.9*W/(26*TW))}
-function camTarget(){if(stage.room){var r=RM[stage.room];ct.x=r.x+r.w/2;ct.y=r.y+r.h/2;ct.z=Math.min(2.2,1.7*W/((r.w+r.h)*TW))}else if(stage.kh){ct.x=5.5;ct.y=5;ct.z=Math.min(1.6,1.5*W/(12*TW))}else{ct.x=7.5;ct.y=4.5;ct.z=fitZ()}}
-function setShow(ids){Object.keys(CHR).forEach(function(id){CHR[id].show=true;CHR[id].mood=""});}
+L.sort(function(a,b){return a[0]-b[0]});L.forEach(function(q){q[1]()});labels();g.restore()}
+var last=0;function frame(tm){var dt=Math.min(.05,(tm-last)/1000||0);last=tm;update(dt);draw();requestAnimationFrame(frame)}
+/* camera: fit the focus region into the free area between the top bubble and the bottom meters */
+function camTarget(tr,br){var f=stage.foc;tr=tr==null?52:tr;br=br==null?8:br;var freeH=Math.max(120,H-tr-br),fz=(tr+(H-br))/2,wh=stage.room?.9:.5;
+var sH=(stage.room?1.08:.95)*W/((f.w+f.h)/2),sV=.92*freeH/((f.w+f.h)/4+wh),s=Math.min(sH,sV,TW*2.8),wall=wh*s;
+ct.z=Math.max(.35,s/TW);ct.x=f.cx;ct.y=f.cy;ct.oy=fz+wall/2-H/2}
+function fit(){var tr=52,br=8;if(V=="round"){var n=document.getElementById("narr");if(!n.hidden)tr=n.offsetTop+n.offsetHeight+4;br=document.getElementById("hud").offsetHeight+4}else if(V=="end"){br=document.getElementById("sheet").offsetHeight+16}camTarget(tr,br)}
+window.addEventListener("resize",function(){rs();fit()});
 function slots(room){var r=RM[room],cx=r.x+r.w/2,cy=r.y+r.h/2;return[[cx-.9,cy-.3],[cx+.5,cy+.5],[cx+1.3,cy-.8],[cx-1.5,cy+.9],[cx+.1,cy-1.3],[cx+1.7,cy+1.1],[cx-.2,cy+1.4]]}
 function stageSet(room,extra,say,catIn,kh){stage.room=kh?null:room;stage.kh=kh?1:0;stage.catPin=catIn?1:0;var cast=["bride","groom"].concat(extra||[]),sl=slots(room||"yard");
-Object.keys(CHR).forEach(function(id){var c=CHR[id],i=cast.indexOf(id);c.show=true;c.mood="";if(i>=0){c.tx=sl[i][0];c.ty=sl[i][1]}else{c.tx=HOME[id][0];c.ty=HOME[id][1]}c.emo="";c.say=""});
+if(kh)stage.foc={cx:5.6,cy:5,w:9.6,h:8.6};else{var r=RM[room];stage.foc={cx:r.x+r.w/2,cy:r.y+r.h/2,w:r.w+.8,h:r.h+.8}}
+Object.keys(CHR).forEach(function(id){var c=CHR[id],i=cast.indexOf(id);c.show=id!="kid"||i>-1;c.mood="";if(i>=0){c.tx=sl[i][0];c.ty=sl[i][1]}else{c.tx=HOME[id][0];c.ty=HOME[id][1]}c.emo="";c.say=""});
 if(catIn){cat.tx=sl[1][0]+.5;cat.ty=sl[1][1]+.3}
-if(say&&CHR[say[0]]){CHR[say[0]].say=say[1];CHR[say[0]].st=6}
-if(kh){stage.shake=1;parrot.say="Khichdi ban gayi hai!";parrot.st=5;Object.keys(CHR).forEach(function(id){CHR[id].emo="💥";CHR[id].et=3})}
-camTarget()}
-function stageHome(){stage.room=null;stage.kh=0;stage.catPin=0;Object.keys(CHR).forEach(function(id){var c=CHR[id];c.show=true;c.mood="";c.tx=HOME[id][0];c.ty=HOME[id][1];c.emo="";c.say=""});camTarget()}
+if(say&&CHR[say[0]]){CHR[say[0]].say=say[1];CHR[say[0]].st=7}
+if(kh){stage.shake=1;parrot.say="Khichdi ban gayi hai!";parrot.st=5;Object.keys(CHR).forEach(function(id){CHR[id].emo="💥";CHR[id].et=3})}}
+function stageHome(){stage.room=null;stage.kh=0;stage.catPin=0;stage.foc={cx:8,cy:5,w:16,h:10};Object.keys(CHR).forEach(function(id){var c=CHR[id];c.show=id!="kid";c.mood="";c.tx=HOME[id][0];c.ty=HOME[id][1];c.emo="";c.say=""})}
 
-/* ===================== GAME STATE ===================== */
-var S,NET=null,PEER=null,app=document.getElementById("app");
-function fresh(keep){var r=keep?S:{};S={role:r.role||null,mode:r.mode||"solo",code:r.code||"",m:[50,50,50,50,50,30],i:0,cur:null,sel:null,mine:{},theirs:{},done:{},styles:{k:0,r:0,a:0,p:0},kc:0,lastK:-9,online:!!(keep&&r.online)}}
-function $(h){app.innerHTML=h;window.scrollTo({top:0})}
+/* ===================== STATE ===================== */
+var S=null,V="home",NET=null,PEER=null,OOPS="";
+var $n=document.getElementById("narr"),$o=document.getElementById("opts"),$h=document.getElementById("hud"),$m=document.getElementById("menu"),$s=document.getElementById("sheet"),$c=document.getElementById("chip");
+function fresh(keep){var r=keep&&S?S:{};S={role:r.role||null,mode:r.mode||"solo",code:r.code||"",len:r.len||12,seed:r.seed||1,m:[50,50,50,50,50,30],dl:null,list:[],pos:0,cur:null,sel:null,rt:0,phase:"intro",mine:{},theirs:{},done:{},styles:{k:0,r:0,a:0,p:0},kc:0,lastK:-9,online:false}}
 function clamp(v){return Math.max(0,Math.min(100,v))}
 function otext(o,role){return(role=="B"?o.tb:o.tg)||o.t}
 function other(){return S.role=="B"?"G":"B"}
-function rname(r){return r=="B"?"Bride":"Groom"}
-function meters(){var h='<div class="meters">';for(var i=0;i<6;i++){h+='<div class="m">'+MN[i][1]+" "+MN[i][0]+'<div class="bar'+(i==5?" s":"")+'"><i style="width:'+S.m[i]+'%"></i></div></div>'}return h+"</div>"}
+function rname(r){return r=="B"?t("bride"):t("groom")}
+function rng(a){return function(){a|=0;a=a+0x6D2B79F5|0;var x=Math.imul(a^a>>>15,1|a);x=x+Math.imul(x^x>>>7,61|x)^x;return((x^x>>>14)>>>0)/4294967296}}
+function buildList(seed,len){var ix=SC.map(function(c,i){return i}).sort(function(a,b){return SC[a].mo-SC[b].mo||(SC[a].id<SC[b].id?-1:1)});if(len>=40)return ix;
+var R=rng(seed),out=[];for(var m=0;m<12;m++){var pool=m==11?ix.filter(function(i){return SC[i].id=="S40"}):ix.filter(function(i){return SC[i].mo==m});if(pool.length)out.push(pool[Math.floor(R()*pool.length)])}return out}
 function flags(){var f=0;for(var i=0;i<5;i++)if(S.m[i]<=35)f++;if(S.m[5]>=65)f++;return f}
-function ai(r){if(r.type=="kh")return{o:Math.random()<.6?0:Math.floor(Math.random()*4),r:0};var o=SC[r.i].o,w=o.map(function(x){return{k:.4,r:.15,a:.2,p:.25}[x.s]}),t=Math.random()*1,a=0,ix=0;for(var i=0;i<w.length;i++){a+=w[i];if(t<=a){ix=i;break}}return{o:ix,r:2+Math.floor(Math.random()*3)}}
+function ai(r){if(r.type=="kh")return{o:Math.random()<.6?0:Math.floor(Math.random()*4),r:0};var o=SC[r.i].o,w=o.map(function(x){return{k:.4,r:.15,a:.2,p:.25}[x.s]}),tt=Math.random(),a=0,ix=0;for(var i=0;i<w.length;i++){a+=w[i];if(tt<=a){ix=i;break}}return{o:ix,r:2+Math.floor(Math.random()*3)}}
+function rnd4(){var a="ABCDEFGHJKMNPQRSTUVWXYZ23456789",s="";for(var i=0;i<4;i++)s+=a[Math.floor(Math.random()*a.length)];return s}
 
-function home(){closeNet();fresh();stageHome();$('<div class="card" style="margin-top:10px"><span class="tag">A DEHLEEZ PROJECT</span><h1 style="margin-top:8px">Aaghaaz Tamasha</h1><div class="ur" style="font-size:1.35rem;color:var(--maroon)">آغاز تماشا</div><p><b>Play your first year of marriage before you live it.</b></p><p class="mute">One house, one aangan, one aunty next door, one parrot. Twelve real first-year situations, played as the bride or the groom. Play solo, or online with your partner and see where your instincts differ.</p></div><button class="btn main" onclick="pick(\'solo\')">Play solo (AI partner)</button><button class="btn main" onclick="pick(\'host\')">Play online with my partner</button><button class="btn alt" onclick="joinUI()">I have a room code</button><p class="mute foot">Prototype v0.2. For learning, not a substitute for counselling or legal advice.</p>')}
-function pick(mode){S.mode=mode;$('<h2>Who are you playing?</h2><p class="mute">'+(mode=="host"?"Your partner will play the other role.":"Your partner will be played by the game.")+' Be honest: the point is to learn your instinct, not to win.</p><button class="btn" onclick="chooseRole(\'B\')"><b>👰 The bride</b><br><span class="mute">Moving into a new household, new family, new rules.</span></button><button class="btn" onclick="chooseRole(\'G\')"><b>🤵 The groom</b><br><span class="mute">Torn between two loyalties, trying to keep everyone happy.</span></button><button class="btn alt" onclick="home()">Back</button>')}
-function chooseRole(r){var m=S.mode;fresh();S.role=r;S.mode=m;if(m=="solo"){S.online=false;begin()}else hostUI()}
-function begin(){var r=S.role,m=S.mode,o=S.online,c=S.code;fresh();S.role=r;S.mode=m;S.online=o;S.code=c;startRound({id:"s0",type:"sc",i:0})}
+/* ===================== VIEWS ===================== */
+function menu(html,bot){$s.innerHTML=html;$m.className=bot?"bot":"";$m.hidden=false;$n.hidden=true;$o.hidden=true;$h.hidden=true;$c.hidden=true;$s.scrollTop=0}
+function render(){document.body.className=LG=="ur"?"ur":"";document.getElementById("lg").textContent=LG=="ur"?"EN":"اردو";document.documentElement.lang=LG=="ur"?"ur":"en";
+if(V=="home")homeV();else if(V=="role")roleV();else if(V=="host")hostV();else if(V=="join")joinV();else if(V=="joining")joiningV();else if(V=="oops")oopsV();else if(V=="end")endV();else roundV();
+setTimeout(fit,30)}
+function toggleLang(){LG=LG=="ur"?"en":"ur";try{localStorage.setItem("aat_lg",LG)}catch(e){}render()}
+function goHome(){closeNet();fresh();stageHome();V="home";render()}
+function homeV(){stageHome();menu('<span class="chip" style="background:var(--gold);display:inline-block">'+t("brand")+'</span><h1>'+t("title")+'</h1>'+(LG=="ur"?'<div style="color:var(--maroon)">Aaghaaz Tamasha</div>':'<div class="mute" style="font-family:\'Noto Nastaliq Urdu\',serif;font-size:1.3rem;direction:rtl;text-align:left;color:var(--maroon)">آغاز تماشا</div>')+'<p><b>'+t("tagline")+'</b></p><p class="mute">'+t("intro")+'</p><button class="btn main" onclick="pickMode(\'solo\')">'+t("solo")+'</button><button class="btn main" onclick="pickMode(\'host\')">'+t("host")+'</button><button class="btn alt" onclick="V=\'join\';render()">'+t("join")+'</button><div class="how"><b>'+t("how")+'</b><ol><li>'+t("how1")+'</li><li>'+t("how2")+'</li><li>'+t("how3")+'</li></ol><p style="margin:6px 0 2px"><b>👥</b> '+t("howO")+'</p></div><p class="mute foot">'+t("foot")+"</p>")}
+function pickMode(m){var l=S&&S.len||12;fresh();S.len=l;S.mode=m;V="role";render()}
+function roleV(){menu('<h2>'+t("whoT")+'</h2><p class="mute">'+(S.mode=="host"?t("partnerHuman"):t("partnerAI"))+" "+t("whoN")+'</p><button class="btn" onclick="chooseRole(\'B\')"><b>👰 '+t("bride")+'</b><br><span class="mute">'+t("brideD")+'</span></button><button class="btn" onclick="chooseRole(\'G\')"><b>🤵 '+t("groom")+'</b><br><span class="mute">'+t("groomD")+'</span></button><p style="margin:10px 0 2px"><b>'+t("lenT")+'</b></p><button class="btn alt'+(S.len==12?" on":"")+'" onclick="S.len=12;render()">'+t("len12")+'</button><button class="btn alt'+(S.len==40?" on":"")+'" onclick="S.len=40;render()">'+t("len40")+'</button><button class="btn alt" onclick="goHome()">'+t("back")+"</button>")}
+function chooseRole(r){S.role=r;S.seed=1+Math.floor(Math.random()*1e9);if(S.mode=="solo"){S.online=false;begin()}else{S.online=true;S.code=rnd4();V="host";render();openNet(true)}}
+function begin(){var k={role:S.role,mode:S.mode,code:S.code,len:S.len,seed:S.seed,online:S.online};S=null;fresh(false);for(var q in k)S[q]=k[q];S.list=buildList(S.seed,S.len);S.pos=0;stageHome();startRound({id:"s0",type:"sc",i:S.list[0]})}
+function hostV(){var link=location.origin+location.pathname+"?room="+S.code;
+menu('<h2>'+t("roomT")+'</h2><div class="code">'+S.code+'</div><p class="mute" style="text-align:center">'+t("roomH",{r:rname(S.role)})+'</p><p class="mute">'+t("roomH2")+'</p><a class="btn main" target="_blank" rel="noopener" href="https://wa.me/?text='+encodeURIComponent(t("roomShare",{c:S.code,l:link}))+'">'+t("wa")+'</a><button class="btn alt" onclick="copyLink()">'+t("copy")+'</button><div class="how" style="text-align:center">'+t("waitJoin")+'</div><button class="btn alt" onclick="goHome()">'+t("cancel")+"</button>")}
+function copyLink(){try{navigator.clipboard.writeText(location.origin+location.pathname+"?room="+S.code)}catch(e){}}
+function joinV(code){menu('<h2>'+t("joinT")+'</h2><p class="mute">'+t("joinH")+'</p><input id="jc" maxlength="4" value="'+(code||"")+'" placeholder="ABCD" autocomplete="off"><button class="btn main" onclick="doJoin()">'+t("joinB")+'</button><button class="btn alt" onclick="goHome()">'+t("back")+"</button>")}
+function doJoin(){var c=document.getElementById("jc").value.trim().toUpperCase();if(c.length!=4)return;fresh();S.code=c;S.online=true;S.mode="guest";V="joining";render();openNet(false)}
+function joiningV(){menu('<div style="text-align:center"><h2>'+t("joining",{c:S.code})+'</h2><p class="mute">'+t("joiningS")+'</p></div><button class="btn alt" onclick="goHome()">'+t("cancel")+"</button>")}
+function oops(m){OOPS=m;V="oops";render()}
+function oopsV(){menu('<div class="warn">'+OOPS+'</div><button class="btn main" onclick="goHome()">'+t("back")+"</button>")}
 
 /* ===================== ROUNDS ===================== */
-function startRound(r){S.cur=r;S.sel=null;if(r.type=="sc"){var c=SC[r.i];stageSet(c.r,c.x,c.say,c.cat,false)}else stageSet("yard",["mil","fil","sana","hamza"],null,false,true);
-if(!S.online&&!S.theirs[r.id])S.theirs[r.id]=ai(r);renderRound()}
-function renderRound(){var r=S.cur,h;
-if(r.type=="sc"){var c=SC[r.i];h='<div class="mute">Situation '+(r.i+1)+" of "+SC.length+" · "+rname(S.role)+(S.online?" · online":" · vs AI partner")+'</div>'+meters()+'<div class="card"><span class="tag">'+c.w+" · "+RM[c.r].n+'</span><h2 style="margin-top:8px">'+c.t+"</h2><p>"+(S.role=="B"?c.b:c.g)+'</p></div><p><b>What do you do?</b></p>';c.o.forEach(function(o,i){h+='<button class="btn" onclick="choose('+i+')">'+otext(o,S.role)+"</button>"})}
-else{h='<div class="k"><h2>Khichdi Ban Gayi Hai!</h2><div class="ur">کھچڑی بن گئی ہے!</div><p>Everything has tangled at once. You can only untangle one thread first.</p></div>'+meters()+"<p><b>Which thread do you pull first?</b></p>";KO.forEach(function(o,i){h+='<button class="btn" onclick="choose('+i+')">'+o.t+"</button>"})}
-$(h)}
-function choose(i){if(S.mine[S.cur.id])return;S.sel=i;if(S.cur.type=="kh")return lock(0);var c=SC[S.cur.i],o=c.o[i];
-$('<div class="mute">Situation '+(S.cur.i+1)+" of "+SC.length+"</div>"+meters()+'<div class="card"><span class="tag">'+SN[o.s]+"</span><p><b>You chose:</b> "+otext(o,S.role)+'</p></div><p><b>How stressful would this situation feel to you?</b></p><div class="rate">'+[1,2,3,4,5].map(function(n){return'<button id="r'+n+'" onclick="rate('+n+')">'+n+"</button>"}).join("")+'</div><p class="mute">1 = barely, 5 = very. '+(S.online?"Your partner will not see your answer until you both lock in.":"Your partner is rating too.")+'</p><button id="nx" class="btn main" disabled onclick="lock(S.rt)">Lock in my answer</button><button class="btn alt" onclick="renderRound()">Change my mind</button>')}
-function rate(n){S.rt=n;for(var k=1;k<=5;k++)document.getElementById("r"+k).className=k==n?"on":"";document.getElementById("nx").disabled=false}
-function lock(r){var id=S.cur.id;if(S.mine[id])return;S.mine[id]={o:S.sel,r:r};if(S.cur.type=="sc")S.styles[SC[S.cur.i].o[S.sel].s]++;if(S.online&&NET)NET.send({t:"pick",id:id,o:S.sel,r:r});check()}
-function check(){var id=S.cur.id;if(S.theirs[id])reveal();else $('<div class="card" style="text-align:center"><h2>⏳ Waiting for your partner</h2><p class="mute">They are still thinking about this one. Your answer is locked in.</p></div>'+meters()+'<button class="btn alt" onclick="useAI()">Partner stuck? Continue with an AI partner</button>')}
+function startRound(r){S.cur=r;S.sel=null;S.rt=0;S.phase="intro";S.dl=null;if(r.type=="sc"){var c=SC[r.i];stageSet(c.r,c.x,c.say,c.cat,false)}else stageSet("yard",["mil","fil","sana","hamza"],null,false,true);
+if(!S.online&&!S.theirs[r.id])S.theirs[r.id]=ai(r);V="round";render()}
+function roundV(){$m.hidden=true;$h.hidden=false;$c.hidden=false;var r=S.cur,h;
+$c.textContent=r.type=="sc"?t("chip",{n:S.pos+1,m:S.list.length})+" · "+SC[r.i].w:t("khR");
+if(S.phase=="result"){resultV();renderHUD();$o.hidden=true;return}
+if(r.type=="sc"){var c=SC[r.i];h='<span class="tag">'+c.w+" · "+rn(c.r)+" · "+rname(S.role)+(S.online?" · 🌐":"")+'</span><h2>'+title(c)+"</h2>"+(LG=="ur"?'<div class="mute">'+t("enBody")+"</div>":"")+"<p>"+en(S.role=="B"?c.b:c.g)+"</p>"}
+else h='<div class="k"><h2>'+t("khT")+'</h2></div><p>'+t("khS")+"</p>";
+if(S.phase=="intro"){h+='<div class="hint"><span>'+t("tapme",{e:S.role=="B"?"👰":"🤵"})+'</span><button class="btn main sm" onclick="openOpts()">'+t("choose")+"</button></div>";$n.innerHTML=h;$n.hidden=false;$o.hidden=true}
+else if(S.phase=="waiting"){h+='<div class="hint"><span>'+t("waitT")+'</span></div>'+(S.online?'<button class="btn alt" onclick="useAI()">'+t("useAI")+"</button>":"");$n.innerHTML=h;$n.hidden=false;$o.hidden=true}
+else{$n.innerHTML=h;$n.hidden=false;optsV()}
+renderHUD()}
+function openOpts(){if(S.phase!="intro")return;S.phase="choosing";render()}
+function optsV(){var r=S.cur,h="";
+if(hint){$o.style.setProperty("--tx",Math.max(24,Math.min(W-24,hint.x))+"px")}
+if(S.phase=="choosing"){h='<p style="margin:0 0 4px"><b>'+(r.type=="sc"?t("whatdo"):t("khQ"))+"</b></p>";
+(r.type=="sc"?SC[r.i].o:KO).forEach(function(o,i){h+='<button class="btn" onclick="pickOpt('+i+')">'+(r.type=="sc"?en(otext(o,S.role)):t("ko"+i))+"</button>"});
+h+='<button class="btn alt" onclick="S.phase=\'intro\';render()">'+t("back")+"</button>"}
+else{var o=SC[r.i].o[S.sel];h='<span class="tag">'+sn(o.s)+'</span><p><b>'+t("youChose")+':</b></p>'+en(otext(o,S.role))+'<p style="margin:8px 0 2px"><b>'+t("stressQ")+'</b></p><div class="rate">'+[1,2,3,4,5].map(function(n){return'<button class="'+(S.rt==n?"on":"")+'" onclick="rate('+n+')">'+n+"</button>"}).join("")+'</div><p class="mute" style="margin:0">'+t("stressH")+'</p><button class="btn main" '+(S.rt?"":"disabled")+' onclick="lock(S.rt)">'+t("lock")+'</button><button class="btn alt" onclick="S.phase=\'choosing\';render()">'+t("change")+"</button>"}
+$o.innerHTML='<div class="in">'+h+"</div>";$o.hidden=false}
+function pickOpt(i){S.sel=i;if(S.cur.type=="kh")return lock(0);S.phase="rating";render()}
+function rate(n){S.rt=n;render()}
+function lock(rt){var id=S.cur.id;if(S.mine[id])return;S.mine[id]={o:S.sel,r:rt};var pc=CHR[S.role=="B"?"bride":"groom"];if(S.cur.type=="sc"){var st=SC[S.cur.i].o[S.sel].s;S.styles[st]++;pc.emo=EM[st];pc.et=3}
+if(S.online&&NET)NET.send({t:"pick",id:id,o:S.sel,r:rt});check()}
+function check(){var id=S.cur.id;if(S.theirs[id])reveal();else{S.phase="waiting";render()}}
 function useAI(){S.online=false;S.theirs[S.cur.id]=ai(S.cur);reveal()}
 var RANK={k:0,p:1,a:2,r:3};
-function reveal(){var r=S.cur,id=r.id,a=S.mine[id],b=S.theirs[id],h,eff=[0,0,0,0,0,0],note="",mood="k";
-if(r.type=="sc"){var c=SC[r.i],oa=c.o[a.o],ob=c.o[b.o];for(var j=0;j<6;j++)eff[j]=Math.round((oa.e[j]+ob.e[j])/2*5);
-if(oa.s=="k"&&ob.s=="k"){eff[0]+=5;eff[5]-=5;note="Team bonus: you both chose skilled. +5 Trust, -5 Stress."}else if((oa.s=="k"&&ob.s=="r")||(oa.s=="r"&&ob.s=="k")){eff[0]-=5;note="Friction: one calm answer met one reactive answer. -5 Trust."}else if(oa.s=="r"&&ob.s=="r"){eff[0]-=5;eff[5]+=5;note="Double reaction. -5 Trust, +5 Stress."}
+function reveal(){var r=S.cur,id=r.id,a=S.mine[id],b=S.theirs[id],eff=[0,0,0,0,0,0],note="",mood="k",c=null;
+if(r.type=="sc"){c=SC[r.i];var oa=c.o[a.o],ob=c.o[b.o];for(var j=0;j<6;j++)eff[j]=Math.round((oa.e[j]+ob.e[j])/2*5);
+if(oa.s=="k"&&ob.s=="k"){eff[0]+=5;eff[5]-=5;note=t("team")}else if((oa.s=="k"&&ob.s=="r")||(oa.s=="r"&&ob.s=="k")){eff[0]-=5;note=t("fric")}else if(oa.s=="r"&&ob.s=="r"){eff[0]-=5;eff[5]+=5;note=t("dbl")}
 mood=RANK[oa.s]>=RANK[ob.s]?oa.s:ob.s}
-else{var ka=KO[a.o],kb=KO[b.o];for(var j2=0;j2<6;j2++)eff[j2]=Math.round((ka.e[j2]+kb.e[j2])/2);if(a.o==0&&b.o==0){eff[0]+=5;note="You both chose your partner first. +5 Trust."}mood=(a.o==0||b.o==0)?"k":"a"}
-if(!S.done[id]){S.done[id]=1;for(var q=0;q<6;q++)S.m[q]=clamp(S.m[q]+eff[q]);
-if(r.type=="sc")react(c,a,b,mood);else{stage.kh=0;stage.shake=0;stageSet("yard",["mil","fil"],null,false,false);stage.room=null;camTarget()}}
-var br=S.role=="B"?a:b,gr=S.role=="B"?b:a;
-h='<div class="mute">'+(r.type=="sc"?"Situation "+(r.i+1)+" of "+SC.length:"Khichdi recovery")+"</div>"+meters();
-var bt=function(x,role){return r.type=="sc"?otext(SC[r.i].o[x.o],role):KO[x.o].t},st=function(x){return r.type=="sc"?SN[SC[r.i].o[x.o].s]:"Thread"},cs=function(x){return r.type=="sc"?SC[r.i].o[x.o].c:KO[x.o].c};
-h+='<div class="two"><div class="card"><span class="tag">You · '+rname(S.role)+" · "+st(a)+"</span><p>"+bt(a,S.role)+"</p>"+(r.type=="sc"?'<p class="mute">Stress '+a.r+"</p>":"")+'</div><div class="card"><span class="tag">Partner · '+rname(other())+" · "+st(b)+"</span><p>"+bt(b,other())+"</p>"+(r.type=="sc"?'<p class="mute">Stress '+b.r+"</p>":"")+"</div></div>";
-h+='<div class="card"><b>What happened</b><p>'+cs(a)+"</p>"+(cs(a)!=cs(b)?'<p class="mute">'+cs(b)+"</p>":"")+'<div class="chips">';
-for(var z=0;z<6;z++)if(eff[z]){var good=z==5?eff[z]<0:eff[z]>0;h+='<span class="'+(good?"up":"dn")+'">'+MN[z][1]+" "+MN[z][0]+" "+(eff[z]>0?"+":"")+eff[z]+"</span>"}
-h+="</div>"+(note?'<p class="mute">'+note+"</p>":"")+"</div>";
-if(r.type=="sc"){if(Math.abs(a.r-b.r)>=2)h+='<div class="warn">Big stress gap ('+a.r+" vs "+b.r+"). Same event, very different feeling. Talk about this one.</div>";h+='<div class="card"><b>The lesson</b><p>'+SC[r.i].n+"</p></div>"}
-else h+='<div class="card"><b>The lesson</b><p>One thread at a time, starting with your partner, not the audience.</p></div>';
-h+='<button class="btn main" onclick="nextRound()">Next</button>';$(h)}
-function react(c,a,b,mood){var br=S.role=="B"?a:b,gr=S.role=="B"?b:a;CHR.bride.mood=c.o[br.o].s;CHR.bride.emo=EM[c.o[br.o].s];CHR.bride.et=6;CHR.groom.mood=c.o[gr.o].s;CHR.groom.emo=EM[c.o[gr.o].s];CHR.groom.et=6;
-CHR.bride.say="";CHR.groom.say="";
-(c.x||[]).forEach(function(id){var ch=CHR[id];ch.mood=mood;ch.emo=EM[mood];ch.et=6;ch.say=RL[id][mood];ch.st=6});
-if(!(c.x||[]).length){}parrot.say=PL[mood];parrot.st=5;cat.emo=mood=="k"?"😺":(mood=="r"?"🙀":"😿");cat.et=5;if(mood=="r")stage.shake=.6}
-function nextRound(){var r=S.cur;if(r.type=="kh"){startRound({id:"s"+S.i,type:"sc",i:S.i});return}
-S.i++;if(S.i>=SC.length)return end();if(flags()>=3&&S.kc<2&&S.i-S.lastK>1){S.kc++;S.lastK=S.i;startRound({id:"k"+S.kc,type:"kh"})}else startRound({id:"s"+S.i,type:"sc",i:S.i})}
-function end(){var e=ENDS.filter(function(x){return x.f(S.m)})[0],top="k";for(var k in S.styles)if(S.styles[k]>S.styles[top])top=k;
-stageHome();Object.keys(CHR).forEach(function(id){CHR[id].mood=e.n=="Team Tamasha"||e.n=="Strong but Tired"?"k":(e.n=="Pulled Apart"?"s":"a");CHR[id].emo=CHR[id].mood=="k"?"😊":(CHR[id].mood=="s"?"😢":"😐");CHR[id].et=99});parrot.say=e.n=="Team Tamasha"?"Mubarak ho! Mubarak ho!":"Phir se khelo!";parrot.st=99;
-var link=location.origin+location.pathname,wa="https://wa.me/?text="+encodeURIComponent("I played Aaghaaz Tamasha and got: "+e.n+". Play your first year with me: "+link);
-var ts={k:0,r:0,a:0,p:0};Object.keys(S.theirs).forEach(function(id){if(id[0]=="s"){var o=SC[+id.slice(1)].o[S.theirs[id].o];ts[o.s]++}});
-$('<div class="k" style="margin-top:6px"><div style="opacity:.8">Your first year</div><h2>'+e.n+"</h2><p>"+e.d+"</p></div>"+meters()+'<div class="card"><b>Your instinct pattern</b><p class="mute">Skilled '+S.styles.k+" · Reactive "+S.styles.r+" · Avoidant "+S.styles.a+" · Pleaser "+S.styles.p+"</p><p>"+PAT[top]+'</p><p class="mute">Partner: Skilled '+ts.k+" · Reactive "+ts.r+" · Avoidant "+ts.a+" · Pleaser "+ts.p+'</p></div><a class="btn main" style="text-align:center" href="'+wa+'" target="_blank" rel="noopener">Share on WhatsApp</a><button class="btn alt" onclick="'+(S.online?"replayOnline()":"pick('solo')")+'">Play again</button><button class="btn alt" onclick="home()">Home</button><p class="mute foot">Dehleez · Aaghaaz Tamasha v0.2</p>')}
+else{var ka=KO[a.o],kb=KO[b.o];for(var j2=0;j2<6;j2++)eff[j2]=Math.round((ka.e[j2]+kb.e[j2])/2);if(a.o==0&&b.o==0){eff[0]+=5;note=t("khTeam")}mood=(a.o==0||b.o==0)?"k":"a"}
+if(!S.done[id]){S.done[id]=1;S.dl=eff;for(var q=0;q<6;q++)S.m[q]=clamp(S.m[q]+eff[q]);S.res={eff:eff,note:note};
+if(r.type=="sc")react(c,a,b,mood);else{stage.kh=0;stage.shake=0;stageSet("yard",["mil","fil"],null,false,false);stage.room=null;stage.foc={cx:5.6,cy:5,w:9.6,h:8.6}}}
+S.phase="result";render()}
+function react(c,a,b,mood){var br=S.role=="B"?a:b,gr=S.role=="B"?b:a;CHR.bride.mood=c.o[br.o].s;CHR.bride.emo=EM[c.o[br.o].s];CHR.bride.et=8;CHR.groom.mood=c.o[gr.o].s;CHR.groom.emo=EM[c.o[gr.o].s];CHR.groom.et=8;CHR.bride.say="";CHR.groom.say="";
+if(c.ser)return;
+(c.x||[]).forEach(function(id){var ch=CHR[id];ch.mood=mood;ch.emo=EM[mood];ch.et=8;ch.say=RL[id][mood];ch.st=8});
+parrot.say=PL[mood];parrot.st=6;cat.emo=mood=="k"?"😺":(mood=="r"?"🙀":"😿");cat.et=6;if(mood=="r")stage.shake=.6}
+function resultV(){var r=S.cur,id=r.id,a=S.mine[id],b=S.theirs[id],eff=S.res.eff,note=S.res.note,sc=r.type=="sc",c=sc?SC[r.i]:null;
+var tx=function(x,role){return sc?en(otext(c.o[x.o],role)):t("ko"+x.o)},st=function(x){return sc?sn(c.o[x.o].s):"·"},cs=function(x){return sc?c.o[x.o].c:KO[x.o].c};
+var h='<span class="tag">'+(sc?title(c):t("khR"))+'</span><div class="two" style="margin-top:6px"><div><b>'+t("you")+" · "+rname(S.role)+" · "+st(a)+"</b><br>"+tx(a,S.role)+(sc?'<br><span class="mute">'+t("stress",{n:a.r})+"</span>":"")+'</div><div><b>'+t("partner")+" · "+rname(other())+" · "+st(b)+"</b><br>"+tx(b,other())+(sc?'<br><span class="mute">'+t("stress",{n:b.r})+"</span>":"")+"</div></div>";
+h+='<p style="margin:8px 0 2px"><b>'+t("happened")+":</b></p>"+en(cs(a))+(cs(a)!=cs(b)?'<div class="mute">'+en(cs(b))+"</div>":"")+'<div class="chips">';
+for(var z=0;z<6;z++)if(eff[z]){var good=z==5?eff[z]<0:eff[z]>0;h+='<span class="'+(good?"up":"dn")+'">'+MN[z]+" "+t("m"+z)+" "+(eff[z]>0?"+":"")+eff[z]+"</span>"}
+h+="</div>"+(note?'<div class="mute">'+note+"</div>":"");
+if(sc&&Math.abs(a.r-b.r)>=2)h+='<div class="warn">'+t("gap",{a:a.r,b:b.r})+"</div>";
+h+='<p style="margin:8px 0 2px"><b>'+t("lesson")+":</b></p>"+(sc?en(c.n):t("khL"))+'<button class="btn main" style="margin-top:8px" onclick="nextRound()">'+t("next")+"</button>";
+$n.innerHTML=h;$n.hidden=false;$n.scrollTop=0}
+function renderHUD(){var h="";for(var i=0;i<6;i++){var d=S.dl&&S.phase=="result"?S.dl[i]:0,good=i==5?d<0:d>0;h+='<div class="hm"><div class="hl">'+MN[i]+"</div><b>"+S.m[i]+'</b><div class="bar'+(i==5?" s":"")+'"><i style="width:'+S.m[i]+'%"></i></div><div class="hn">'+t("m"+i)+"</div>"+(d?'<span class="dl '+(good?"up":"dn")+'">'+(d>0?"+":"")+d+"</span>":"")+"</div>"}$h.innerHTML=h}
+function nextRound(){var r=S.cur;if(r.type=="kh"){startRound({id:"s"+S.pos,type:"sc",i:S.list[S.pos]});return}
+S.pos++;if(S.pos>=S.list.length)return end();if(flags()>=3&&S.kc<2&&S.pos-S.lastK>1){S.kc++;S.lastK=S.pos;startRound({id:"k"+S.kc,type:"kh"})}else startRound({id:"s"+S.pos,type:"sc",i:S.list[S.pos]})}
+function end(){V="end";stageHome();var ei=0;for(var i=0;i<ENDS.length;i++)if(ENDS[i](S.m)){ei=i;break}S.ei=ei;
+Object.keys(CHR).forEach(function(id){var mm=ei==1||ei==2?"k":(ei==0?"s":"a");CHR[id].mood=mm;CHR[id].emo=mm=="k"?"😊":(mm=="s"?"😢":"😐");CHR[id].et=999});parrot.say=ei==1?"Mubarak ho! Mubarak ho!":"Phir se khelo!";parrot.st=999;render()}
+function endV(){var ei=S.ei,top="k";for(var k in S.styles)if(S.styles[k]>S.styles[top])top=k;
+var link=location.origin+location.pathname,wa="https://wa.me/?text="+encodeURIComponent(t("shareTxt",{n:t("e"+ei+"n"),l:link}));
+var ts={k:0,r:0,a:0,p:0};Object.keys(S.theirs).forEach(function(id){if(id[0]=="s"){var ix=S.list[+id.slice(1)];if(ix!=null){ts[SC[ix].o[S.theirs[id].o].s]++}}});
+var hadS=S.list.some(function(i){return SC[i].ser});
+menu('<div class="k"><div style="opacity:.8">'+t("endH")+'</div><h2>'+t("e"+ei+"n")+"</h2><p style='margin:4px 0 0'>"+t("e"+ei+"d")+'</p></div><div class="card"><b>'+t("inst")+'</b><p class="mute" style="margin:2px 0">'+sn("k")+" "+S.styles.k+" · "+sn("r")+" "+S.styles.r+" · "+sn("a")+" "+S.styles.a+" · "+sn("p")+" "+S.styles.p+"</p><p style='margin:2px 0'>"+t("p_"+top)+'</p><p class="mute" style="margin:2px 0">'+t("partnerPat")+": "+sn("k")+" "+ts.k+" · "+sn("r")+" "+ts.r+" · "+sn("a")+" "+ts.a+" · "+sn("p")+" "+ts.p+"</p></div>"+(hadS?'<div class="warn">'+t("safety")+"</div>":"")+'<a class="btn main" style="text-align:center" href="'+wa+'" target="_blank" rel="noopener">'+t("share")+'</a><button class="btn alt" onclick="'+(S.online?"replayOnline()":"again()")+'">'+t("again")+'</button><button class="btn alt" onclick="goHome()">'+t("home")+"</button>",true)}
+function again(){S.seed=1+Math.floor(Math.random()*1e9);begin()}
 
 /* ===================== ONLINE (couple) ===================== */
 function closeNet(){try{if(PEER)PEER.destroy()}catch(e){}PEER=null;NET=null;try{if(window.BC)window.BC.close()}catch(e){}window.BC=null}
-function rnd4(){var a="ABCDEFGHJKMNPQRSTUVWXYZ23456789",s="";for(var i=0;i<4;i++)s+=a[Math.floor(Math.random()*a.length)];return s}
-function loadPeer(cb){if(window.Peer)return cb();var s=document.createElement("script");s.src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js";s.onload=cb;s.onerror=function(){oops("Could not load the online service. Check your connection, or play solo.")};document.head.appendChild(s)}
-function oops(t){$('<div class="warn">'+t+'</div><button class="btn main" onclick="home()">Back</button>')}
-function hostUI(){S.online=true;S.code=rnd4();$('<h2>Your room</h2><div class="code" id="rc">'+S.code+'</div><p class="mute" style="text-align:center">Ask your partner to open the game and enter this code, or send them the link. You are the '+rname(S.role)+'.</p><a class="btn main" id="wa" target="_blank" rel="noopener">Send link on WhatsApp</a><button class="btn alt" onclick="copyLink()">Copy link</button><div class="card" id="st" style="text-align:center">⏳ Waiting for your partner to join...</div><button class="btn alt" onclick="home()">Cancel</button>');
-var link=location.origin+location.pathname+"?room="+S.code;document.getElementById("wa").href="https://wa.me/?text="+encodeURIComponent("Let's play Aaghaaz Tamasha together. Room "+S.code+": "+link);
-openNet(true)}
-function copyLink(){try{navigator.clipboard.writeText(location.origin+location.pathname+"?room="+S.code)}catch(e){}}
-function joinUI(code){$('<h2>Join your partner</h2><p class="mute">Enter the 4-character room code.</p><input id="jc" maxlength="4" value="'+(code||"")+'" placeholder="ABCD"><button class="btn main" onclick="doJoin()">Join</button><button class="btn alt" onclick="home()">Back</button>');if(code)doJoin()}
-function doJoin(){var c=document.getElementById("jc").value.trim().toUpperCase();if(c.length!=4)return;S.code=c;S.online=true;S.mode="guest";$('<div class="card" style="text-align:center"><h2>Joining room '+c+'...</h2><p class="mute">Connecting to your partner.</p></div><button class="btn alt" onclick="home()">Cancel</button>');openNet(false)}
+function loadPeer(cb){if(window.Peer)return cb();var s=document.createElement("script");s.src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js";s.onload=cb;s.onerror=function(){oops(t("loaderr"))};document.head.appendChild(s)}
 function openNet(host){var code=S.code,local=location.hash.indexOf("local")>-1;
 function wire(send){NET={send:send};if(!host)send({t:"join"})}
 if(local){var bc=new BroadcastChannel("aat-"+code);window.BC=bc;bc.onmessage=function(e){onData(e.data)};wire(function(m){bc.postMessage(m)});return}
 loadPeer(function(){var id="aaghaaz-tamasha-"+code;
-if(host){PEER=new Peer(id);PEER.on("connection",function(c){c.on("open",function(){wire(function(m){c.send(m)})});c.on("data",onData);c.on("close",onClose)});PEER.on("error",function(e){if(e.type=="unavailable-id"){S.code=rnd4();hostUI()}else oops("Connection problem: "+e.type)})}
-else{PEER=new Peer();PEER.on("open",function(){var c=PEER.connect(id,{reliable:true});c.on("open",function(){wire(function(m){c.send(m)})});c.on("data",onData);c.on("close",onClose)});PEER.on("error",function(e){oops(e.type=="peer-unavailable"?"Room "+code+" not found. Check the code with your partner.":"Connection problem: "+e.type)})}})}
-function onData(m){if(m.t=="join"&&S.mode=="host"){NET.send({t:"start",role:S.role});begin()}
-else if(m.t=="start"&&S.mode=="guest"){S.role=m.role=="B"?"G":"B";begin()}
-else if(m.t=="pick"){S.theirs[m.id]={o:m.o,r:m.r};if(S.cur&&S.cur.id==m.id&&S.mine[m.id]&&!S.done[m.id])reveal()}
-else if(m.t=="again"){begin()}}
-function onClose(){if(!S.online)return;S.online=false;var w=document.createElement("div");w.className="warn";w.textContent="Your partner disconnected. The game continues with an AI partner.";app.insertBefore(w,app.firstChild);if(S.cur&&S.mine[S.cur.id]&&!S.theirs[S.cur.id]){S.theirs[S.cur.id]=ai(S.cur);reveal();app.insertBefore(w,app.firstChild)}else if(S.cur&&!S.theirs[S.cur.id])S.theirs[S.cur.id]=ai(S.cur)}
-function replayOnline(){if(NET)NET.send({t:"again"});begin()}
+if(host){PEER=new Peer(id);PEER.on("connection",function(c){c.on("open",function(){wire(function(m){c.send(m)})});c.on("data",onData);c.on("close",onClose)});PEER.on("error",function(e){if(e.type=="unavailable-id"){S.code=rnd4();V="host";render();openNet(true)}else oops(t("connprob",{e:e.type}))})}
+else{PEER=new Peer();PEER.on("open",function(){var c=PEER.connect(id,{reliable:true});c.on("open",function(){wire(function(m){c.send(m)})});c.on("data",onData);c.on("close",onClose)});PEER.on("error",function(e){oops(e.type=="peer-unavailable"?t("notfound",{c:code}):t("connprob",{e:e.type}))})}})}
+function onData(m){if(m.t=="join"&&S.mode=="host"){NET.send({t:"start",role:S.role,seed:S.seed,len:S.len});begin()}
+else if(m.t=="start"&&S.mode=="guest"){S.role=m.role=="B"?"G":"B";S.seed=m.seed;S.len=m.len;begin()}
+else if(m.t=="pick"&&S.cur){S.theirs[m.id]={o:m.o,r:m.r};if(S.cur.id==m.id&&S.mine[m.id]&&!S.done[m.id])reveal()}
+else if(m.t=="again"){S.seed=m.seed||S.seed;begin()}}
+function onClose(){if(!S||!S.online)return;S.online=false;var w=document.createElement("div");w.className="warn";w.textContent=t("discon");w.style.cssText="position:absolute;z-index:9;top:84px;left:8px;right:8px;text-align:center";document.getElementById("game").appendChild(w);setTimeout(function(){w.remove()},6000);
+if(S.cur&&!S.theirs[S.cur.id]){S.theirs[S.cur.id]=ai(S.cur);if(S.mine[S.cur.id])reveal()}}
+function replayOnline(){S.seed=1+Math.floor(Math.random()*1e9);if(NET)NET.send({t:"again",seed:S.seed});begin()}
 
-/* ===================== BOOT ===================== */
-rs();stageHome();requestAnimationFrame(frame);
-var qm=location.search.match(/room=([A-Za-z0-9]{4})/);if(qm){fresh();joinUI(qm[1].toUpperCase())}else home();
+/* ===================== INPUT + BOOT ===================== */
+cv.addEventListener("pointerdown",function(e){if(V!="round"||S.phase!="intro"||!hint)return;var r=cv.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top;if(Math.hypot(x-hint.x,y-hint.y)<60)openOpts()});
+rs();stageHome();cam.z=ct.z=.5;requestAnimationFrame(frame);
+fresh();var qm=location.search.match(/room=([A-Za-z0-9]{4})/);if(qm){V="join";render();joinV(qm[1].toUpperCase());doJoin()}else render();
 </script>
 </body>
 </html>
