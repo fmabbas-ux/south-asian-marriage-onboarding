@@ -93,6 +93,7 @@ body.ur #tip{direction:rtl;font-family:"Noto Nastaliq Urdu",serif;line-height:2}
 </div>
 <script src="scenarios.js"></script>
 <script src="scenarios2.js"></script>
+<script src="crises.js"></script>
 <script>
 var LG="en";try{LG=localStorage.getItem("aat_lg")||"en"}catch(e){}
 </script>
@@ -238,7 +239,7 @@ function stageHome(){stage.room=null;stage.kh=0;stage.catPin=0;stage.foc={cx:8,c
 /* ===================== STATE ===================== */
 var S=null,V="home",NET=null,PEER=null,OOPS="";
 var $n=document.getElementById("narr"),$o=document.getElementById("opts"),$h=document.getElementById("hud"),$m=document.getElementById("menu"),$s=document.getElementById("sheet"),$c=document.getElementById("chip");
-function fresh(keep){var r=keep&&S?S:{};S={role:r.role||null,mode:r.mode||"solo",code:r.code||"",len:r.len||12,seed:r.seed||1,m:[50,50,50,50,50,30],dl:null,list:[],pos:0,cur:null,sel:null,rt:0,phase:"intro",mine:{},theirs:{},done:{},styles:{k:0,r:0,a:0,p:0},kc:0,lastK:-9,online:false,R:initR(),why:{}}}
+function fresh(keep){var r=keep&&S?S:{};S={role:r.role||null,mode:r.mode||"solo",code:r.code||"",len:r.len||12,seed:r.seed||1,m:[50,50,50,50,50,30],dl:null,list:[],pos:0,cur:null,sel:null,rt:0,phase:"intro",mine:{},theirs:{},done:{},styles:{k:0,r:0,a:0,p:0},kc:0,lastK:-9,cc:0,lastC:-9,cdone:{},online:false,R:initR(),why:{}}}
 function initR(){var R={};NPC.forEach(function(c){R[c]={B:0,G:0,fB:0,fG:0}});R.bmom.B=8;R.bdad.B=8;R.mil.G=8;R.fil.G=8;return R}
 function lensI(id,o){var raw=0,w=LENS[id];for(var k=0;k<6;k++)raw+=w[k]*o.e[k];return Math.max(-9,Math.min(9,Math.round(raw*1.1)))}
 function clampR(v){return Math.max(-30,Math.min(30,v))}
@@ -261,7 +262,7 @@ function otext(o,role){return(role=="B"?o.tb:o.tg)||o.t}
 function other(){return S.role=="B"?"G":"B"}
 function rname(r){return r=="B"?t("bride"):t("groom")}
 function rng(a){return function(){a|=0;a=a+0x6D2B79F5|0;var x=Math.imul(a^a>>>15,1|a);x=x+Math.imul(x^x>>>7,61|x)^x;return((x^x>>>14)>>>0)/4294967296}}
-function buildList(seed,len){var ix=SC.map(function(c,i){return i}).sort(function(a,b){return SC[a].mo-SC[b].mo||(SC[a].id<SC[b].id?-1:1)});if(len>=40)return ix;
+function buildList(seed,len){var ix=SC.map(function(c,i){return i}).filter(function(i){return !SC[i].cr}).sort(function(a,b){return SC[a].mo-SC[b].mo||(SC[a].id<SC[b].id?-1:1)});if(len>=40)return ix;
 var R=rng(seed),out=[];for(var m=0;m<12;m++){var pool=m==11?ix.filter(function(i){return SC[i].id=="S40"}):ix.filter(function(i){return SC[i].mo==m});if(pool.length)out.push(pool[Math.floor(R()*pool.length)])}return out}
 function flags(){var f=0;for(var i=0;i<5;i++)if(S.m[i]<=35)f++;if(S.m[5]>=65)f++;return f}
 function ai(r){if(r.type=="kh")return{o:Math.random()<.6?0:Math.floor(Math.random()*4),r:0};var o=SC[r.i].o,w=o.map(function(x){return{k:.4,r:.15,a:.2,p:.25}[x.s]}),tt=Math.random(),a=0,ix=0;for(var i=0;i<w.length;i++){a+=w[i];if(tt<=a){ix=i;break}}return{o:ix,r:2+Math.floor(Math.random()*3)}}
@@ -292,7 +293,7 @@ function oopsV(){menu('<div class="warn">'+OOPS+'</div><button class="btn main" 
 function startRound(r){S.cur=r;S.sel=null;S.rt=0;S.phase="intro";S.dl=null;if(r.type=="sc"){var c=SC[r.i];stageSet(c.r,c.x,c.say,c.cat,false)}else stageSet("yard",["mil","fil","sana","hamza"],null,false,true);
 if(!S.online&&!S.theirs[r.id])S.theirs[r.id]=ai(r);V="round";render()}
 function roundV(){$m.hidden=true;$h.hidden=false;$c.hidden=false;$lb.hidden=false;if(!$l.hidden)ledV();var r=S.cur,h;
-$c.textContent=r.type=="sc"?t("chip",{n:S.pos+1,m:S.list.length})+" · "+SC[r.i].w:t("khR");
+$c.textContent=r.type=="sc"?(r.cr?"⚡":t("chip",{n:S.pos+1,m:S.list.length}))+" · "+SC[r.i].w:t("khR");
 if(S.phase=="result"){resultV();renderHUD();$o.hidden=true;return}
 if(r.type=="sc"){var c=SC[r.i];h='<span class="tag">'+c.w+" · "+rn(c.r)+" · "+rname(S.role)+(S.online?" · 🌐":"")+'</span><h2>'+title(c)+"</h2>"+(LG=="ur"?'<div class="mute">'+t("enBody")+"</div>":"")+"<p>"+en(S.role=="B"?c.b:c.g)+"</p>"+warnHTML(c)}
 else h='<div class="k"><h2>'+t("khT")+'</h2></div><p>'+t("khS")+"</p>";
@@ -354,8 +355,11 @@ function ledV(){if(!S||!S.R)return;var me=S.role,ot=me=="B"?"G":"B",cell=functio
 NPC.forEach(function(id){var r=S.R[id];if(id=="kid"&&!r.B&&!r.G&&!r.fB&&!r.fG)return;h+='<div class="ln">'+nm(id)+'</div><div class="lc">'+cell(r[me])+'</div><div class="lc">'+cell(r[ot])+'</div><div class="lc">'+cell(r["f"+me])+"</div>";
 var w=S.why[id];if(w&&r[w.p]<=-3)h+='<div class="lw">↳ '+t("ledSince",{t:(LG=="ur"&&w.u?w.u:w.t)})+"</div>"});
 h+='</div><button class="btn alt" style="margin-top:8px" onclick="toggleLedger()">'+t("ledClose")+"</button>";$l.innerHTML=h}
-function nextRound(){var r=S.cur;if(r.type=="kh"){startRound({id:"s"+S.pos,type:"sc",i:S.list[S.pos]});return}
-S.pos++;if(S.pos>=S.list.length)return end();if((flags()>=3||(flags()>=2&&coldCount()>=2))&&S.kc<2&&S.pos-S.lastK>1){S.kc++;S.lastK=S.pos;startRound({id:"k"+S.kc,type:"kh"})}else startRound({id:"s"+S.pos,type:"sc",i:S.list[S.pos]})}
+function pickCrisis(){if(S.cc>=2||S.pos-S.lastC<3)return -1;var pos=-1;for(var i=0;i<SC.length;i++){var c=SC[i];if(!c.cr||S.cdone[c.id]!=null)continue;if(c.pos&&0)continue;try{if(c.trig())return i}catch(e){}}return pos}
+function nextRound(){var r=S.cur;if(r.cr){startRound({id:"s"+S.pos,type:"sc",i:S.list[S.pos]});return}
+if(r.type=="kh"){startRound({id:"s"+S.pos,type:"sc",i:S.list[S.pos]});return}
+S.pos++;if(S.pos>=S.list.length)return end();var ci=pickCrisis();if(ci>=0){S.cc++;S.lastC=S.pos;S.cdone[SC[ci].id]=S.pos;startRound({id:"c"+S.pos,type:"sc",i:ci,cr:1});return}
+if((flags()>=3||(flags()>=2&&coldCount()>=2))&&S.kc<2&&S.pos-S.lastK>1){S.kc++;S.lastK=S.pos;startRound({id:"k"+S.kc,type:"kh"})}else startRound({id:"s"+S.pos,type:"sc",i:S.list[S.pos]})}
 function end(){V="end";stageHome();var ei=5,cc=coldCount();for(var i=0;i<ENDS.length;i++)if(ENDS[i][1](S.m,cc)){ei=ENDS[i][0];break}S.ei=ei;
 Object.keys(CHR).forEach(function(id){var mm=ei==1||ei==2?"k":(ei==0?"s":"a");CHR[id].mood=mm;CHR[id].emo=mm=="k"?"😊":(mm=="s"?"😢":"😐");CHR[id].et=999});parrot.say=ei==1?"Mubarak ho! Mubarak ho!":"Phir se khelo!";parrot.st=999;render()}
 function endV(){var ei=S.ei,top="k";for(var k in S.styles)if(S.styles[k]>S.styles[top])top=k;

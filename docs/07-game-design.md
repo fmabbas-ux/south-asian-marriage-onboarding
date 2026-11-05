@@ -67,3 +67,23 @@ Beneath the six shared meters the game keeps a hidden register of how each perso
 - **Previews.** Options show likely reactions (arrows) for the people in the room, so the trade-off is visible before choosing.
 - **Boil-over.** Two danger flags plus two cold people can also trigger Khichdi Ban Gayi Hai. A new ending, Cold Peace, covers good meters with many unresolved grudges.
 - **Online.** Both phones compute the same ledger from the same two answers, so nothing extra is sent.
+
+## Turning points (added in v0.5)
+Extreme meters trigger a one-off story twist (`game/crises.js`), checked after each round, max 2 per game, at least 3 rounds apart, and never on the same round as Khichdi. Deterministic from meters, so both players see the same twist.
+
+| ID | Trigger | Twist |
+|---|---|---|
+| C1 | Stress >= 85 | The breaking point (3 a.m.). Skilled path: 48-hour pause, sleep, counsellor or agreed elder |
+| C7 | Stress >= 80 and Self <= 35 | The collapse (fainting, doctor). Rest, shared load, counsellor |
+| C2 | Trust <= 20 | The word nobody wanted to hear (separation talk). Neutral: fixed pause, counselling, one agreed mediator, legal information for both (nikahnama, khula, mediation) |
+| C2b | Trust <= 25, two or more rounds after C2 | Secret lawyer visit. Share what each learned, counselling first |
+| C3 | Self <= 18 | The packed bag. Name whether it is space or leaving, give a return date, never block or follow |
+| C4 | Parents <= 18 | The elders gather. Ground rules, couple speaks for themselves |
+| C5 | Standing <= 18 | The biradari is talking. One shared line, said once |
+| C6 | Money <= 18 | The empty account. Numbers on one page, three-month plan |
+| C8 | Trust >= 88 and Self >= 60 | A place of your own (positive) |
+| C9 | Parents >= 88 and Standing >= 70 | Everyone loves you: kind no with alternative (positive) |
+| C10 | Money >= 88 | A windfall: pre-agree shares (positive) |
+| C11 | Self >= 88 and Parents <= 45 | Too independent?: voice plus warmth (positive) |
+
+Guardrails: divorce is neither pushed nor shamed; the skilled option is always a pause plus information plus an outside helper. C2 and C2b carry legal content and need lawyer review before launch; C7 is educational, not diagnostic. No twist frames control or abuse as something to adjust to (S40 remains the safety scenario).
