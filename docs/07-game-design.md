@@ -1,6 +1,6 @@
 # 07. Game Design
 
-Working title: **"Do Log" (two people)**, placeholder.
+Game title: **Dono Taraf** (both sides), under the **Dehleez** brand.
 
 ## Concept
 A narrative choice game where **each partner plays the same year from their own side**, then compares. It turns the course's scenarios into practice and makes the gap between partners visible and discussable.

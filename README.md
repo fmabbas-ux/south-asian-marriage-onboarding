@@ -1,5 +1,7 @@
 # South Asian Marriage Onboarding
 
+**Brand: Dehleez** (دہلیز, "threshold"). Course: **Pehla Saal** (the first year). Game: **Dono Taraf** (both sides).
+
 A public knowledge base for preparing a bride and groom for the **pre-marriage period and the first year of marriage** in South Asian families (Pakistan first, then India, Bangladesh, Sri Lanka, Nepal and the diaspora).
 
 The wedding gets months of planning. The marriage gets none. This project fixes that by laying out every dynamic a new couple will face, in plain situations, and turning it into three products:

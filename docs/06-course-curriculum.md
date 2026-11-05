@@ -1,6 +1,6 @@
 # 06. Course Curriculum
 
-Working title: **"Shaadi ke Baad: the first year"** (placeholder).
+Course title: **Pehla Saal** (the first year), under the **Dehleez** brand.
 
 ## Format
 - **Languages:** Urdu/Hindi (primary spoken), English subtitles; English version for diaspora.

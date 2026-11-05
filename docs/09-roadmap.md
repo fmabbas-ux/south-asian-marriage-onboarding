@@ -27,14 +27,14 @@
 - Follow-up studies at 6 and 12 months; publish anonymised outcomes.
 
 ## Open decisions
-1. Brand name and domain (check availability).
+1. ~~Brand name~~ Decided 5 Nov 2026: brand **Dehleez**, course **Pehla Saal**, game **Dono Taraf**. Domain and handle still to register.
 2. Religion framing: Islamic-values-aware first, or fully neutral?
 3. Counsellor partners vs in-house.
 4. Entity: sole proprietor vs company.
 5. Open-source scope: what stays public (research, topic map) vs paid (scripts, game content).
 
 ## Next actions (this week)
-1. Choose a name; reserve domain and YouTube handle.
+1. Reserve the Dehleez domain and YouTube handle.
 2. Pick the first 12 scenarios and write full drafts.
 3. Find two reviewers.
 4. Build the expectations audit as a printable PDF.
