@@ -1,6 +1,6 @@
 # 07. Game Design
 
-Game title: **Aaghaaz Tamasha** (the beginning of the drama), under the **Dehleez** brand. **Dono Taraf** (both sides) is the two-player mode inside it.
+Working title: **"Do Log" (two people)**, placeholder.
 
 ## Concept
 A narrative choice game where **each partner plays the same year from their own side**, then compares. It turns the course's scenarios into practice and makes the gap between partners visible and discussable.
@@ -13,9 +13,6 @@ A narrative choice game where **each partner plays the same year from their own 
 
 ## Core loop
 Scenario card > read from your perspective > choose one of 3 to 4 responses > immediate consequence + hidden long-term effect > short coaching note.
-
-## Signature moment: "Khichdi Ban Gayi Hai!"
-When several meters collide (for example Parent harmony, Money and Stress all fall in one month), the game pauses and a banner shouts **"Khichdi Ban Gayi Hai!"** (the situation has turned into a mess). The player then gets a recovery round: pick one thing to untangle first, and a coaching card explains why untangling one thread at a time works. Also used as the name of a mid-game event deck and as a shareable meme card. Source: the author's own life.
 
 ## Meters
 | Meter | Meaning |
@@ -58,3 +55,15 @@ This gap, not the score, is the product's main value.
 
 ## Monetization hooks
 Free demo month; full year paid; family card deck as a printed product; counsellor-led couple sessions as a partner service.
+
+## Private ledger (grudge matrix), added in v0.4
+Beneath the six shared meters the game keeps a hidden register of how each person feels about each player, and how each player feels about them. It is a small game-theory layer: every choice has an opportunity cost, and no single choice pleases everyone.
+
+- **Lenses.** Each character weighs the six meters differently (Ammi-ji cares about Parents and Standing and is unhappy when the bride's Self goes up; Hamza cares about Money; Aunty enjoys drama). The same option therefore lands differently on each person present.
+- **Register.** `R[person]` holds four numbers: toward the bride, toward the groom, and the bride's and groom's resentment toward them. Values run from -30 to +30 and fade 8% per situation.
+- **Grudges are sticky.** If someone is already cold (-6 or lower), good news is discounted by half and bad news is amplified by 30%. A positive Parents score can therefore coexist with a personally hurt Ammi-ji.
+- **Carry-over.** When a person with a grudge (or goodwill) is in the room, the shared meters take a penalty (or bonus). Parents and Standing follow the elders and relatives; Trust follows the child; Stress follows resentment held by the players.
+- **Pleaser cost.** Pleasing someone raises their number but costs the pleaser resentment toward them, which later shows up as Stress.
+- **Previews.** Options show likely reactions (arrows) for the people in the room, so the trade-off is visible before choosing.
+- **Boil-over.** Two danger flags plus two cold people can also trigger Khichdi Ban Gayi Hai. A new ending, Cold Peace, covers good meters with many unresolved grudges.
+- **Online.** Both phones compute the same ledger from the same two answers, so nothing extra is sent.

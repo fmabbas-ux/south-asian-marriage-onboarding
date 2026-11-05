@@ -51,19 +51,29 @@ a.btn{text-decoration:none}
 .k{background:var(--maroon);color:#fff;border-radius:12px;padding:8px 10px;text-align:center;margin-bottom:6px}.k h2{color:#fff;margin:0;font-size:1.3rem}
 .card{background:var(--bg);border-radius:12px;padding:8px 12px;margin:8px 0}
 #hud{position:absolute;left:0;right:0;bottom:0;z-index:5;display:grid;grid-template-columns:repeat(6,1fr);gap:6px;padding:16px 8px calc(6px + env(safe-area-inset-bottom));background:linear-gradient(transparent,rgba(30,15,20,.55));pointer-events:none}
-.hm{background:rgba(255,253,248,.94);color:#2b1a1f;border-radius:9px;padding:3px 5px 4px;position:relative;font-size:.62rem;line-height:1.25;min-width:0}
+.hm{cursor:help;pointer-events:auto;background:rgba(255,253,248,.94);color:#2b1a1f;border-radius:9px;padding:3px 5px 4px;position:relative;font-size:.62rem;line-height:1.25;min-width:0}
 .hm .hl{font-size:.9rem;line-height:1.1}.hm .hn{font-size:.6rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:1px}
 .hm .bar{height:6px;background:#ecd9bd;border-radius:4px;overflow:hidden;margin-top:2px}.hm .bar i{display:block;height:100%;background:var(--teal);transition:width .8s}
 .hm .bar.s i{background:#c0392b}
 .hm b{position:absolute;right:5px;top:4px;font-size:.78rem}
 .hm .dl{position:absolute;right:2px;top:-14px;background:#fff;border-radius:6px;padding:0 5px;font-weight:800;font-size:.72rem;box-shadow:0 1px 3px rgba(0,0,0,.3);animation:pop .4s}
 @keyframes pop{from{transform:scale(.4);opacity:0}to{transform:none;opacity:1}}
+#tip{position:absolute;z-index:9;left:50%;transform:translateX(-50%);width:min(420px,calc(100% - 16px));background:#2b1a1f;color:#fff6e6;border-radius:14px;padding:8px 12px;font-size:.85rem;box-shadow:0 6px 18px rgba(0,0,0,.4)}
+#tip[hidden],#led[hidden],#lb[hidden]{display:none}
+body.ur #tip{direction:rtl;font-family:"Noto Nastaliq Urdu",serif;line-height:2}
+#led{top:calc(42px + env(safe-area-inset-top));z-index:9;max-height:72dvh}
+.lg{display:grid;grid-template-columns:1.1fr 1fr 1fr 1fr;gap:3px 6px;align-items:center;font-size:.85rem}
+.lg .lh{font-size:.66rem;font-weight:700;color:var(--mute);text-align:center}
+.lg .ln{font-weight:700}.lg .lc{text-align:center;white-space:nowrap}
+.lg .lw{grid-column:1/-1;font-size:.72rem;color:var(--mute);margin:-2px 0 2px}
+.pv{margin-top:2px;font-size:.75rem}
 #menu{position:absolute;inset:0;z-index:7;display:flex;justify-content:center;align-items:center;background:linear-gradient(rgba(255,246,230,.55),rgba(255,246,230,.8));padding:44px 10px 10px}
 #menu.bot{align-items:flex-end;background:linear-gradient(transparent 35%,rgba(255,246,230,.55))}
 @media (prefers-color-scheme:dark){#menu{background:linear-gradient(rgba(28,18,22,.5),rgba(28,18,22,.8))}#menu.bot{background:linear-gradient(transparent 35%,rgba(28,18,22,.55))}}
 .sheet{background:var(--card);border:2px solid #3a2020;border-radius:20px;padding:14px;width:min(560px,100%);max-height:100%;overflow:auto;box-shadow:0 10px 30px rgba(0,0,0,.3)}
 .sheet h1{font-size:2rem;margin:.2em 0 0;color:var(--maroon);line-height:1.15}
 .sheet h2{margin:.1em 0 .3em;color:var(--maroon)}
+.sheet .k h2{color:#fff;margin:0}
 .sheet input{width:100%;padding:10px;border-radius:10px;border:2px solid var(--line);background:var(--card);color:var(--ink);font:inherit;text-transform:uppercase;letter-spacing:.2em;text-align:center;font-size:1.3rem}
 .code{font-family:ui-monospace,Consolas,monospace;font-size:2rem;letter-spacing:.3em;text-align:center;background:var(--bg);border:2px dashed var(--gold);padding:8px;border-radius:10px}
 .how{background:var(--bg);border-radius:12px;padding:8px 12px;margin:10px 0;font-size:.88rem}.how ol{margin:4px 0;padding-inline-start:20px}.how li{margin:3px 0}
@@ -73,9 +83,11 @@ a.btn{text-decoration:none}
 <body>
 <div id="game">
 <canvas id="cv"></canvas>
-<div id="topbar"><span class="chip" id="chip" hidden></span><span style="flex:1"></span><button class="ib" id="lg" onclick="toggleLang()">اردو</button><button class="ib" id="hb" onclick="goHome()" aria-label="Home">☰</button></div>
+<div id="topbar"><span class="chip" id="chip" hidden></span><span style="flex:1"></span><button class="ib" id="lb" onclick="toggleLedger()" aria-label="Ledger" hidden>💞</button><button class="ib" id="lg" onclick="toggleLang()">اردو</button><button class="ib" id="hb" onclick="goHome()" aria-label="Home">☰</button></div>
 <div id="narr" class="bub" hidden></div>
 <div id="opts" class="bub" hidden></div>
+<div id="led" class="bub" hidden></div>
+<div id="tip" hidden></div>
 <div id="hud" hidden></div>
 <div id="menu" hidden><div class="sheet" id="sheet"></div></div>
 </div>
@@ -111,13 +123,18 @@ bmom:{k:"Mashallah, meri beti samajhdar hai.",r:"Hai, meri bachi...",a:"(whisper
 bdad:{k:"Sahi faisla, beta.",r:"Gussa kam karo, beta.",a:"(adjusts his glasses)",p:"Bas khush raho."},
 aunty:{k:"Ohoo, samajhdar jori!",r:"Sab ko pata chal jayega...",a:"(whispers to someone)",p:"Hmm, chalo chalo."},
 kid:{k:"Theek hai... aap acchi hain.",r:"(runs to his room)",a:"(stares at his tablet)",p:"Mujhe kuch nahi chahiye."}};
+var RX={mil:["Pehle bhi yehi kiya tha tum ne...","Beta, tum to apni ho gayi ho."],fil:["Hmm. Hum bhule nahi hain.","Shabash beta, ghar mein rounaq hai."],sana:["Bhabhi, aap hamesha aise hi karti hain.","Bhabhi, aap best ho!"],hamza:["Ab pehle jaisa maza nahi...","Aap top ho, bhai!"],bmom:["Meri beti ko itna kuch sehna pada...","Allah tumhe khush rakhe!"],bdad:["Beta, mujhe fikar rehti hai.","Mujhe tum par fakhar hai."],aunty:["Maine suna tha kuch aisa hi...","Ma shaa Allah, kya jori hai!"],kid:["(looks away)","Aap meri favourite ho."]};
+for(var _k in RX){RL[_k].c=RX[_k][0];RL[_k].w=RX[_k][1]}
+var NPC=["mil","fil","sana","hamza","bmom","bdad","aunty","kid"],PAR=["mil","fil","bmom","bdad"];
+/* how each person weighs the six meters: [trust,self,parents,standing,money,stress]. Stress weight is negative: more stress = less happy (Aunty enjoys drama). */
+var LENS={mil:[.5,-.3,2,2,.5,-.3],fil:[.3,-.3,2,1.5,1.5,-.2],sana:[.8,.8,.3,1,.2,-.4],hamza:[.3,.2,.5,.3,2,-.2],bmom:[1,1.5,.5,.5,.3,-1],bdad:[1,1.2,.4,.6,.5,-1],aunty:[.3,-.2,1,2,.2,.4],kid:[1,.3,.1,0,0,-1.5]};
 var PL={k:"Shabash! Shabash!",r:"Lado mat! Lado mat!",a:"Chup! Chup!",p:"Ji ji! Ji ji!"};
 var KO=[
 {e:[8,3,0,0,0,-8],c:"One conversation untangles more than five phone calls."},
 {e:[-2,0,3,3,0,4],c:"Everyone feels heard, but your spouse feels like a topic, not a partner."},
 {e:[2,0,0,0,8,-2],c:"A clear budget calms one thread, but the people threads are still tangled."},
 {e:[1,0,0,0,-2,-4],c:"The trip is lovely. The khichdi is waiting when you get home."}];
-var ENDS=[function(m){return m[0]<=35},function(m){return m[0]>=65&&m[5]<=45},function(m){return m[0]>=60},function(m){return m[1]<=35},function(m){return m[0]<50},function(){return true}];
+var ENDS=[[0,function(m){return m[0]<=35}],[1,function(m,k){return m[0]>=65&&m[5]<=45&&k<=1}],[6,function(m,k){return k>=3&&m[0]>=40}],[2,function(m){return m[0]>=60}],[3,function(m){return m[1]<=35}],[4,function(m){return m[0]<50}],[5,function(){return true}]];
 function nm(id){return LG=="ur"&&CH[id].u?CH[id].u:CH[id].n}
 function rn(r){return t("r_"+r)}
 function sn(s){return t("s_"+s)}
@@ -183,7 +200,7 @@ var bw=0;lines.forEach(function(l){bw=Math.max(bw,g.measureText(l).width)});bw+=
 g.fillStyle=col||"#fff";g.strokeStyle="#333";g.lineWidth=1.2;g.beginPath();if(g.roundRect)g.roundRect(bx,by,bw,bh,8);else g.rect(bx,by,bw,bh);g.fill();g.stroke();g.fillStyle="#222";g.textAlign="left";lines.forEach(function(l,i){g.fillText(l,bx+7,by+15+i*15)})}
 function labels(){
 var ids=Object.keys(CHR).filter(function(i){return CHR[i].show});
-ids.forEach(function(id){var c=CHR[id],d=CH[id],s=d.sc||1,p=P(c.x,c.y,1.2*s+.1);g.font="700 11px system-ui,sans-serif";g.textAlign="center";var lab=nm(id),w=g.measureText(lab).width+8;g.fillStyle="rgba(255,255,255,.9)";g.fillRect(p[0]-w/2,p[1]-14,w,14);g.fillStyle="#3a2020";g.fillText(lab,p[0],p[1]-3);
+ids.forEach(function(id){var c=CHR[id],d=CH[id],s=d.sc||1,p=P(c.x,c.y,1.2*s+.1);g.font="700 11px system-ui,sans-serif";g.textAlign="center";var lab=nm(id),w;if(S&&S.R&&V=="round"&&S.R[id]){var av0=(S.R[id].B+S.R[id].G)/2;lab+=Math.min(S.R[id].B,S.R[id].G)<=-6?" 💔":(av0>=10?" 💗":"")}w=g.measureText(lab).width+8;g.fillStyle="rgba(255,255,255,.9)";g.fillRect(p[0]-w/2,p[1]-14,w,14);g.fillStyle="#3a2020";g.fillText(lab,p[0],p[1]-3);
 if(c.emo){g.font="20px system-ui,sans-serif";g.fillText(c.emo,p[0],p[1]-18)}});
 ids.forEach(function(id){var c=CHR[id];if(c.say){var s=CH[id].sc||1,p=P(c.x,c.y,1.2*s+.1);bubble(c.say,p[0],p[1]-(c.emo?42:22))}});
 if(parrot.say){var p=P(9.3,1.5,1.4);bubble(parrot.say,p[0],p[1]-6,"#d9f7d4")}
@@ -221,7 +238,24 @@ function stageHome(){stage.room=null;stage.kh=0;stage.catPin=0;stage.foc={cx:8,c
 /* ===================== STATE ===================== */
 var S=null,V="home",NET=null,PEER=null,OOPS="";
 var $n=document.getElementById("narr"),$o=document.getElementById("opts"),$h=document.getElementById("hud"),$m=document.getElementById("menu"),$s=document.getElementById("sheet"),$c=document.getElementById("chip");
-function fresh(keep){var r=keep&&S?S:{};S={role:r.role||null,mode:r.mode||"solo",code:r.code||"",len:r.len||12,seed:r.seed||1,m:[50,50,50,50,50,30],dl:null,list:[],pos:0,cur:null,sel:null,rt:0,phase:"intro",mine:{},theirs:{},done:{},styles:{k:0,r:0,a:0,p:0},kc:0,lastK:-9,online:false}}
+function fresh(keep){var r=keep&&S?S:{};S={role:r.role||null,mode:r.mode||"solo",code:r.code||"",len:r.len||12,seed:r.seed||1,m:[50,50,50,50,50,30],dl:null,list:[],pos:0,cur:null,sel:null,rt:0,phase:"intro",mine:{},theirs:{},done:{},styles:{k:0,r:0,a:0,p:0},kc:0,lastK:-9,online:false,R:initR(),why:{}}}
+function initR(){var R={};NPC.forEach(function(c){R[c]={B:0,G:0,fB:0,fG:0}});R.bmom.B=8;R.bdad.B=8;R.mil.G=8;R.fil.G=8;return R}
+function lensI(id,o){var raw=0,w=LENS[id];for(var k=0;k<6;k++)raw+=w[k]*o.e[k];return Math.max(-9,Math.min(9,Math.round(raw*1.1)))}
+function clampR(v){return Math.max(-30,Math.min(30,v))}
+function avgR(id){return(S.R[id].B+S.R[id].G)/2}
+function coldOf(id){var r=S.R[id];return Math.min(r.B,r.G)}
+function coldCount(){return NPC.filter(function(id){return coldOf(id)<=-6}).length}
+/* old grudges and goodwill leak into the shared meters whenever that person is in the room */
+function grudgeAdj(cast){var adj=[0,0,0,0,0,0];cast.forEach(function(id){var r=S.R[id],a=Math.round((coldOf(id)<=-4?coldOf(id):avgR(id))/5),dim=PAR.indexOf(id)>-1?2:(id=="kid"?0:3);if(a)adj[dim]+=a;var res=(r.fB<=-8?1:0)+(r.fG<=-8?1:0);if(res)adj[5]+=res});return adj.map(function(v){return Math.max(-6,Math.min(6,v))})}
+/* the private ledger: how each person in the room feels about each of you, and how you feel about them */
+function ledgerUpdate(c,oB,oG){var d={};NPC.forEach(function(id){var r=S.R[id];["B","G","fB","fG"].forEach(function(k){r[k]=Math.round(r[k]*.92)})});
+(c.x||[]).forEach(function(id){var r=S.R[id],dd={B:0,G:0,fB:0,fG:0};
+[["B",oB],["G",oG]].forEach(function(pp){var p=pp[0],o=pp[1],I=lensI(id,o),cur=r[p];
+if(I>0&&cur<=-6)I=Math.ceil(I*.5);else if(I<0&&cur<=-6)I=Math.floor(I*1.3);
+dd[p]=I;r[p]=clampR(r[p]+I);
+var f=o.s=="p"?(I>=1?-2:0):(o.s=="r"?-1:(o.s=="k"?1:0));dd["f"+p]=f;r["f"+p]=clampR(r["f"+p]+f);
+if(I<=-3)S.why[id]={t:c.t,u:c.u,p:p}});d[id]=dd});return d}
+function face(v){return v<=-12?"😡":v<=-6?"💔":v<=-2?"😕":v<3?"😐":v<8?"🙂":"💗"}
 function clamp(v){return Math.max(0,Math.min(100,v))}
 function otext(o,role){return(role=="B"?o.tb:o.tg)||o.t}
 function other(){return S.role=="B"?"G":"B"}
@@ -234,13 +268,13 @@ function ai(r){if(r.type=="kh")return{o:Math.random()<.6?0:Math.floor(Math.rando
 function rnd4(){var a="ABCDEFGHJKMNPQRSTUVWXYZ23456789",s="";for(var i=0;i<4;i++)s+=a[Math.floor(Math.random()*a.length)];return s}
 
 /* ===================== VIEWS ===================== */
-function menu(html,bot){$s.innerHTML=html;$m.className=bot?"bot":"";$m.hidden=false;$n.hidden=true;$o.hidden=true;$h.hidden=true;$c.hidden=true;$s.scrollTop=0}
+function menu(html,bot){$lb.hidden=true;$l.hidden=true;$t.hidden=true;$s.innerHTML=html;$m.className=bot?"bot":"";$m.hidden=false;$n.hidden=true;$o.hidden=true;$h.hidden=true;$c.hidden=true;$s.scrollTop=0}
 function render(){document.body.className=LG=="ur"?"ur":"";document.getElementById("lg").textContent=LG=="ur"?"EN":"اردو";document.documentElement.lang=LG=="ur"?"ur":"en";
 if(V=="home")homeV();else if(V=="role")roleV();else if(V=="host")hostV();else if(V=="join")joinV();else if(V=="joining")joiningV();else if(V=="oops")oopsV();else if(V=="end")endV();else roundV();
 setTimeout(fit,30)}
 function toggleLang(){LG=LG=="ur"?"en":"ur";try{localStorage.setItem("aat_lg",LG)}catch(e){}render()}
 function goHome(){closeNet();fresh();stageHome();V="home";render()}
-function homeV(){stageHome();menu('<span class="chip" style="background:var(--gold);display:inline-block">'+t("brand")+'</span><h1>'+t("title")+'</h1>'+(LG=="ur"?'<div style="color:var(--maroon)">Aaghaaz Tamasha</div>':'<div class="mute" style="font-family:\'Noto Nastaliq Urdu\',serif;font-size:1.3rem;direction:rtl;text-align:left;color:var(--maroon)">آغاز تماشا</div>')+'<p><b>'+t("tagline")+'</b></p><p class="mute">'+t("intro")+'</p><button class="btn main" onclick="pickMode(\'solo\')">'+t("solo")+'</button><button class="btn main" onclick="pickMode(\'host\')">'+t("host")+'</button><button class="btn alt" onclick="V=\'join\';render()">'+t("join")+'</button><div class="how"><b>'+t("how")+'</b><ol><li>'+t("how1")+'</li><li>'+t("how2")+'</li><li>'+t("how3")+'</li></ol><p style="margin:6px 0 2px"><b>👥</b> '+t("howO")+'</p></div><p class="mute foot">'+t("foot")+"</p>")}
+function homeV(){stageHome();menu('<span class="chip" style="background:var(--gold);display:inline-block">'+t("brand")+'</span><h1>'+t("title")+'</h1>'+(LG=="ur"?'<div style="color:var(--maroon)">Aaghaaz Tamasha</div>':'<div class="mute" style="font-family:\'Noto Nastaliq Urdu\',serif;font-size:1.3rem;direction:rtl;text-align:left;color:var(--maroon)">آغاز تماشا</div>')+'<p><b>'+t("tagline")+'</b></p><p class="mute">'+t("intro")+'</p><button class="btn main" onclick="pickMode(\'solo\')">'+t("solo")+'</button><button class="btn main" onclick="pickMode(\'host\')">'+t("host")+'</button><button class="btn alt" onclick="V=\'join\';render()">'+t("join")+'</button><div class="how"><b>'+t("how")+'</b><ol><li>'+t("how1")+'</li><li>'+t("how2")+'</li><li>'+t("how3")+'</li><li>'+t("how4")+'</li></ol><p style="margin:6px 0 2px"><b>👥</b> '+t("howO")+'</p></div><p class="mute foot">'+t("foot")+"</p>")}
 function pickMode(m){var l=S&&S.len||12;fresh();S.len=l;S.mode=m;V="role";render()}
 function roleV(){menu('<h2>'+t("whoT")+'</h2><p class="mute">'+(S.mode=="host"?t("partnerHuman"):t("partnerAI"))+" "+t("whoN")+'</p><button class="btn" onclick="chooseRole(\'B\')"><b>👰 '+t("bride")+'</b><br><span class="mute">'+t("brideD")+'</span></button><button class="btn" onclick="chooseRole(\'G\')"><b>🤵 '+t("groom")+'</b><br><span class="mute">'+t("groomD")+'</span></button><p style="margin:10px 0 2px"><b>'+t("lenT")+'</b></p><button class="btn alt'+(S.len==12?" on":"")+'" onclick="S.len=12;render()">'+t("len12")+'</button><button class="btn alt'+(S.len==40?" on":"")+'" onclick="S.len=40;render()">'+t("len40")+'</button><button class="btn alt" onclick="goHome()">'+t("back")+"</button>")}
 function chooseRole(r){S.role=r;S.seed=1+Math.floor(Math.random()*1e9);if(S.mode=="solo"){S.online=false;begin()}else{S.online=true;S.code=rnd4();V="host";render();openNet(true)}}
@@ -257,20 +291,22 @@ function oopsV(){menu('<div class="warn">'+OOPS+'</div><button class="btn main" 
 /* ===================== ROUNDS ===================== */
 function startRound(r){S.cur=r;S.sel=null;S.rt=0;S.phase="intro";S.dl=null;if(r.type=="sc"){var c=SC[r.i];stageSet(c.r,c.x,c.say,c.cat,false)}else stageSet("yard",["mil","fil","sana","hamza"],null,false,true);
 if(!S.online&&!S.theirs[r.id])S.theirs[r.id]=ai(r);V="round";render()}
-function roundV(){$m.hidden=true;$h.hidden=false;$c.hidden=false;var r=S.cur,h;
+function roundV(){$m.hidden=true;$h.hidden=false;$c.hidden=false;$lb.hidden=false;if(!$l.hidden)ledV();var r=S.cur,h;
 $c.textContent=r.type=="sc"?t("chip",{n:S.pos+1,m:S.list.length})+" · "+SC[r.i].w:t("khR");
 if(S.phase=="result"){resultV();renderHUD();$o.hidden=true;return}
-if(r.type=="sc"){var c=SC[r.i];h='<span class="tag">'+c.w+" · "+rn(c.r)+" · "+rname(S.role)+(S.online?" · 🌐":"")+'</span><h2>'+title(c)+"</h2>"+(LG=="ur"?'<div class="mute">'+t("enBody")+"</div>":"")+"<p>"+en(S.role=="B"?c.b:c.g)+"</p>"}
+if(r.type=="sc"){var c=SC[r.i];h='<span class="tag">'+c.w+" · "+rn(c.r)+" · "+rname(S.role)+(S.online?" · 🌐":"")+'</span><h2>'+title(c)+"</h2>"+(LG=="ur"?'<div class="mute">'+t("enBody")+"</div>":"")+"<p>"+en(S.role=="B"?c.b:c.g)+"</p>"+warnHTML(c)}
 else h='<div class="k"><h2>'+t("khT")+'</h2></div><p>'+t("khS")+"</p>";
 if(S.phase=="intro"){h+='<div class="hint"><span>'+t("tapme",{e:S.role=="B"?"👰":"🤵"})+'</span><button class="btn main sm" onclick="openOpts()">'+t("choose")+"</button></div>";$n.innerHTML=h;$n.hidden=false;$o.hidden=true}
 else if(S.phase=="waiting"){h+='<div class="hint"><span>'+t("waitT")+'</span></div>'+(S.online?'<button class="btn alt" onclick="useAI()">'+t("useAI")+"</button>":"");$n.innerHTML=h;$n.hidden=false;$o.hidden=true}
 else{$n.innerHTML=h;$n.hidden=false;optsV()}
 renderHUD()}
+function warnHTML(c){var w="";(c.x||[]).forEach(function(id){var v=S.R[id][S.role];if(v<=-5)w+='<div class="warn">💔 '+t("ledCold",{n:nm(id),v:v})+"</div>";else if(v>=10)w+='<div class="mute">💗 '+t("ledWarm",{n:nm(id),v:"+"+v})+"</div>"});return w}
+function prev(c,o){var s="";(c.x||[]).forEach(function(id){var I=lensI(id,o);if(I>=2)s+=nm(id)+" ↑ &nbsp;";else if(I<=-2)s+=nm(id)+" ↓ &nbsp;"});return s?'<div class="mute pv">'+t("prevH")+" "+s+"</div>":""}
 function openOpts(){if(S.phase!="intro")return;S.phase="choosing";render()}
 function optsV(){var r=S.cur,h="";
 if(hint){$o.style.setProperty("--tx",Math.max(24,Math.min(W-24,hint.x))+"px")}
 if(S.phase=="choosing"){h='<p style="margin:0 0 4px"><b>'+(r.type=="sc"?t("whatdo"):t("khQ"))+"</b></p>";
-(r.type=="sc"?SC[r.i].o:KO).forEach(function(o,i){h+='<button class="btn" onclick="pickOpt('+i+')">'+(r.type=="sc"?en(otext(o,S.role)):t("ko"+i))+"</button>"});
+(r.type=="sc"?SC[r.i].o:KO).forEach(function(o,i){h+='<button class="btn" onclick="pickOpt('+i+')">'+(r.type=="sc"?en(otext(o,S.role))+prev(SC[r.i],o):t("ko"+i))+"</button>"});
 h+='<button class="btn alt" onclick="S.phase=\'intro\';render()">'+t("back")+"</button>"}
 else{var o=SC[r.i].o[S.sel];h='<span class="tag">'+sn(o.s)+'</span><p><b>'+t("youChose")+':</b></p>'+en(otext(o,S.role))+'<p style="margin:8px 0 2px"><b>'+t("stressQ")+'</b></p><div class="rate">'+[1,2,3,4,5].map(function(n){return'<button class="'+(S.rt==n?"on":"")+'" onclick="rate('+n+')">'+n+"</button>"}).join("")+'</div><p class="mute" style="margin:0">'+t("stressH")+'</p><button class="btn main" '+(S.rt?"":"disabled")+' onclick="lock(S.rt)">'+t("lock")+'</button><button class="btn alt" onclick="S.phase=\'choosing\';render()">'+t("change")+"</button>"}
 $o.innerHTML='<div class="in">'+h+"</div>";$o.hidden=false}
@@ -286,12 +322,13 @@ if(r.type=="sc"){c=SC[r.i];var oa=c.o[a.o],ob=c.o[b.o];for(var j=0;j<6;j++)eff[j
 if(oa.s=="k"&&ob.s=="k"){eff[0]+=5;eff[5]-=5;note=t("team")}else if((oa.s=="k"&&ob.s=="r")||(oa.s=="r"&&ob.s=="k")){eff[0]-=5;note=t("fric")}else if(oa.s=="r"&&ob.s=="r"){eff[0]-=5;eff[5]+=5;note=t("dbl")}
 mood=RANK[oa.s]>=RANK[ob.s]?oa.s:ob.s}
 else{var ka=KO[a.o],kb=KO[b.o];for(var j2=0;j2<6;j2++)eff[j2]=Math.round((ka.e[j2]+kb.e[j2])/2);if(a.o==0&&b.o==0){eff[0]+=5;note=t("khTeam")}mood=(a.o==0||b.o==0)?"k":"a"}
-if(!S.done[id]){S.done[id]=1;S.dl=eff;for(var q=0;q<6;q++)S.m[q]=clamp(S.m[q]+eff[q]);S.res={eff:eff,note:note};
+if(!S.done[id]){S.done[id]=1;var adj=[0,0,0,0,0,0],led={};if(r.type=="sc"){adj=grudgeAdj(c.x||[]);for(var j3=0;j3<6;j3++)eff[j3]+=adj[j3];led=ledgerUpdate(c,S.role=="B"?c.o[a.o]:c.o[b.o],S.role=="B"?c.o[b.o]:c.o[a.o])}
+S.dl=eff;for(var q=0;q<6;q++)S.m[q]=clamp(S.m[q]+eff[q]);S.res={eff:eff,note:note,adj:adj,led:led};
 if(r.type=="sc")react(c,a,b,mood);else{stage.kh=0;stage.shake=0;stageSet("yard",["mil","fil"],null,false,false);stage.room=null;stage.foc={cx:5.6,cy:5,w:9.6,h:8.6}}}
 S.phase="result";render()}
 function react(c,a,b,mood){var br=S.role=="B"?a:b,gr=S.role=="B"?b:a;CHR.bride.mood=c.o[br.o].s;CHR.bride.emo=EM[c.o[br.o].s];CHR.bride.et=8;CHR.groom.mood=c.o[gr.o].s;CHR.groom.emo=EM[c.o[gr.o].s];CHR.groom.et=8;CHR.bride.say="";CHR.groom.say="";
 if(c.ser)return;
-(c.x||[]).forEach(function(id){var ch=CHR[id];ch.mood=mood;ch.emo=EM[mood];ch.et=8;ch.say=RL[id][mood];ch.st=8});
+(c.x||[]).forEach(function(id){var ch=CHR[id],av=avgR(id),m2=mood,line=RL[id][mood],em=EM[mood];if(coldOf(id)<=-6){m2="s";line=RL[id].c;em="💔"}else if(av>=8){m2="k";line=RL[id].w;em="💗"}ch.mood=m2;ch.emo=em;ch.et=8;ch.say=line;ch.st=8});
 parrot.say=PL[mood];parrot.st=6;cat.emo=mood=="k"?"😺":(mood=="r"?"🙀":"😿");cat.et=6;if(mood=="r")stage.shake=.6}
 function resultV(){var r=S.cur,id=r.id,a=S.mine[id],b=S.theirs[id],eff=S.res.eff,note=S.res.note,sc=r.type=="sc",c=sc?SC[r.i]:null;
 var tx=function(x,role){return sc?en(otext(c.o[x.o],role)):t("ko"+x.o)},st=function(x){return sc?sn(c.o[x.o].s):"·"},cs=function(x){return sc?c.o[x.o].c:KO[x.o].c};
@@ -299,19 +336,34 @@ var h='<span class="tag">'+(sc?title(c):t("khR"))+'</span><div class="two" style
 h+='<p style="margin:8px 0 2px"><b>'+t("happened")+":</b></p>"+en(cs(a))+(cs(a)!=cs(b)?'<div class="mute">'+en(cs(b))+"</div>":"")+'<div class="chips">';
 for(var z=0;z<6;z++)if(eff[z]){var good=z==5?eff[z]<0:eff[z]>0;h+='<span class="'+(good?"up":"dn")+'">'+MN[z]+" "+t("m"+z)+" "+(eff[z]>0?"+":"")+eff[z]+"</span>"}
 h+="</div>"+(note?'<div class="mute">'+note+"</div>":"");
+var adj=S.res.adj||[],ap=[];for(var z2=0;z2<6;z2++)if(adj[z2])ap.push(MN[z2]+" "+t("m"+z2)+" "+(adj[z2]>0?"+":"")+adj[z2]);if(ap.length)h+='<div class="mute">'+t("carry",{x:ap.join(", ")})+"</div>";
+var led=S.res.led||{},lh="",ot=S.role=="B"?"G":"B",sg=function(v){return'<b class="'+(v>=0?"up":"dn")+'">'+(v>0?"+":"")+v+"</b>"};Object.keys(led).forEach(function(i2){var d=led[i2],me=d[S.role],pa=d[ot];lh+="<span>"+nm(i2)+": "+t("you")+" "+sg(me)+" · "+t("partner")+" "+sg(pa)+"</span>"});
+if(lh)h+='<p style="margin:8px 0 2px"><b>💞 '+t("ledChg")+':</b></p><div class="chips">'+lh+"</div>";
 if(sc&&Math.abs(a.r-b.r)>=2)h+='<div class="warn">'+t("gap",{a:a.r,b:b.r})+"</div>";
 h+='<p style="margin:8px 0 2px"><b>'+t("lesson")+":</b></p>"+(sc?en(c.n):t("khL"))+'<button class="btn main" style="margin-top:8px" onclick="nextRound()">'+t("next")+"</button>";
 $n.innerHTML=h;$n.hidden=false;$n.scrollTop=0}
-function renderHUD(){var h="";for(var i=0;i<6;i++){var d=S.dl&&S.phase=="result"?S.dl[i]:0,good=i==5?d<0:d>0;h+='<div class="hm"><div class="hl">'+MN[i]+"</div><b>"+S.m[i]+'</b><div class="bar'+(i==5?" s":"")+'"><i style="width:'+S.m[i]+'%"></i></div><div class="hn">'+t("m"+i)+"</div>"+(d?'<span class="dl '+(good?"up":"dn")+'">'+(d>0?"+":"")+d+"</span>":"")+"</div>"}$h.innerHTML=h}
+function renderHUD(){var h="";for(var i=0;i<6;i++){var d=S.dl&&S.phase=="result"?S.dl[i]:0,good=i==5?d<0:d>0;h+='<div class="hm" data-i="'+i+'"><div class="hl">'+MN[i]+"</div><b>"+S.m[i]+'</b><div class="bar'+(i==5?" s":"")+'"><i style="width:'+S.m[i]+'%"></i></div><div class="hn">'+t("m"+i)+"</div>"+(d?'<span class="dl '+(good?"up":"dn")+'">'+(d>0?"+":"")+d+"</span>":"")+"</div>"}$h.innerHTML=h}
+var $t=document.getElementById("tip"),$l=document.getElementById("led"),$lb=document.getElementById("lb"),tipT=0;
+function showTip(i){$t.innerHTML="<b>"+MN[i]+" "+t("m"+i)+" · "+S.m[i]+"</b><br>"+t("tip"+i);$t.style.bottom=($h.offsetHeight+10)+"px";$t.hidden=false;clearTimeout(tipT);tipT=setTimeout(function(){$t.hidden=true},8000)}
+$h.addEventListener("click",function(e){var m=e.target.closest(".hm");if(m)showTip(+m.dataset.i)});
+$h.addEventListener("mouseover",function(e){var m=e.target.closest(".hm");if(m)showTip(+m.dataset.i)});
+$h.addEventListener("mouseleave",function(){$t.hidden=true});
+document.addEventListener("pointerdown",function(e){if(!e.target.closest(".hm")&&!e.target.closest("#tip"))$t.hidden=true});
+function toggleLedger(){if(!$l.hidden){$l.hidden=true;return}ledV();$l.hidden=false}
+function ledV(){if(!S||!S.R)return;var me=S.role,ot=me=="B"?"G":"B",cell=function(v){return face(v)+" "+(v>0?"+":"")+v},h='<h2>💞 '+t("ledT")+'</h2><p class="mute" style="margin:0 0 6px">'+t("ledS")+'</p><div class="lg"><div></div><div class="lh">'+t("toYou")+'</div><div class="lh">'+t("toPartner")+'</div><div class="lh">'+t("youTo")+"</div>";
+NPC.forEach(function(id){var r=S.R[id];if(id=="kid"&&!r.B&&!r.G&&!r.fB&&!r.fG)return;h+='<div class="ln">'+nm(id)+'</div><div class="lc">'+cell(r[me])+'</div><div class="lc">'+cell(r[ot])+'</div><div class="lc">'+cell(r["f"+me])+"</div>";
+var w=S.why[id];if(w&&r[w.p]<=-3)h+='<div class="lw">↳ '+t("ledSince",{t:(LG=="ur"&&w.u?w.u:w.t)})+"</div>"});
+h+='</div><button class="btn alt" style="margin-top:8px" onclick="toggleLedger()">'+t("ledClose")+"</button>";$l.innerHTML=h}
 function nextRound(){var r=S.cur;if(r.type=="kh"){startRound({id:"s"+S.pos,type:"sc",i:S.list[S.pos]});return}
-S.pos++;if(S.pos>=S.list.length)return end();if(flags()>=3&&S.kc<2&&S.pos-S.lastK>1){S.kc++;S.lastK=S.pos;startRound({id:"k"+S.kc,type:"kh"})}else startRound({id:"s"+S.pos,type:"sc",i:S.list[S.pos]})}
-function end(){V="end";stageHome();var ei=0;for(var i=0;i<ENDS.length;i++)if(ENDS[i](S.m)){ei=i;break}S.ei=ei;
+S.pos++;if(S.pos>=S.list.length)return end();if((flags()>=3||(flags()>=2&&coldCount()>=2))&&S.kc<2&&S.pos-S.lastK>1){S.kc++;S.lastK=S.pos;startRound({id:"k"+S.kc,type:"kh"})}else startRound({id:"s"+S.pos,type:"sc",i:S.list[S.pos]})}
+function end(){V="end";stageHome();var ei=5,cc=coldCount();for(var i=0;i<ENDS.length;i++)if(ENDS[i][1](S.m,cc)){ei=ENDS[i][0];break}S.ei=ei;
 Object.keys(CHR).forEach(function(id){var mm=ei==1||ei==2?"k":(ei==0?"s":"a");CHR[id].mood=mm;CHR[id].emo=mm=="k"?"😊":(mm=="s"?"😢":"😐");CHR[id].et=999});parrot.say=ei==1?"Mubarak ho! Mubarak ho!":"Phir se khelo!";parrot.st=999;render()}
 function endV(){var ei=S.ei,top="k";for(var k in S.styles)if(S.styles[k]>S.styles[top])top=k;
 var link=location.origin+location.pathname,wa="https://wa.me/?text="+encodeURIComponent(t("shareTxt",{n:t("e"+ei+"n"),l:link}));
 var ts={k:0,r:0,a:0,p:0};Object.keys(S.theirs).forEach(function(id){if(id[0]=="s"){var ix=S.list[+id.slice(1)];if(ix!=null){ts[SC[ix].o[S.theirs[id].o].s]++}}});
-var hadS=S.list.some(function(i){return SC[i].ser});
-menu('<div class="k"><div style="opacity:.8">'+t("endH")+'</div><h2>'+t("e"+ei+"n")+"</h2><p style='margin:4px 0 0'>"+t("e"+ei+"d")+'</p></div><div class="card"><b>'+t("inst")+'</b><p class="mute" style="margin:2px 0">'+sn("k")+" "+S.styles.k+" · "+sn("r")+" "+S.styles.r+" · "+sn("a")+" "+S.styles.a+" · "+sn("p")+" "+S.styles.p+"</p><p style='margin:2px 0'>"+t("p_"+top)+'</p><p class="mute" style="margin:2px 0">'+t("partnerPat")+": "+sn("k")+" "+ts.k+" · "+sn("r")+" "+ts.r+" · "+sn("a")+" "+ts.a+" · "+sn("p")+" "+ts.p+"</p></div>"+(hadS?'<div class="warn">'+t("safety")+"</div>":"")+'<a class="btn main" style="text-align:center" href="'+wa+'" target="_blank" rel="noopener">'+t("share")+'</a><button class="btn alt" onclick="'+(S.online?"replayOnline()":"again()")+'">'+t("again")+'</button><button class="btn alt" onclick="goHome()">'+t("home")+"</button>",true)}
+var hadS=S.list.some(function(i){return SC[i].ser}),al=NPC.filter(function(id){return avgR(id)>=8&&(S.R[id].B>=8&&S.R[id].G>=8||avgR(id)>=10)}).map(nm),co=NPC.filter(function(id){return coldOf(id)<=-6}).map(nm);
+var lg2=(al.length||co.length)?'<div class="card"><b>💞 '+t("ledT")+"</b>"+(al.length?'<p style="margin:2px 0">💗 '+t("allies")+": "+al.join(", ")+"</p>":"")+(co.length?'<p style="margin:2px 0">💔 '+t("coldL")+": "+co.join(", ")+"</p>":"")+"</div>":"";
+menu('<div class="k"><div style="opacity:.8">'+t("endH")+'</div><h2>'+t("e"+ei+"n")+"</h2><p style='margin:4px 0 0'>"+t("e"+ei+"d")+'</p></div><div class="card"><b>'+t("inst")+'</b><p class="mute" style="margin:2px 0">'+sn("k")+" "+S.styles.k+" · "+sn("r")+" "+S.styles.r+" · "+sn("a")+" "+S.styles.a+" · "+sn("p")+" "+S.styles.p+"</p><p style='margin:2px 0'>"+t("p_"+top)+'</p><p class="mute" style="margin:2px 0">'+t("partnerPat")+": "+sn("k")+" "+ts.k+" · "+sn("r")+" "+ts.r+" · "+sn("a")+" "+ts.a+" · "+sn("p")+" "+ts.p+"</p></div>"+lg2+(hadS?'<div class="warn">'+t("safety")+"</div>":"")+'<a class="btn main" style="text-align:center" href="'+wa+'" target="_blank" rel="noopener">'+t("share")+'</a><button class="btn alt" onclick="'+(S.online?"replayOnline()":"again()")+'">'+t("again")+'</button><button class="btn alt" onclick="goHome()">'+t("home")+"</button>",true)}
 function again(){S.seed=1+Math.floor(Math.random()*1e9);begin()}
 
 /* ===================== ONLINE (couple) ===================== */
