@@ -1,6 +1,6 @@
 # 07. Game Design
 
-Game title: **Dono Taraf** (both sides), under the **Dehleez** brand.
+Game title: **Aaghaaz Tamasha** (the beginning of the drama), under the **Dehleez** brand. **Dono Taraf** (both sides) is the two-player mode inside it.
 
 ## Concept
 A narrative choice game where **each partner plays the same year from their own side**, then compares. It turns the course's scenarios into practice and makes the gap between partners visible and discussable.
@@ -13,6 +13,9 @@ A narrative choice game where **each partner plays the same year from their own 
 
 ## Core loop
 Scenario card > read from your perspective > choose one of 3 to 4 responses > immediate consequence + hidden long-term effect > short coaching note.
+
+## Signature moment: "Khichdi Ban Gayi Hai!"
+When several meters collide (for example Parent harmony, Money and Stress all fall in one month), the game pauses and a banner shouts **"Khichdi Ban Gayi Hai!"** (the situation has turned into a mess). The player then gets a recovery round: pick one thing to untangle first, and a coaching card explains why untangling one thread at a time works. Also used as the name of a mid-game event deck and as a shareable meme card. Source: the author's own life.
 
 ## Meters
 | Meter | Meaning |

@@ -1,6 +1,6 @@
 # South Asian Marriage Onboarding
 
-**Brand: Dehleez** (دہلیز, "threshold"). Course: **Pehla Saal** (the first year). Game: **Dono Taraf** (both sides).
+**Brand: Dehleez** (دہلیز, "threshold"). Course: **Pehla Saal** (the first year). Game: **Aaghaaz Tamasha** (with **Dono Taraf**, both sides, as its two-player mode).
 
 A public knowledge base for preparing a bride and groom for the **pre-marriage period and the first year of marriage** in South Asian families (Pakistan first, then India, Bangladesh, Sri Lanka, Nepal and the diaspora).
 

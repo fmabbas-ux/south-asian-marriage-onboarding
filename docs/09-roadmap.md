@@ -27,7 +27,7 @@
 - Follow-up studies at 6 and 12 months; publish anonymised outcomes.
 
 ## Open decisions
-1. ~~Brand name~~ Decided 5 Nov 2026: brand **Dehleez**, course **Pehla Saal**, game **Dono Taraf**. Domain and handle still to register.
+1. ~~Brand name~~ Decided 5 Nov 2026: brand **Dehleez**, course **Pehla Saal**, game **Aaghaaz Tamasha** (two-player mode: **Dono Taraf**). Domain and handle still to register.
 2. Religion framing: Islamic-values-aware first, or fully neutral?
 3. Counsellor partners vs in-house.
 4. Entity: sole proprietor vs company.
