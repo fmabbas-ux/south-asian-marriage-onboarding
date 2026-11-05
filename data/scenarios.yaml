@@ -1,0 +1,52 @@
+# Scenario format used by course, game and blog. Full texts to be written (see docs/05-scenario-library.md).
+schema:
+  id: string            # S01..S99
+  dynamic: D1..D7
+  phase: [0,1,2,3,4,5,6]   # see docs/03-journey-timeline.md
+  universal: true|false
+  perspective_bride: text
+  perspective_groom: text
+  options:             # 3-4 per scenario
+    - label: text
+      style: reactive|avoidant|pleaser|skilled
+      effects: {trust: int, self: int, parent_harmony: int, family_standing: int, money: int, stress: int}
+      consequence: text
+  coaching_note: text
+  reviewed_by: string
+  reviewed_on: date
+
+scenarios:
+  - id: S08
+    dynamic: D2
+    phase: 3
+    universal: false
+    title: The 7 a.m. knock
+    perspective_bride: >
+      It is day nine. Your mother-in-law opens your bedroom door without knocking to ask if you
+      want tea. You were changing. You smile, but your chest is tight, and you don't know if this
+      is normal in this house.
+    perspective_groom: >
+      Your mother has always walked into your room. You don't think about it. Your wife has gone
+      quiet at breakfast and you don't know why.
+    options:
+      - label: Say nothing and hope it stops
+        style: pleaser
+        effects: {trust: -1, self: -2, parent_harmony: 1, family_standing: 0, money: 0, stress: 2}
+        consequence: It happens again on day twelve, and the resentment grows.
+      - label: Tell your husband angrily that his mother has no manners
+        style: reactive
+        effects: {trust: -2, self: 0, parent_harmony: -2, family_standing: -1, money: 0, stress: 2}
+        consequence: He becomes defensive, and the issue becomes about his mother, not the door.
+      - label: Wait for a calm moment, tell him how it felt, and ask him to raise a knock-first habit with his mother
+        style: skilled
+        effects: {trust: 2, self: 1, parent_harmony: 0, family_standing: 0, money: 0, stress: -1}
+        consequence: He speaks to his mother kindly; a small habit changes.
+      - label: Lock the door every time
+        style: avoidant
+        effects: {trust: 0, self: 0, parent_harmony: -2, family_standing: -1, money: 0, stress: 1}
+        consequence: The locked door is read as a message.
+    coaching_note: >
+      Name the behaviour and the feeling, hand the family conversation to the family member's own
+      child, and give the parent a way to say yes.
+    reviewed_by: ""
+    reviewed_on: ""
