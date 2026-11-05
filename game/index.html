@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Aaghaaz Tamasha | Dehleez</title>
+<meta name="description" content="Play your first year of marriage before you live it. A two-sided scenario game by Dehleez.">
+<meta property="og:title" content="Aaghaaz Tamasha: play your first year before you live it">
+<meta property="og:description" content="12 real first-year situations. Play as bride or groom, then compare with your partner.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8D%B2%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fff6e6;--card:#fffdf8;--ink:#2b1a1f;--mute:#7a6a6a;--maroon:#7a1f3d;--gold:#f2a900;--teal:#12756e;--red:#c0392b;--line:#ecd9bd;--good:#1f8a4c;--bad:#c0392b}
+@media (prefers-color-scheme:dark){:root{--bg:#1c1216;--card:#2a1c22;--ink:#f7ebe0;--mute:#b9a59c;--maroon:#e58aa6;--gold:#f6bd3a;--teal:#4fc3b6;--line:#43303a;--good:#59d08a;--bad:#ff8a7a}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+#app{max-width:560px;margin:0 auto;padding:16px}
+h1,h2,h3{line-height:1.2;margin:0 0 .4em}
+h1{font-size:2.2rem;color:var(--maroon)}
+.ur{font-family:"Noto Nastaliq Urdu","Jameel Noori Nastaleeq",serif;direction:rtl;line-height:2}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin:12px 0}
+.btn{display:block;width:100%;text-align:left;border:2px solid var(--line);background:var(--card);color:var(--ink);padding:12px 14px;border-radius:12px;font:inherit;margin:8px 0;cursor:pointer}
+.btn:hover,.btn:focus{border-color:var(--gold)}
+.btn.main{background:var(--maroon);color:#fff;border-color:var(--maroon);text-align:center;font-weight:700}
+.btn.alt{text-align:center;font-weight:600}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.tag{display:inline-block;background:var(--gold);color:#2b1a1f;font-weight:700;font-size:.75rem;padding:2px 10px;border-radius:99px}
+.mute{color:var(--mute);font-size:.9rem}
+.meters{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:8px 0}
+.m{font-size:.7rem;color:var(--mute)}
+.bar{height:8px;background:var(--line);border-radius:6px;overflow:hidden;margin-top:2px}
+.bar i{display:block;height:100%;background:var(--teal);transition:width .5s}
+.bar.s i{background:var(--red)}
+.chips span{display:inline-block;margin:2px 4px 2px 0;padding:2px 8px;border-radius:8px;font-size:.8rem;background:var(--line)}
+.up{color:var(--good)}.dn{color:var(--bad)}
+.rate{display:flex;gap:8px}.rate button{flex:1;padding:10px;border-radius:10px;border:2px solid var(--line);background:var(--card);color:var(--ink);font:inherit;cursor:pointer}
+.rate button.on{background:var(--gold);border-color:var(--gold);color:#2b1a1f;font-weight:700}
+.k{background:var(--maroon);color:#fff;border-radius:16px;padding:28px 16px;text-align:center;animation:sh .5s 2}
+.k h2{font-size:1.8rem;color:#fff}.k .ur{font-size:1.5rem}
+@keyframes sh{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px) rotate(-1deg)}75%{transform:translateX(8px) rotate(1deg)}}
+code,textarea,input{font:inherit}
+textarea,input{width:100%;padding:10px;border-radius:10px;border:2px solid var(--line);background:var(--card);color:var(--ink)}
+.code{font-family:ui-monospace,Consolas,monospace;font-size:1.15rem;letter-spacing:.06em;word-break:break-all;background:var(--bg);border:2px dashed var(--gold);padding:10px;border-radius:10px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.gap{border-left:5px solid var(--gold)}.same{border-left:5px solid var(--teal)}
+.foot{text-align:center;margin:24px 0 8px}
+a{color:var(--maroon)}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+var MN=[["Trust","🤝"],["Self","🧍"],["Parents","🏠"],["Standing","👪"],["Money","💰"],["Stress","😵"]];
+var SN={k:"Skilled",r:"Reactive",a:"Avoidant",p:"Pleaser"};
+var SC=[
+{w:"Wedding night",t:"Night one",
+b:"It's 2 a.m. after a fourteen-hour wedding. Your feet hurt, the jewellery is heavy, and the man beside you is still half a stranger. Everyone said tonight is 'special'. You mostly want to sleep, and you also don't want to disappoint him.",
+g:"It's 2 a.m. You've smiled at six hundred guests and your friends have been winking all week. Your wife looks exhausted. You feel an unspoken pressure about tonight and you're not sure what she expects.",
+o:[{t:"Go along with what you think is expected, and say nothing.",s:"p",e:[-1,-3,0,0,0,2],c:"The night passes. Neither of you knows what the other really wanted, and a quiet distance begins."},
+{t:"Say it out loud: 'I'm exhausted and nervous. Can we just talk and sleep tonight?'",s:"k",e:[3,2,0,0,0,-3],c:"A pause, then relief on both sides. You laugh about the day together. First private joke unlocked."},
+{t:"Make a joke, change the subject, and never come back to it.",s:"a",e:[0,-1,0,0,0,1],c:"The joke lands. The question stays unanswered and returns on night three."},
+{t:"Get irritated that the evening isn't going as imagined.",s:"r",e:[-3,-1,0,0,0,3],c:"Your tone chills the room. The first night is remembered for the wrong reason."}],
+n:"Exhaustion is not rejection. One calm sentence about how you feel beats guessing what the other expects. Closeness grows from talking first."},
+
+{w:"Month 3",t:"The family-money surprise",
+b:"You find out your husband sent money to his brother's shop without telling you. It's his salary, but it's also your household. You feel like a guest in your own finances.",
+g:"Your brother asked for help and it felt natural to send it. Your wife seems upset about something you consider family duty, and you feel judged.",
+o:[{t:"Demand that all support to the extended family stops.",s:"r",e:[-3,0,-2,-1,1,3],c:"It lands as 'your family doesn't matter'. Words sharpen, and by evening a parent has heard about it."},
+{t:"Say nothing and quietly start hiding some of your own money.",s:"a",e:[-3,0,0,0,-1,1],c:"Secrets become the new currency. Trust is what they cost."},
+{t:"Say: 'Helping family is good. Let's agree an amount together and tell each other first.'",s:"k",e:[3,1,0,0,2,-2],c:"A rule instead of a fight. The monthly money chat becomes a habit that saves you later."},
+{t:"Agree to anything and resent it quietly.",s:"p",e:[-1,-3,1,0,-1,2],c:"You keep the peace on the surface, and the resentment compounds like interest."}],
+n:"Money fights are rarely about money; they're about who counts. Agree an amount and a 'tell each other first' rule instead of arguing over whose family deserves what."},
+
+{w:"Month 2",t:"The silent two days",
+b:"A small argument at dinner about Friday plans. He stops answering and turns on the TV. By the second day you feel invisible and you're rehearsing speeches in your head.",
+g:"After the dinner argument you went quiet because you didn't want to say something you'd regret. You think you're being calm. Two days later the house feels heavy and you don't know how to restart.",
+o:[{t:"Keep the silence going until the other person apologises first.",s:"r",e:[-3,0,0,0,0,3],c:"Day four. Nobody is winning, and both of you are lonely in the same flat."},
+{t:"Apologise for everything just to end it.",s:"p",e:[1,-3,0,0,0,-1],c:"Peace returns fast, but the real issue is buried and you feel a little smaller."},
+{t:"Act as if nothing happened and carry on.",s:"a",e:[-1,0,0,0,0,1],c:"Life resumes politely. The Friday issue is still sitting there."},
+{t:"Say: 'I need twenty minutes, then I want to finish this talk,' and actually come back.",s:"k",e:[3,1,0,0,0,-2],c:"You both return. Twenty minutes of calm does what two days of silence couldn't."}],
+n:"Taking a break is a skill; vanishing is a punishment. Say how long you need and come back at that time."},
+
+{w:"Day 9",t:"The 7 a.m. knock",
+b:"Your mother-in-law opens your bedroom door without knocking to ask if you want tea. You were changing. You smile, but your chest is tight, and you don't know if this is normal in this house.",
+g:"Your mother has always walked into your room, and you've never thought about it. Your wife has gone quiet at breakfast and you don't know why.",
+o:[{t:"Say nothing and hope it stops.",s:"p",e:[-1,-2,1,0,0,2],c:"It happens again on day twelve. The resentment grows quietly."},
+{t:"Lock the door every time.",s:"a",e:[0,0,-2,-1,0,1],c:"The locked door gets read as a message, and the family notices."},
+{t:"Turn it into blame.",tb:"Tell your husband his mother has no manners.",tg:"Tell your wife she's overreacting.",s:"r",e:[-2,0,-2,-1,0,2],c:"Now the conversation is about blame, not the door. Someone gets defensive."},
+{t:"Handle it kindly.",tb:"Pick a calm moment, share how it felt, and ask your husband to warmly raise a 'knock first' habit with his mother.",tg:"Ask your wife what's bothering her, listen, then warmly raise a 'knock first' habit with your mother yourself.",s:"k",e:[3,1,0,0,0,-1],c:"It's raised kindly by her own child, the habit changes, and nobody loses face."}],
+n:"Name the behaviour and the feeling. The parent's own child carries the message and gives the parent a way to say yes."},
+
+{w:"Week 3",t:"The cooking commentary",
+b:"Every meal you cook gets a verdict from your mother-in-law: too much salt, not how her son likes it. You're cooking for twelve people for the first time. You laugh it off, but you're counting.",
+g:"Your mother has opinions on every dish, as she did for everyone. You think it's harmless. Your wife has started eating less at the table.",
+o:[{t:"Laugh along and keep serving.",s:"a",e:[-1,-2,0,0,0,1],c:"It stays 'light' until it isn't."},
+{t:"Cook only exactly the way she says from now on.",s:"p",e:[0,-3,1,1,0,2],c:"Fewer comments, and a growing feeling that your hands are not your own."},
+{t:"Handle it warmly.",tb:"Ask your husband to thank his mother, give her a dish she owns (her Friday biryani), and tell her plainly that your cooking suits your home.",tg:"Thank your mother warmly, give her a dish she owns (her Friday biryani), and tell her plainly your wife's cooking suits you.",s:"k",e:[2,1,2,1,0,-2],c:"Your mother (or mother-in-law) gets a role to shine in, and the comments thin out. The kitchen starts to feel shared."},
+{t:"Stop cooking altogether.",s:"r",e:[-1,1,-3,-2,0,2],c:"The kitchen goes cold and every relative has an opinion about it."}],
+n:"Give a critic a role, not a fight. A warm 'it suits us' from the husband or son does more than any debate."},
+
+{w:"Month 4",t:"Whose Eid first?",
+b:"Chand raat. Your parents expect you home for Eid morning. His family expects everyone at their house. Your husband says 'let's see'.",
+g:"Both families have called twice. You're hoping it sorts itself out, and your wife is waiting for you to say something.",
+o:[{t:"Let both families push and go with whoever pushes hardest.",s:"a",e:[-1,0,-1,-1,0,2],c:"The loudest family wins and the other feels forgotten. Both of you feel carried, not chosen."},
+{t:"Announce you're going to your own family and expect your spouse to follow.",s:"r",e:[-3,0,-2,0,0,3],c:"Your spouse follows with a stony face. The story gets retold at the next gathering."},
+{t:"Give up your own family's Eid to keep everyone calm.",s:"p",e:[-1,-3,-1,1,0,2],c:"One family is happy. You are not, and your own parents hear it in your voice."},
+{t:"Agree a fair plan together (morning here, afternoon there, swap next year), then tell both families 'we've decided'.",s:"k",e:[3,1,1,1,0,-2],c:"Both families grumble briefly, then adapt. 'We've decided' is a sentence they learn to accept."}],
+n:"Decide as a couple first and announce second. A rotating, written plan beats bargaining case by case."},
+
+{w:"Month 5",t:"The salary question",
+b:"You overhear it: your father-in-law expects his son's whole salary to go into the household kitty. You earn too and had hoped to save a little. Your husband hasn't said a word.",
+g:"Your father assumes your salary goes to the house, as his did. Your wife has hinted at saving. You're caught between respecting your father and starting your own life.",
+o:[{t:"Hand over everything and say nothing more.",s:"p",e:[-2,-3,2,1,-2,2],c:"The elders are delighted. By month six you can't afford anything that's yours."},
+{t:"Agree a clear split together (household, parents' support, your savings), then share it respectfully with the elders and ask for their dua.",s:"k",e:[3,1,0,0,3,-2],c:"A plan, not a rebellion. Elders accept a number delivered with respect far more easily than a surprise."},
+{t:"Announce your money is your own, full stop.",s:"r",e:[-2,1,-3,-2,1,3],c:"The house hears 'we don't trust you'. Your father stops talking to you for a week."},
+{t:"Delay the talk until someone explodes.",s:"a",e:[-1,-1,-1,0,-1,2],c:"The explosion comes at a wedding, with an audience."}],
+n:"Present a plan, not a position. Elders often reject ultimatums and accept clear plans delivered with respect."},
+
+{w:"Month 6",t:"The younger brother's fees",
+b:"Your husband's younger brother needs semester fees. The family glances at your husband, and a little at your salary.",
+g:"Your younger brother's fees are due and everyone looks at you. You want to help, but you haven't spoken to your wife about it.",
+o:[{t:"Refuse: 'It's not our responsibility.'",s:"r",e:[-1,0,-3,-3,1,3],c:"The word 'stingy' travels fast. Your spouse is embarrassed in front of the family."},
+{t:"Agree a limit together (an amount and a duration), then tell the family kindly and clearly.",s:"k",e:[3,1,1,0,2,-2],c:"The family gets a clear yes with a boundary. The fee is covered, and everyone knows it isn't unlimited."},
+{t:"Say 'we'll see' and leave it hanging.",s:"a",e:[-1,0,-1,-1,-1,2],c:"The deadline passes. Someone else pays, and you carry the shame."},
+{t:"Pay the whole thing and don't discuss it.",s:"p",e:[-2,-2,2,2,-3,2],c:"The fee gets paid, and a quiet debt opens in your marriage."}],
+n:"Support to relatives is a couple decision with a number and a time limit. A clear 'yes, up to here' protects both love and budget."},
+
+{w:"Month 4",t:"Koi khushkhabri?",
+b:"At a cousin's dholki, three aunties ask 'Koi khushkhabri?' You smile through the third. In the car afterwards, nobody asks how you felt.",
+g:"At the same dholki an uncle jokes about your 'delay'. You laugh with the others, but your wife stiffens beside you.",
+o:[{t:"Skip the next few gatherings.",s:"a",e:[0,0,-1,-2,0,1],c:"A quiet month, then the questions return with 'why aren't you coming?' added."},
+{t:"Snap: 'It's none of your business.'",s:"r",e:[0,1,-1,-3,0,3],c:"Silence at the table. By night the whole family has opinions about your attitude."},
+{t:"Start a baby sooner than you want, just to stop the questions.",s:"p",e:[-1,-3,1,2,0,3],c:"The questions stop. The pressure inside doesn't."},
+{t:"Prepare a short, warm answer together ('When Allah wills, you'll be the first to know!') and say it smiling, as a team.",s:"k",e:[3,2,0,1,0,-3],c:"The auntie laughs and moves on. Your spouse squeezes your hand under the table."}],
+n:"Three standard questions get three standard answers, said warmly and together. The aim is to close the topic, not win it."},
+
+{w:"Month 8",t:"The offer abroad",
+b:"Your husband has an offer to work abroad. It's a big chance. Your parents are getting older and your own career is just beginning. He's already half-telling his friends.",
+g:"You've got an offer abroad, a real chance. You're excited and a little scared. Your parents want you close, her parents are ageing, and you haven't yet asked what she wants.",
+o:[{t:"Announce your decision and expect your spouse to follow.",s:"r",e:[-3,0,-2,-1,0,3],c:"The ticket gets booked and the trust gets cancelled."},
+{t:"Sit down together: list what each of you wants, set a trial period with a review date, then tell both families the plan.",s:"k",e:[3,2,0,0,1,-2],c:"'Let's try 18 months and then decide' lowers fear on both sides, and both families get a clear story."},
+{t:"Quietly drop your own wishes to avoid trouble.",s:"p",e:[-1,-3,1,1,0,2],c:"No fight happens. A small piece of you is missing at every future celebration."},
+{t:"Keep the options open and avoid answering anyone.",s:"a",e:[-1,0,-1,-1,0,3],c:"Everyone waits, rumours begin, and the offer expires."}],
+n:"Big moves are joint decisions with a review date. A trial period turns an ultimatum into an experiment."},
+
+{w:"Month 3",t:"The quiet sadness",
+b:"Nothing is wrong, exactly. But some evenings you cry in the bathroom and then feel guilty: you have a kind husband and a nice home, so why this?",
+g:"Your wife has been quiet and flat for weeks. You've tried jokes and small gifts. Nothing lands, and you wonder if it's something you did.",
+o:[{t:"Cover it up.",tb:"Hide it so nobody worries and keep performing.",tg:"Keep joking and assume it will pass.",s:"p",e:[-1,-2,0,0,0,2],c:"It doesn't pass. It goes underground."},
+{t:"Fill every evening with guests and events so there's no quiet.",s:"a",e:[-1,-1,0,1,0,2],c:"The calendar is full, and so is the loneliness."},
+{t:"Name it, and listen.",tb:"Say: 'This is a big change and I'm struggling. I don't need fixing, just listening.' If it lingers, ask for a counsellor.",tg:"Ask gently, listen without fixing, and offer to find a counsellor together if it lingers.",s:"k",e:[3,3,0,0,0,-3],c:"The heaviness has a name now. Being heard does more than any gift could."},
+{t:"Lash out.",tb:"Snap: 'You don't understand anything.'",tg:"Say: 'What more do you want? I'm trying.'",s:"r",e:[-3,-1,0,0,0,3],c:"The sadness is now also a fight."}],
+n:"Post-wedding sadness is common: you lost routines, people and a home. Naming it and being listened to without being 'fixed' is step one; a counsellor is step two."},
+
+{w:"Month 10",t:"A sharp word at dinner",
+b:"At a family dinner he snaps at you over something small, in front of everyone. A cousin looks away. Your face burns.",
+g:"At a family dinner you snap at your wife over something small, in front of everyone. A cousin looks away. You knew it was wrong the second it left your mouth, but there's an audience.",
+o:[{t:"Escalate.",tb:"Snap back loudly.",tg:"Double down: 'Well, I wasn't wrong.'",s:"r",e:[-3,0,-1,-2,0,3],c:"The dinner becomes a family story, and not a flattering one."},
+{t:"Pretend.",tb:"Smile, say nothing, and go quiet for days.",tg:"Act as though nothing happened.",s:"a",e:[-1,-1,0,0,0,2],c:"The evening ends politely. The hurt goes home with you."},
+{t:"Brush it off.",tb:"Apologise yourself to keep the peace.",tg:"Blame the stress and laugh it off.",s:"p",e:[-1,-3,0,0,0,1],c:"It ends the moment and teaches both of you that this is how it goes."},
+{t:"Repair it.",tb:"Stay composed, then that night say: 'That hurt in front of everyone. I need an apology and a different way.'",tg:"Apologise that night, plainly and without a 'but', and do a small warm repair in front of the family too.",s:"k",e:[3,2,0,1,0,-3],c:"A clear apology and a clear request. Trust comes out stronger than it went in."}],
+n:"Repair is fast, private first, specific, and has no 'but'. Public sharpness damages trust more than the topic itself."}
+];
+var KO=[
+{t:"Sit down with your spouse first, just the two of you.",e:[8,3,0,0,0,-8],c:"Right choice. One conversation untangles more than five phone calls."},
+{t:"Call a family meeting and settle everyone at once.",e:[-2,0,3,3,0,4],c:"Everyone feels heard, but your spouse feels like a topic, not a partner."},
+{t:"Sort the money mess first.",e:[2,0,0,0,8,-2],c:"A clear budget calms one thread, but the people threads are still tangled."},
+{t:"Take a quick holiday and distract yourselves.",e:[1,0,0,0,-2,-4],c:"The trip is lovely. The khichdi is waiting when you get home."}];
+var ENDS=[
+{id:"pulled",n:"Pulled Apart",d:"By month 12 you are living in the same house but different stories. This is the version the course exists to prevent: it often starts with small silences, not big fights.",f:function(m){return m[0]<=35}},
+{id:"team",n:"Team Tamasha",d:"You turned the drama into a team sport. Families still have opinions, but you answer as 'we', and your spouse knows they are on your side.",f:function(m){return m[0]>=65&&m[5]<=45}},
+{id:"tired",n:"Strong but Tired",d:"The two of you are solid, and so is the pile of family demands. Your bond is working; protect it with boundaries and rest before burnout takes the credit.",f:function(m){return m[0]>=60}},
+{id:"adjuster",n:"The Great Adjuster",d:"Everyone around you is happy, and you have quietly shrunk. Adjusting is a gift, but only when it's chosen, not when it's the only move you have.",f:function(m){return m[1]<=35}},
+{id:"parallel",n:"Parallel Lives",d:"Polite and peaceful, but you've stopped really sharing. Two people living side by side, managing the household together and the inner life alone.",f:function(m){return m[0]<50}},
+{id:"fig",n:"Still Figuring It Out",d:"A mixed first year: some wins, some khichdi. That is the normal shape of year one. A weekly check-in and one hard conversation could tip it in your favour.",f:function(){return true}}];
+var PAT={k:"You mostly chose the skilled response. Keep practising these as scripts: they get easier with every use.",r:"Your instinct under pressure is to react. Practise the 20-minute break: say 'I need twenty minutes, then I'll come back'.",a:"Your instinct under pressure is to avoid. Silence feels safe but leaves the problem alone. Practise naming one feeling in one sentence.",p:"Your instinct under pressure is to please. Keeping peace has a price: you. Practise one small honest 'I'd prefer...' a day."};
+var S,app=document.getElementById("app");
+function fresh(){S={role:null,i:0,m:[50,50,50,50,50,30],picks:[],rates:[],styles:{k:0,r:0,a:0,p:0},kc:0,lastK:-9,fb:null,rated:false}}
+function $(h){app.innerHTML=h;window.scrollTo(0,0)}
+function clamp(v){return Math.max(0,Math.min(100,v))}
+function meters(){var h='<div class="meters">';for(var i=0;i<6;i++){var s=i==5;h+='<div class="m">'+MN[i][1]+" "+MN[i][0]+'<div class="bar'+(s?" s":"")+'"><i style="width:'+S.m[i]+'%"></i></div></div>'}return h+"</div>"}
+function otext(o,role){return (role=="B"?o.tb:o.tg)||o.t}
+function home(){fresh();$('<div class="card" style="margin-top:28px"><span class="tag">A DEHLEEZ PROJECT</span><h1 style="margin-top:10px">Aaghaaz Tamasha</h1><div class="ur" style="font-size:1.4rem;color:var(--maroon)">آغاز تماشا</div><p><b>Play your first year of marriage before you live it.</b></p><p class="mute">Twelve real situations, one year. Play as the bride or the groom. Then swap codes with your partner and see where your instincts differ. No logins, nothing stored.</p></div><button class="btn main" onclick="pick()">Start playing</button><button class="btn alt" onclick="cmp()">I have a partner\'s code: compare</button><p class="mute foot">Prototype v0.1. For learning, not a substitute for counselling or legal advice.</p>')}
+function pick(){$('<h2>Who are you playing?</h2><p class="mute">You will see each situation from your side. Be honest: the point is to learn your instinct, not to win.</p><button class="btn" onclick="start(\'B\')"><b>👰 The bride</b><br><span class="mute">Moving into a new household, new family, new rules.</span></button><button class="btn" onclick="start(\'G\')"><b>🤵 The groom</b><br><span class="mute">Torn between two loyalties, trying to keep everyone happy.</span></button><button class="btn alt" onclick="home()">Back</button>')}
+function start(r){fresh();S.role=r;scene()}
+function scene(){var c=SC[S.i];S.fb=null;S.rated=false;var h='<div class="mute">Situation '+(S.i+1)+" of "+SC.length+' · '+(S.role=="B"?"Bride":"Groom")+'</div>'+meters()+'<div class="card"><span class="tag">'+c.w+'</span><h2 style="margin-top:8px">'+c.t+'</h2><p>'+(S.role=="B"?c.b:c.g)+'</p></div><p><b>What do you do?</b></p>';c.o.forEach(function(o,i){h+='<button class="btn" onclick="choose('+i+')">'+otext(o,S.role)+'</button>'});$(h)}
+function choose(i){var c=SC[S.i],o=c.o[i];S.picks.push(i);S.styles[o.s]++;for(var j=0;j<6;j++)S.m[j]=clamp(S.m[j]+o.e[j]*5);S.fb=i;showfb()}
+function showfb(){var c=SC[S.i],o=c.o[S.fb];var h='<div class="mute">Situation '+(S.i+1)+" of "+SC.length+'</div>'+meters()+'<div class="card"><span class="tag">'+SN[o.s]+'</span><p><b>'+otext(o,S.role)+'</b></p><p>'+o.c+'</p><div class="chips">';for(var j=0;j<6;j++){var v=o.e[j]*5;if(v){var good=j==5?v<0:v>0;h+='<span class="'+(good?"up":"dn")+'">'+MN[j][1]+" "+MN[j][0]+" "+(v>0?"+":"")+v+"</span>"}}h+='</div></div><div class="card"><b>The lesson</b><p>'+c.n+'</p></div><p><b>How stressful would this situation feel to you?</b></p><div class="rate">';for(var r=1;r<=5;r++)h+='<button id="r'+r+'" onclick="rate('+r+')">'+r+"</button>";h+='</div><p class="mute">1 = barely, 5 = very. Your partner will rate the same event; the gap is the interesting part.</p><button id="nx" class="btn main" disabled onclick="next()">Next</button>';$(h)}
+function rate(r){S.rates[S.i]=r;S.rated=true;for(var k=1;k<=5;k++)document.getElementById("r"+k).className=k==r?"on":"";document.getElementById("nx").disabled=false}
+function flags(){var f=0;for(var i=0;i<5;i++)if(S.m[i]<=35)f++;if(S.m[5]>=65)f++;return f}
+function next(){S.i++;if(S.i>=SC.length)return end();if(flags()>=3&&S.kc<2&&S.i-S.lastK>1){S.kc++;S.lastK=S.i;return khichdi()}scene()}
+function khichdi(){var h='<div class="k"><h2>Khichdi Ban Gayi Hai!</h2><div class="ur">کھچڑی بن گئی ہے!</div><p>Several things have tangled at once. Take a breath. You can only untangle one thread first.</p></div>'+meters()+'<p><b>Which thread do you pull first?</b></p>';KO.forEach(function(o,i){h+='<button class="btn" onclick="recover('+i+')">'+o.t+"</button>"});$(h)}
+function recover(i){var o=KO[i];for(var j=0;j<6;j++)S.m[j]=clamp(S.m[j]+o.e[j]);$('<div class="card"><h2>'+o.c+'</h2><p class="mute">The skilled move in a khichdi: one thread at a time, starting with your partner, not the audience.</p></div>'+meters()+'<button class="btn main" onclick="scene()">Back to the year</button>')}
+function code(){var s=S.role;for(var i=0;i<SC.length;i++)s+=S.picks[i]+""+S.rates[i];return s}
+function end(){var e=ENDS.filter(function(x){return x.f(S.m)})[0];var top="k";for(var k in S.styles)if(S.styles[k]>S.styles[top])top=k;var c=code();var link=location.origin+location.pathname;var wa="https://wa.me/?text="+encodeURIComponent("I just played Aaghaaz Tamasha ("+(S.role=="B"?"bride":"groom")+"). My code: "+c+"\nPlay and compare with me: "+link);
+$('<div class="k" style="animation:none"><div class="mute" style="color:#fff">Your first year</div><h2>'+e.n+'</h2><p>'+e.d+'</p></div>'+meters()+'<div class="card"><b>Your instinct pattern</b><p class="mute">Skilled '+S.styles.k+' · Reactive '+S.styles.r+' · Avoidant '+S.styles.a+' · Pleaser '+S.styles.p+'</p><p>'+PAT[top]+'</p></div><div class="card"><b>Your code</b><div class="code" id="cd">'+c+'</div><p class="mute">Send this to your partner. When they finish, compare codes to see where you differ.</p><a class="btn main" style="text-decoration:none" href="'+wa+'" target="_blank" rel="noopener">Share on WhatsApp</a><button class="btn alt" onclick="copy()">Copy my code</button></div><button class="btn main" onclick="cmp(\''+c+'\')">Compare with my partner</button><button class="btn alt" onclick="pick()">Play again</button><p class="mute foot">Dehleez · Aaghaaz Tamasha v0.1</p>')}
+function copy(){var t=document.getElementById("cd").textContent;try{navigator.clipboard.writeText(t)}catch(e){}}
+function cmp(mine){$('<h2>Dono Taraf: compare codes</h2><p class="mute">Paste your code and your partner\'s code. Nothing leaves your device.</p><p><b>Your code</b></p><input id="c1" value="'+(mine||"")+'" placeholder="e.g. B1230..."><p><b>Partner\'s code</b></p><input id="c2" placeholder="e.g. G2141..."><div id="err" class="dn"></div><button class="btn main" onclick="doCmp()">Compare</button><button class="btn alt" onclick="home()">Home</button>')}
+function parse(s){s=(s||"").trim().toUpperCase().replace(/[^A-Z0-9]/g,"");return /^[BG]([0-3][1-5]){12}$/.test(s)?{role:s[0],p:s.slice(1).match(/../g).map(function(x){return{o:+x[0],r:+x[1]}})}:null}
+function doCmp(){var a=parse(document.getElementById("c1").value),b=parse(document.getElementById("c2").value);if(!a||!b){document.getElementById("err").textContent="One of the codes isn't valid. Codes look like B1230... and are 25 characters.";return}
+var h='<h2>Where you agree and where you differ</h2><p class="mute">A big gap is not a problem. It is a conversation waiting to happen.</p>',big=0;SC.forEach(function(c,i){var x=c.o[a.p[i].o],y=c.o[b.p[i].o],gap=Math.abs(a.p[i].r-b.p[i].r)>=2,diff=x.s!=y.s;if(gap)big++;h+='<div class="card '+(gap||diff?"gap":"same")+'"><b>'+(i+1)+". "+c.t+'</b><p class="mute" style="margin:2px 0">'+(gap?"Big stress gap: talk about this one.":diff?"Different instincts.":"Aligned.")+'</p><p><b>You ('+(a.role=="B"?"bride":"groom")+')</b> · '+SN[x.s]+" · stress "+a.p[i].r+"<br>"+otext(x,a.role)+'</p><p><b>Partner ('+(b.role=="B"?"bride":"groom")+')</b> · '+SN[y.s]+" · stress "+b.p[i].r+"<br>"+otext(y,b.role)+"</p></div>"});
+h+='<div class="card"><b>Conversation starter</b><p>'+(big?"You differ sharply on "+big+" situation"+(big>1?"s":"")+". Pick one and each say what it felt like, with no fixing and no 'but'.":"Your stress levels are close on every situation. Nice. Pick the one that was hardest for both of you and write a one-line plan for it.")+'</p></div><button class="btn main" onclick="home()">Home</button>';$(h)}
+home();
+</script>
+</body>
+</html>

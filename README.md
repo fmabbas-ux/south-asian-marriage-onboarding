@@ -37,6 +37,7 @@ The wedding gets months of planning. The marriage gets none. This project fixes 
 | `docs/08-platform-and-monetization.md` | YouTube vs website, payments from Pakistan, pricing |
 | `docs/09-roadmap.md` | Phased plan with next actions |
 | `docs/10-red-lines-and-safety.md` | Where conflict ends and abuse begins; content guardrails |
+| `game/index.html` | Playable prototype of Aaghaaz Tamasha (single file, no build). Live: https://aaghaaz-tamasha.vercel.app |
 | `data/scenarios.yaml` | Machine-readable scenario format used by the game |
 
 ## Status
