@@ -39,7 +39,7 @@ notfound:["Room {c} not found. Check the code with your partner.","کمرہ {c} 
 connprob:["Connection problem: {e}","رابطے میں مسئلہ: {e}"],
 loaderr:["Could not load the online service. Check your connection, or play solo.","آن لائن سروس لوڈ نہیں ہو سکی۔ انٹرنیٹ چیک کریں یا اکیلے کھیلیں۔"],
 discon:["Your partner disconnected. The game continues with an AI partner.","آپ کا ساتھی جدا ہو گیا۔ کھیل کمپیوٹر ساتھی کے ساتھ جاری ہے۔"],
-foot:["Prototype v0.7. For learning, not a substitute for counselling or legal advice.","ابتدائی ورژن 0.7۔ سیکھنے کے لیے ہے، مشورے یا قانونی رہنمائی کا متبادل نہیں۔"],
+foot:["Prototype v0.8. For learning, not a substitute for counselling or legal advice.","ابتدائی ورژن 0.8۔ سیکھنے کے لیے ہے، مشورے یا قانونی رہنمائی کا متبادل نہیں۔"],
 chip:["{n} / {m}","{n} / {m}"],
 tapme:["Tap your character {e} to choose","اپنے کردار {e} پر ٹیپ کر کے چنیں"],
 choose:["Choose","چنیں"],
@@ -166,4 +166,14 @@ fbErr:["Couldn't send ({e}). Your text is still here. Please try again in a minu
 fbShort:["Please write a few words first.","پہلے چند الفاظ لکھیں۔"],fbBadCt:["That contact detail doesn't look right.","یہ رابطہ درست نہیں لگتا۔"],fbWait:["You just sent one. Please wait a minute before another.","آپ نے ابھی بھیجا ہے۔ دوسرے سے پہلے ایک منٹ انتظار کریں۔"],
 fbAgain:["Send another","ایک اور بھیجیں"]
 };for(var _g in _F)T[_g]=_F[_g];
+
+var _G={
+prevly:["Previously:","پچھلی بار:"],
+rc_g:["In {t}, you both handled it well.","{t} میں آپ دونوں نے اچھے سے سنبھالا۔"],
+rc_m:["{t} was only half-resolved.","{t} آدھا ہی حل ہوا۔"],
+rc_b:["{t} went badly and left a mark.","{t} بُری طرح گزرا اور نشان چھوڑ گیا۔"],
+treeT:["Your story so far","اب تک کی آپ کی کہانی"],
+treeS:["Each chapter leads to the next depending on how you handled it. 🌱 handled well, ⚖️ mixed, 🔥 went badly.","ہر باب اگلے باب کی طرف لے جاتا ہے، اس پر منحصر کہ آپ نے اسے کیسے سنبھالا۔ 🌱 اچھا، ⚖️ ملا جلا، 🔥 بُرا۔"],
+monthN:["Month {n}","مہینہ {n}"]
+};for(var _h in _G)T[_h]=_G[_h];
 function t(k,o){var a=T[k];if(!a)return k;var s=(LG=="ur"&&a[1])?a[1]:a[0];if(o)for(var q in o)s=s.split("{"+q+"}").join(o[q]);return s}

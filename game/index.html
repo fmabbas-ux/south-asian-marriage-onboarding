@@ -81,6 +81,8 @@ textarea.fi{resize:vertical}
 .fk{display:flex;gap:8px;align-items:flex-start;margin:8px 0;font-size:.85rem}
 .fk input[type=checkbox]{width:auto;flex:0 0 18px;height:18px;margin:2px 0 0;padding:0;text-align:start}.fk{text-align:start;justify-content:flex-start}
 .hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+.rc{margin:6px 0;padding:6px 10px;border-radius:10px;background:#eef3ff;border-left:4px solid #6b86d6;font-size:.88rem}
+.tn{font-size:.85rem;line-height:1.5}
 .xl{margin:6px 0;padding:6px 10px;border-radius:10px;background:#fff6dd;border-left:4px solid var(--gold);font-size:.9rem}
 .wl{margin:3px 0;font-size:.85rem;line-height:1.45}
 #menu{position:absolute;inset:0;z-index:7;display:flex;justify-content:center;align-items:center;background:linear-gradient(rgba(255,246,230,.55),rgba(255,246,230,.8));padding:44px 10px 10px}
@@ -111,6 +113,7 @@ textarea.fi{resize:vertical}
 <script src="scenarios2.js"></script>
 <script src="crises.js"></script>
 <script src="story.js"></script>
+<script src="tree.js"></script>
 <script>
 var LG="en";try{LG=localStorage.getItem("aat_lg")||"en"}catch(e){}
 </script>
@@ -256,7 +259,7 @@ function stageHome(){stage.room=null;stage.kh=0;stage.catPin=0;stage.foc={cx:8,c
 /* ===================== STATE ===================== */
 var S=null,V="home",NET=null,PEER=null,OOPS="";
 var $n=document.getElementById("narr"),$o=document.getElementById("opts"),$h=document.getElementById("hud"),$m=document.getElementById("menu"),$s=document.getElementById("sheet"),$c=document.getElementById("chip");
-function fresh(keep){var r=keep&&S?S:{};S={role:r.role||null,mode:r.mode||"solo",code:r.code||"",len:r.len||12,seed:r.seed||1,m:[50,50,50,50,50,30],dl:null,list:[],pos:0,cur:null,sel:null,rt:0,phase:"intro",mine:{},theirs:{},done:{},styles:{k:0,r:0,a:0,p:0},kc:0,lastK:-9,cc:0,lastC:-9,cdone:{},hist:[],q:{},echo:[],chill:0,F:initF(),W:{},T:{},nsp:0,cnt:{g:0,w:0,t:0,e:0},online:false,R:initR(),why:{}}}
+function fresh(keep){var r=keep&&S?S:{};S={role:r.role||null,mode:r.mode||"solo",code:r.code||"",len:r.len||12,seed:r.seed||1,m:[50,50,50,50,50,30],dl:null,list:[],pos:0,cur:null,sel:null,rt:0,phase:"intro",mine:{},theirs:{},done:{},styles:{k:0,r:0,a:0,p:0},kc:0,lastK:-9,cc:0,lastC:-9,cdone:{},path:[],rc:{},hist:[],q:{},echo:[],chill:0,F:initF(),W:{},T:{},nsp:0,cnt:{g:0,w:0,t:0,e:0},online:false,R:initR(),why:{}}}
 function initR(){var R={};NPC.forEach(function(c){R[c]={B:0,G:0,fB:0,fG:0}});R.bmom.B=8;R.bdad.B=8;R.mil.G=8;R.fil.G=8;return R}
 function lensI(id,o){var raw=0,w=LENS[id];for(var k=0;k<6;k++)raw+=w[k]*o.e[k];return Math.max(-9,Math.min(9,Math.round(raw*1.1)))}
 function clampR(v){return Math.max(-30,Math.min(30,v))}
@@ -312,7 +315,7 @@ if(!S.online&&!S.theirs[r.id])S.theirs[r.id]=ai(r);V="round";render()}
 function roundV(){$m.hidden=true;$h.hidden=false;$c.hidden=false;$lb.hidden=false;if(!$l.hidden)ledV();var r=S.cur,h;
 $c.textContent=r.type=="sc"?(r.cr?"⚡":t("chip",{n:S.pos+1,m:S.list.length}))+" · "+SC[r.i].w:t("khR");
 if(S.phase=="result"){resultV();renderHUD();$o.hidden=true;return}
-if(r.type=="sc"){var c=SC[r.i];h='<span class="tag">'+c.w+" · "+rn(c.r)+" · "+rname(S.role)+(S.online?" · 🌐":"")+'</span><h2>'+title(c)+"</h2>"+(LG=="ur"?'<div class="mute">'+t("enBody")+"</div>":"")+"<p>"+en(S.role=="B"?c.b:c.g)+"</p>"+warnHTML(c)+chillHTML()}
+if(r.type=="sc"){var c=SC[r.i];h='<span class="tag">'+((S.rc[c.id]&&S.list.length<40)?t("monthN",{n:S.pos+1}):c.w)+" · "+rn(c.r)+" · "+rname(S.role)+(S.online?" · 🌐":"")+'</span><h2>'+title(c)+"</h2>"+(LG=="ur"?'<div class="mute">'+t("enBody")+"</div>":"")+(r.cr?"":recapHTML(c))+"<p>"+en(S.role=="B"?c.b:c.g)+"</p>"+warnHTML(c)+chillHTML()}
 else h='<div class="k"><h2>'+t("khT")+'</h2></div><p>'+t("khS")+"</p>";
 if(S.phase=="intro"){h+='<div class="hint"><span>'+t("tapme",{e:S.role=="B"?"👰":"🤵"})+'</span><button class="btn main sm" onclick="openOpts()">'+t("choose")+"</button></div>";$n.innerHTML=h;$n.hidden=false;$o.hidden=true}
 else if(S.phase=="waiting"){h+='<div class="hint"><span>'+t("waitT")+'</span></div>'+(S.online?'<button class="btn alt" onclick="useAI()">'+t("useAI")+"</button>":"");$n.innerHTML=h;$n.hidden=false;$o.hidden=true}
@@ -387,11 +390,11 @@ var link=location.origin+location.pathname,wa="https://wa.me/?text="+encodeURICo
 var ts={k:0,r:0,a:0,p:0};Object.keys(S.theirs).forEach(function(id){if(id[0]=="s"){var ix=S.list[+id.slice(1)];if(ix!=null){ts[SC[ix].o[S.theirs[id].o].s]++}}});
 var hadS=S.list.some(function(i){return SC[i].ser}),al=NPC.filter(function(id){return avgR(id)>=8&&(S.R[id].B>=8&&S.R[id].G>=8||avgR(id)>=10)}).map(nm),co=NPC.filter(function(id){return coldOf(id)<=-6}).map(nm);
 var lg2=(al.length||co.length)?'<div class="card"><b>💞 '+t("ledT")+"</b>"+(al.length?'<p style="margin:2px 0">💗 '+t("allies")+": "+al.join(", ")+"</p>":"")+(co.length?'<p style="margin:2px 0">💔 '+t("coldL")+": "+co.join(", ")+"</p>":"")+"</div>":"";
-menu('<div class="k"><div style="opacity:.8">'+t("endH")+'</div><h2>'+t("e"+ei+"n")+"</h2><p style='margin:4px 0 0'>"+t("e"+ei+"d")+'</p></div><div class="card"><b>'+t("inst")+'</b><p class="mute" style="margin:2px 0">'+sn("k")+" "+S.styles.k+" · "+sn("r")+" "+S.styles.r+" · "+sn("a")+" "+S.styles.a+" · "+sn("p")+" "+S.styles.p+"</p><p style='margin:2px 0'>"+t("p_"+top)+'</p><p class="mute" style="margin:2px 0">'+t("partnerPat")+": "+sn("k")+" "+ts.k+" · "+sn("r")+" "+ts.r+" · "+sn("a")+" "+ts.a+" · "+sn("p")+" "+ts.p+"</p></div>"+lg2+treasuresHTML()+(hadS?'<div class="warn">'+t("safety")+"</div>":"")+'<a class="btn main" style="text-align:center" href="'+wa+'" target="_blank" rel="noopener">'+t("share")+'</a><button class="btn alt" onclick="openFB(\'end\')">'+t("fbBtn")+'</button><button class="btn alt" onclick="'+(S.online?"replayOnline()":"again()")+'">'+t("again")+'</button><button class="btn alt" onclick="goHome()">'+t("home")+"</button>",true)}
+menu('<div class="k"><div style="opacity:.8">'+t("endH")+'</div><h2>'+t("e"+ei+"n")+"</h2><p style='margin:4px 0 0'>"+t("e"+ei+"d")+'</p></div><div class="card"><b>'+t("inst")+'</b><p class="mute" style="margin:2px 0">'+sn("k")+" "+S.styles.k+" · "+sn("r")+" "+S.styles.r+" · "+sn("a")+" "+S.styles.a+" · "+sn("p")+" "+S.styles.p+"</p><p style='margin:2px 0'>"+t("p_"+top)+'</p><p class="mute" style="margin:2px 0">'+t("partnerPat")+": "+sn("k")+" "+ts.k+" · "+sn("r")+" "+ts.r+" · "+sn("a")+" "+ts.a+" · "+sn("p")+" "+ts.p+"</p></div>"+lg2+treeHTML()+treasuresHTML()+(hadS?'<div class="warn">'+t("safety")+"</div>":"")+'<a class="btn main" style="text-align:center" href="'+wa+'" target="_blank" rel="noopener">'+t("share")+'</a><button class="btn alt" onclick="openFB(\'end\')">'+t("fbBtn")+'</button><button class="btn alt" onclick="'+(S.online?"replayOnline()":"again()")+'">'+t("again")+'</button><button class="btn alt" onclick="goHome()">'+t("home")+"</button>",true)}
 function again(){S.seed=1+Math.floor(Math.random()*1e9);begin()}
 
 /* ===================== FEEDBACK ===================== */
-var FB=null,FBCATS=["suggestion","bug","content","complaint","safety","privacy","praise","other"],FBCTS=["none","email","whatsapp","phone","instagram","x","facebook","other"],VER="0.7";
+var FB=null,FBCATS=["suggestion","bug","content","complaint","safety","privacy","praise","other"],FBCTS=["none","email","whatsapp","phone","instagram","x","facebook","other"],VER="0.8";
 function escH(x){return String(x==null?"":x).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}
 function openFB(back){var keep=FB&&FB.st!="sent"?FB:null;FB=keep||{cat:"suggestion",msg:"",ct:"none",cv:"",ok:true,ctx:true,st:"form",err:"",id:"",n:7,back:back};FB.back=back;V="fb";render()}
 function fbBack(){V=(FB&&FB.back=="end"&&S&&S.ei!=null)?"end":"home";if(V=="home")stageHome();render()}

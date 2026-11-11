@@ -48,7 +48,7 @@ function L(id){return led[id]||(led[id]={B:0,G:0,fB:0,fG:0})}
 [["B",oB],["G",oG]].forEach(function(pp){var p=pp[0],o=pp[1];
 if(o.rl)for(var id in o.rl){var d=o.rl[id],x=R[id],dd=L(id);x[p]=clampR(x[p]+d[0]);x["f"+p]=clampR(x["f"+p]+(d[1]||0));dd[p]+=d[0];dd["f"+p]+=(d[1]||0)}
 if(o.wf&&c.wc){S.F[c.wc][p]+=o.s=="k"?2:1;S.W[c.wid]=(S.W[c.wid]||"")+p}});
-var q=(oB.s=="k")+(oG.s=="k");S.q[c.id]=q;S.hist.push({id:c.id,sB:oB.s,sG:oG.s});
+var q=(oB.s=="k")+(oG.s=="k");S.q[c.id]=q;if(!c.cr){var tc=treeCls(q);S.path.push({id:c.id,cls:tc,pos:S.pos});treeLink(c.id,tc)}S.hist.push({id:c.id,sB:oB.s,sG:oG.s});
 if(c.wc){var who=S.W[c.wid]||"";if(who)ex.push("🎁 "+t("wishDone",{n:nm(c.wc),w:who.indexOf("B")>-1&&who.indexOf("G")>-1?t("bothOf"):(who==S.role?t("you"):t("partner"))}));else ex.push("🎁 "+t("wishMissed",{n:nm(c.wc)}))}
 if(c.rep){var was=S.chill;S.chill=Math.max(0,S.chill-q*2);if(was>0&&S.chill==0)ex.push("☀️ "+t("chillClear"));else if(was>0)ex.push("🌤️ "+t("chillLess"))}
 else if(S.chill>0){eff[0]-=3;eff[5]+=3;S.chill--;ex.push("😶 "+t("chillHit"))}
@@ -70,7 +70,7 @@ if(o.wf&&c.wc==T.comp){out.push({k:k,x:"rival"});return}
 if((c.x||[]).indexOf(T.h)>-1){var I=lensI(T.h,o);if(I>=2)out.push({k:k,x:"up"});else if(I<=-2)out.push({k:k,x:"down"})}});return out}
 
 /* ---------- panels ---------- */
-function storyPanel(){var me=S.role,ot=me=="B"?"G":"B",h='<h2 style="margin-top:12px">🎁 '+t("wishT")+'</h2><p class="mute" style="margin:0 0 4px">'+t("wishS")+"</p>";
+function storyPanel(){var me=S.role,ot=me=="B"?"G":"B",h=treeHTML()+'<h2 style="margin-top:12px">🎁 '+t("wishT")+'</h2><p class="mute" style="margin:0 0 4px">'+t("wishS")+"</p>";
 Object.keys(WISHES).forEach(function(id){WISHES[id].forEach(function(w){var st,who=S.W[w[0]]||"";
 if(who)st="✅ "+(who.indexOf(me)>-1&&who.indexOf(ot)>-1?t("bothOf"):(who.indexOf(me)>-1?t("you"):t("partner")));
 else if(S.cdone[w[0]]!=null)st="⌛ "+t("wishOpen");else if(avgR(id)>=-1)st="💬 "+t("wishSoon");else st="🧊 "+t("wishCold");
