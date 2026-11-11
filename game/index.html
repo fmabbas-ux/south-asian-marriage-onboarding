@@ -8,6 +8,10 @@
 <meta property="og:title" content="Aaghaaz Tamasha: play your first year before you live it">
 <meta property="og:description" content="A blocky family house, an aunty next door, a parrot and 40 real first-year situations. Play with your partner online.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8D%B2%3C/text%3E%3C/svg%3E">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#7a1f3d">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@500;700&display=swap" rel="stylesheet">
 <style>
@@ -361,7 +365,7 @@ if(V=="home")homeV();else if(V=="role")roleV();else if(V=="host")hostV();else if
 setTimeout(fit,30)}
 function toggleLang(){LG=LG=="ur"?"en":"ur";try{localStorage.setItem("aat_lg",LG)}catch(e){}render()}
 function goHome(){closeNet();fresh();stageHome();V="home";render()}
-function homeV(){stageHome();menu('<span class="chip" style="background:var(--gold);display:inline-block">'+t("brand")+'</span><h1>'+t("title")+'</h1>'+(LG=="ur"?'<div style="color:var(--maroon)">Aaghaaz Tamasha</div>':'<div class="mute" style="font-family:\'Noto Nastaliq Urdu\',serif;font-size:1.3rem;direction:rtl;text-align:left;color:var(--maroon)">آغاز تماشا</div>')+'<p><b>'+t("tagline")+'</b></p><p class="mute">'+t("intro")+'</p><button class="btn main" onclick="pickMode(\'solo\')">'+t("solo")+'</button><button class="btn main" onclick="pickMode(\'host\')">'+t("host")+'</button><button class="btn alt" onclick="V=\'join\';render()">'+t("join")+'</button><button class="btn alt" onclick="openFB(\'home\')">'+t("fbBtn")+'</button><div class="how"><b>'+t("how")+'</b><ol><li>'+t("how1")+'</li><li>'+t("how2")+'</li><li>'+t("how3")+'</li><li>'+t("how4")+'</li></ol><p style="margin:6px 0 2px"><b>👥</b> '+t("howO")+'</p></div><p class="mute foot">'+t("foot")+"</p>")}
+function homeV(){stageHome();menu('<span class="chip" style="background:var(--gold);display:inline-block">'+t("brand")+'</span><h1>'+t("title")+'</h1>'+(LG=="ur"?'<div style="color:var(--maroon)">Aaghaaz Tamasha</div>':'<div class="mute" style="font-family:\'Noto Nastaliq Urdu\',serif;font-size:1.3rem;direction:rtl;text-align:left;color:var(--maroon)">آغاز تماشا</div>')+'<p><b>'+t("tagline")+'</b></p><p class="mute">'+t("intro")+'</p><button class="btn main" onclick="pickMode(\'solo\')">'+t("solo")+'</button><button class="btn main" onclick="pickMode(\'host\')">'+t("host")+'</button><button class="btn alt" onclick="V=\'join\';render()">'+t("join")+'</button><button class="btn alt" onclick="openFB(\'home\')">'+t("fbBtn")+'</button><div class="how"><b>'+t("how")+'</b><ol><li>'+t("how1")+'</li><li>'+t("how2")+'</li><li>'+t("how3")+'</li><li>'+t("how4")+'</li></ol><p style="margin:6px 0 2px"><b>👥</b> '+t("howO")+'</p></div><p class="mute foot">'+t("foot")+' · <a href="privacy.html" style="color:inherit">'+t("privL")+"</a></p>")}
 function pickMode(m){var l=S&&S.len||12;fresh();S.len=l;S.mode=m;V="role";render()}
 function roleV(){menu('<h2>'+t("whoT")+'</h2><p class="mute">'+(S.mode=="host"?t("partnerHuman"):t("partnerAI"))+" "+t("whoN")+'</p><button class="btn" onclick="chooseRole(\'B\')"><b>👰 '+t("bride")+'</b><br><span class="mute">'+t("brideD")+'</span></button><button class="btn" onclick="chooseRole(\'G\')"><b>🤵 '+t("groom")+'</b><br><span class="mute">'+t("groomD")+'</span></button><p style="margin:10px 0 2px"><b>'+t("lenT")+'</b></p><button class="btn alt'+(S.len==12?" on":"")+'" onclick="S.len=12;render()">'+t("len12")+'</button><button class="btn alt'+(S.len==40?" on":"")+'" onclick="S.len=40;render()">'+t("len40")+'</button><button class="btn alt" onclick="goHome()">'+t("back")+"</button>")}
 function chooseRole(r){S.role=r;S.seed=1+Math.floor(Math.random()*1e9);if(S.mode=="solo"){S.online=false;begin()}else{S.online=true;S.code=rnd4();V="host";render();openNet(true)}}
@@ -460,7 +464,7 @@ menu('<div class="k"><div style="opacity:.8">'+t("endH")+'</div><h2>'+t("e"+ei+"
 function again(){S.seed=1+Math.floor(Math.random()*1e9);begin()}
 
 /* ===================== FEEDBACK ===================== */
-var FB=null,FBCATS=["suggestion","bug","content","complaint","safety","privacy","praise","other"],FBCTS=["none","email","whatsapp","phone","instagram","x","facebook","other"],VER="0.11";
+var FB=null,FBCATS=["suggestion","bug","content","complaint","safety","privacy","praise","other"],FBCTS=["none","email","whatsapp","phone","instagram","x","facebook","other"],VER="0.12";
 function escH(x){return String(x==null?"":x).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}
 function openFB(back){var keep=FB&&FB.st!="sent"?FB:null;FB=keep||{cat:"suggestion",msg:"",ct:"none",cv:"",ok:true,ctx:true,st:"form",err:"",id:"",n:7,back:back};FB.back=back;V="fb";render()}
 function fbBack(){V=(FB&&FB.back=="end"&&S&&S.ei!=null)?"end":"home";if(V=="home")stageHome();render()}
@@ -478,7 +482,7 @@ h+='<label class="fl">'+t("fbCt")+'</label><select class="fi" onchange="FB.ct=th
 if(f.ct!="none")h+='<input class="fi" id="fcv" maxlength="120" autocomplete="off" placeholder="'+escH(t("ctp_"+f.ct))+'" value="'+escH(f.cv)+'" oninput="FB.cv=this.value" style="margin-top:6px"><label class="fk"><input type="checkbox" '+(f.ok?"checked":"")+' onchange="FB.ok=this.checked"> '+t("fbOk")+"</label>";
 h+='<label class="fk"><input type="checkbox" '+(f.ctx?"checked":"")+' onchange="FB.ctx=this.checked"> '+t("fbCtx")+'</label><input class="hp" tabindex="-1" autocomplete="off" id="fhp" aria-hidden="true">';
 if(f.err)h+='<div class="warn">'+f.err+"</div>";
-h+='<button class="btn main" '+(f.st=="sending"?"disabled":"")+' onclick="fbSend()">'+(f.st=="sending"?t("fbSending"):t("fbSend"))+'</button><button class="btn alt" onclick="fbBack()">'+t("back")+'</button><p class="mute" style="font-size:.75rem">'+t("fbPriv")+"</p>";
+h+='<button class="btn main" '+(f.st=="sending"?"disabled":"")+' onclick="fbSend()">'+(f.st=="sending"?t("fbSending"):t("fbSend"))+'</button><button class="btn alt" onclick="fbBack()">'+t("back")+'</button><p class="mute" style="font-size:.75rem">'+t("fbPriv")+' <a href="privacy.html" style="color:inherit">'+t("privL")+"</a></p>";
 menu(h,false)}
 function fbSend(){var f=FB;if(f.st=="sending")return;f.err="";
 if(f.msg.trim().length<5){f.err=t("fbShort");return render()}
@@ -523,5 +527,6 @@ cv.addEventListener("wheel",function(e){e.preventDefault();manZoom(Math.exp(-e.d
 rs();stageHome();cam.z=ct.z=.5;requestAnimationFrame(frame);
 fresh();var qm=location.search.match(/room=([A-Za-z0-9]{4})/);if(qm){V="join";render();joinV(qm[1].toUpperCase());doJoin()}else render();
 </script>
+<script>if("serviceWorker" in navigator)window.addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){})});</script>
 </body>
 </html>
