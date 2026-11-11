@@ -96,3 +96,18 @@ Guardrails: divorce is neither pushed nor shamed; the skilled option is always a
 - **Treasures (T1-T3).** Dadi's gold set (Ammi-ji: bride vs Sana), Abbu-ji's seed money (groom vs Hamza), Ammi's heirloom bangles (bride vs a cousin). Winner = regard + 5 x favours (+ half of the partner's favours) against the rival's pull, plus a handling modifier from the options. Needs favours >= 2. Outcomes: yours, someone else, or still undecided. The result card explains why.
 - Specials (crises, gossip, echoes, wishes, treasures) are capped at 6 per 12-round game and 14 per 40-round game, with at least two normal rounds between them.
 - All triggers use only shared state (meters, ledger, both players' picks), so two phones stay in sync.
+
+## v0.8: story tree (from player suggestion FB-20261111-6XAI)
+- The scenario library is no longer a set of isolated scenes. Each chapter has an outcome class from both players' picks: **g** (both chose the skilled option), **m** (mixed), **b** (neither did).
+- `game/tree.js` holds the edges: 26 parent chapters, each with a child per class and a recap sentence. After a chapter resolves, the child is moved into the next slot (swapped in if it was later in the list, replacing the next slot in 12-round games). The final chapter (S40) is never replaced, and no chapter repeats.
+- The next chapter opens with a **"Previously"** strip: the specific recap for the branch, or a general one-liner about the last chapter.
+- **Your story so far** (a tree of chapters with 🌱 well, ⚖️ mixed, 🔥 badly) is in the 💞 panel mid-game and on the ending screen.
+- Chapters moved by the tree show "Month N" so the labels stay in order.
+- Deterministic from shared picks, so two phones stay in sync.
+- Tested: 12- and 40-round games with skilled, reactive and avoidant play give different paths, no repeats, S40 last.
+
+## v0.9 (player suggestions FB-20261111-9JIX and FB-20261111-YOYT)
+- Layout: parents' house and Aunty's house moved well away from the main house (gap of about 3.5 tiles, stone paths), the grey street removed, half-wall dividers and small furniture removed, tile checker and outlines softened, soft shadows under figures, faint room names on the floor in the home view, room camera slightly roomier. Reference ideas: Sims-style cutaway walls (already used), fewer props per room, wayfinding labels instead of clutter.
+- Treasure progress bar: per treasure, 0-99% from how close the three win conditions are (score gap, regard, favours), shown in the ledger and as a compact strip above the options. Win shows 100%.
+- Confetti: full-screen canvas burst (about 4 seconds) when you win a treasure.
+- Grudge: at the end, a role that was offered treasures and won none gets stress +8 and trust -3 (shared meters), and the end screen says so.

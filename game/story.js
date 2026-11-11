@@ -57,7 +57,7 @@ if(c.echo&&q<2)S.echo.push({id:c.echo,at:S.pos+2});
 if(c.ev=="g"&&q==2)ex.push("🕊️ "+t("gosHealed"));
 if(c.ev=="t"){var T=TREAS[c.tr],sc=trScore(c.tr),M=(oB.tm||0)+(oG.tm||0),diff=sc.a-sc.c+M,A=T.A,w=(diff>=3&&sc.reg>=2&&sc.fav>=2)?"A":(diff<=-3?"C":"N"),rs=T.res[w];S.T[c.tr]=w;
 for(var z=0;z<6;z++)eff[z]+=rs.e[z];for(var id2 in rs.l){var d2=rs.l[id2],x2=R[id2],dd2=L(id2);x2.B=clampR(x2.B+d2[0]);x2.G=clampR(x2.G+d2[1]);dd2.B+=d2[0];dd2.G+=d2[1]}
-ex.push((w=="A"?"🏆 ":(w=="C"?"💔 ":"⏳ "))+rs.t);
+ex.push((w=="A"?"🏆 ":(w=="C"?"💔 ":"⏳ "))+rs.t);if(w=="A")setTimeout(confetti,350);
 ex.push(t("trWhy",{r:Math.round(sc.reg),f:sc.fav,c:Math.round(sc.c),m:(M>0?"+":"")+M}))}
 return ex}
 
@@ -79,7 +79,7 @@ h+='<h2 style="margin-top:12px">🏺 '+t("trT")+'</h2><p class="mute" style="mar
 Object.keys(TREAS).forEach(function(k){var T=TREAS[k],r=S.T[k],sc=trScore(k),nmT=LG=="ur"?T.n[1]:T.n[0],st;
 if(r=="A")st="🏆 "+t("trGot");else if(r=="C")st="💔 "+t("trLost");else if(r=="N")st="⏳ "+t("trLater");else st="🔒 "+t("trWait",{n:nm(T.h)});
 var bar=r?"":' <span class="mute">('+t("trProg",{r:Math.round(sc.reg),f:sc.fav})+")</span>";
-h+='<div class="wl"><b>'+nmT+"</b> · "+nm(T.h)+" · "+st+bar+"</div>"});return h}
+h+='<div class="wl"><b>'+nmT+"</b> · "+nm(T.h)+" · "+st+bar+"</div>"+trBarHTML(k,0)});return h}
 function treasuresHTML(){var g=[];Object.keys(TREAS).forEach(function(k){var r=S.T[k];if(!r)return;var T=TREAS[k];g.push((r=="A"?"🏆 ":(r=="C"?"💔 ":"⏳ "))+(LG=="ur"?T.n[1]:T.n[0])+" · "+(r=="A"?t("trGot"):(r=="C"?t("trLost"):t("trLater"))))});
 return g.length?'<div class="card"><b>🏺 '+t("trT")+"</b><p style='margin:2px 0'>"+g.join("<br>")+"</p></div>":""}
 function chillHTML(){return S.chill>0?'<div class="warn">😶 '+t("chillBan",{n:S.chill})+"</div>":""}
@@ -242,3 +242,19 @@ X(O("a","Say nothing.",[0,0,0,0,0,1],"She waits for a word that doesn't come."),
 X(O("k","Hold her hands: 'Ammi, I'd love them, but what I'd love more is a Friday call every week. Tell me about your mother.'",[2,1,2,1,0,-2],"A promise of attention is worth more than the bangles. She starts telling the story right there.","Hold her hands: 'Ammi, I'd love them, but I'd love a weekly Friday call more. Tell me about your mother.'","Say: 'Whoever gets them, we'll call every Friday. Tell us about your mother.'"),{tm:3})],
 "Heirlooms are given to the person who keeps the giver close. A habit beats a speech.",
 {cr:1,ev:"t",tr:"bangles",at:.9});
+
+/* v0.9 (player suggestion FB-20261111-YOYT): treasure progress bars, confetti on a win, and a grudge if you finish empty-handed */
+function trPct(k){var T=TREAS[k],r=S.T[k];if(r)return r=="A"?100:0;var sc=trScore(k),p1=Math.max(0,Math.min(1,(sc.a-sc.c+6)/9)),p2=Math.max(0,Math.min(1,(sc.reg+4)/6)),p3=Math.max(0,Math.min(1,sc.fav/2));
+var v=Math.round(100*(.5*p1+.3*p2+.2*p3));return(p1>=1&&p2>=1&&p3>=1)?100:Math.min(v,99)}
+function trBarHTML(k,mini){var T=TREAS[k],pc=trPct(k),r=S.T[k],nmT=LG=="ur"?T.n[1]:T.n[0],mine=T.A==S.role,col=r=="A"?"#2f9e5b":(r=="C"?"#c0453f":(pc>=70?"#e0a000":"#6b86d6"));
+return'<div class="tb'+(mini?" mini":"")+'"><span class="tbn">'+(mine?"🎁 ":"🏺 ")+nmT+(mine?"":" ("+t("partner")+")")+'</span><span class="tbt"><i style="width:'+(r=="C"?100:pc)+'%;background:'+col+'"></i></span><span class="tbp">'+(r=="A"?"🏆":(r=="C"?"💔":pc+"%"))+"</span></div>"}
+function trStrip(){var k=Object.keys(TREAS),h="";k.forEach(function(x){if(!S.T[x])h+=trBarHTML(x,1)});return h?'<div class="trs">'+h+"</div>":""}
+function confetti(){try{var c=document.getElementById("cf");if(!c){c=document.createElement("canvas");c.id="cf";c.style.cssText="position:fixed;left:0;top:0;width:100%;height:100%;pointer-events:none;z-index:99";document.body.appendChild(c)}
+var w=c.width=innerWidth,h=c.height=innerHeight,x=c.getContext("2d"),cols=["#f2a900","#e8527a","#2f9e5b","#4a7fe0","#9b5de5","#ff7f50"],ps=[],i;
+for(i=0;i<170;i++)ps.push({x:Math.random()*w,y:-20-Math.random()*h*.5,vx:(Math.random()-.5)*3,vy:2+Math.random()*4,r:4+Math.random()*6,a:Math.random()*6,va:(Math.random()-.5)*.3,c:cols[i%6]});
+var t0=null;function f(ts){if(t0==null)t0=ts;var el=ts-t0;x.clearRect(0,0,w,h);ps.forEach(function(p){p.x+=p.vx+Math.sin(p.a)*.6;p.y+=p.vy;p.a+=p.va;x.save();x.translate(p.x,p.y);x.rotate(p.a);x.fillStyle=p.c;x.globalAlpha=Math.max(0,1-el/4200);x.fillRect(-p.r/2,-p.r/3,p.r,p.r*.6);x.restore()});
+if(el<4200)requestAnimationFrame(f);else{x.clearRect(0,0,w,h);if(c.parentNode)c.parentNode.removeChild(c)}}requestAnimationFrame(f)}catch(e){}}
+/* end of game: a role that was offered treasures but won none carries the grudge (stress up, trust down). Shared meters, so deterministic on both phones. */
+function applyGrudge(){if(S.grudgeDone)return;S.grudgeDone=1;S.grudge=[];["B","G"].forEach(function(r){var opp=0,won=0;Object.keys(TREAS).forEach(function(k){if(TREAS[k].A==r&&S.T[k]){opp++;if(S.T[k]=="A")won++}});if(opp>0&&won==0)S.grudge.push(r)});
+S.grudge.forEach(function(){S.m[5]=clamp(S.m[5]+8);S.m[0]=clamp(S.m[0]-3)})}
+function grudgeHTML(){if(!S.grudge||!S.grudge.length)return"";return'<div class="warn">😤 <b>'+t("grudgeT")+"</b> "+S.grudge.map(function(r){return rname(r)}).join(" + ")+" · "+t("grudgeD")+"</div>"}
