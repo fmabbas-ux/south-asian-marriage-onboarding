@@ -39,7 +39,7 @@ notfound:["Room {c} not found. Check the code with your partner.","کمرہ {c} 
 connprob:["Connection problem: {e}","رابطے میں مسئلہ: {e}"],
 loaderr:["Could not load the online service. Check your connection, or play solo.","آن لائن سروس لوڈ نہیں ہو سکی۔ انٹرنیٹ چیک کریں یا اکیلے کھیلیں۔"],
 discon:["Your partner disconnected. The game continues with an AI partner.","آپ کا ساتھی جدا ہو گیا۔ کھیل کمپیوٹر ساتھی کے ساتھ جاری ہے۔"],
-foot:["Prototype v0.5. For learning, not a substitute for counselling or legal advice.","ابتدائی ورژن 0.5۔ سیکھنے کے لیے ہے، مشورے یا قانونی رہنمائی کا متبادل نہیں۔"],
+foot:["Prototype v0.7. For learning, not a substitute for counselling or legal advice.","ابتدائی ورژن 0.7۔ سیکھنے کے لیے ہے، مشورے یا قانونی رہنمائی کا متبادل نہیں۔"],
 chip:["{n} / {m}","{n} / {m}"],
 tapme:["Tap your character {e} to choose","اپنے کردار {e} پر ٹیپ کر کے چنیں"],
 choose:["Choose","چنیں"],
@@ -114,4 +114,56 @@ tip5:["The pressure you are both carrying. Higher is worse. At 65 or above it is
 e6n:["Cold Peace","ٹھنڈا امن"],e6d:["The meters look fine, but too many people are still carrying a grudge. Everyone is polite, and nobody has forgotten. Quiet repairs with the people you skipped would change this year's story.","میٹر ٹھیک لگتے ہیں مگر بہت سے لوگ اب بھی دل میں گرہ لیے بیٹھے ہیں۔ سب شائستہ ہیں اور کوئی کچھ بھولا نہیں۔ جن لوگوں کو آپ نے نظر انداز کیا ان کے ساتھ خاموش صلح اس سال کی کہانی بدل سکتی ہے۔"],
 n_dulhan:["Bride","دلہن"]
 };
+
+var _N={
+wishDone:["{n}'s wish is granted by {w}.","{n} کی خواہش {w} نے پوری کی۔"],
+wishMissed:["{n}'s wish goes unanswered. They'll remember who didn't help.","{n} کی خواہش پوری نہ ہوئی۔ انہیں یاد رہے گا کس نے مدد نہ کی۔"],
+bothOf:["both of you","آپ دونوں"],
+chillHit:["The chill between you costs trust and adds stress this round.","آپ دونوں کے درمیان کی ٹھنڈک اس راؤنڈ میں اعتماد کم اور دباؤ زیادہ کرتی ہے۔"],
+chillSet:["It's now cold between you two for {n} more rounds, unless one of you repairs it.","اب آپ دونوں کے درمیان {n} راؤنڈ تک ٹھنڈک رہے گی، جب تک کوئی صلح نہ کرے۔"],
+chillClear:["The air between you clears. You're on the same side of the room again.","آپ دونوں کے درمیان کی فضا صاف ہو گئی۔"],
+chillLess:["The chill softens a little. A bit more repair would finish it.","ٹھنڈک کچھ کم ہوئی۔ تھوڑی اور صلح اسے ختم کر دے گی۔"],
+chillBan:["Cold between you two: -3 trust, +3 stress for {n} more round(s). A skilled repair clears it sooner.","آپ دونوں کے درمیان ٹھنڈک: {n} راؤنڈ تک اعتماد -3، دباؤ +3۔ اچھی صلح اسے جلد ختم کرتی ہے۔"],
+gosHealed:["You handled the rumour well, and it died there.","آپ نے افواہ کو اچھے سے سنبھالا، وہ وہیں ختم ہو گئی۔"],
+trWhy:["Why: regard {r}, favours {f}, rival pull {c}, your handling {m}.","وجہ: قدر {r}، احسانات {f}، حریف کا وزن {c}، آپ کا طریقہ {m}۔"],
+wishT:["Wishlist","خواہشات کی فہرست"],
+wishS:["Small asks from the family. Doing one costs you something, and the right ones earn treasures.","خاندان کی چھوٹی خواہشیں۔ پوری کرنے میں آپ کا کچھ خرچ ہوتا ہے، اور صحیح خواہشیں خزانے دلاتی ہیں۔"],
+wishOpen:["asked, still open","مانگی گئی، ابھی باقی"],
+wishSoon:["may ask soon","جلد کہہ سکتے ہیں"],
+wishCold:["won't ask while things are cold","رشتہ سرد ہو تو نہیں کہیں گے"],
+trT:["Treasures","خزانے"],
+trS:["Family heirlooms go to whoever keeps the giver close, through warmth plus a real favour, not a request.","خاندانی وراثت اسی کو ملتی ہے جو دینے والے کو قریب رکھے: محبت اور کوئی حقیقی احسان، نہ کہ مانگنا۔"],
+trGot:["yours","آپ کا"],
+trLost:["went to someone else","کسی اور کو ملا"],
+trLater:["still undecided","فیصلہ باقی"],
+trWait:["{n} hasn't decided yet","{n} نے ابھی فیصلہ نہیں کیا"],
+trProg:["regard {r}, favours {f}","قدر {r}، احسانات {f}"],
+t_up:["helps your chances","آپ کے امکانات بڑھاتا ہے"],
+t_down:["hurts your chances","آپ کے امکانات گھٹاتا ہے"],
+t_fav:["counts as a favour toward it","اس کے لیے احسان شمار ہوگا"],
+t_rival:["weakens your rival's pull","حریف کا پلڑا ہلکا ہوتا ہے"]
+};for(var _k in _N)T[_k]=_N[_k];
+
+var _F={
+fbBtn:["💬 Suggestions, complaints, bugs","💬 تجاویز، شکایات، خرابیاں"],
+fbT:["Tell us what you think","ہمیں اپنی رائے بتائیں"],
+fbS:["Suggestions, complaints, bugs or praise go straight to the team. Every message gets a reference number and a response target.","تجاویز، شکایات، خرابیاں یا تعریف سیدھی ٹیم تک پہنچتی ہیں۔ ہر پیغام کا ایک حوالہ نمبر اور جواب کی مدت مقرر ہوتی ہے۔"],
+fbCat:["What is this about?","یہ کس بارے میں ہے؟"],
+fc_suggestion:["A suggestion or idea","کوئی تجویز یا خیال"],fc_bug:["Something is broken (bug)","کوئی خرابی (بگ)"],fc_content:["A scenario feels wrong or offensive","کوئی منظر غلط یا ناگوار لگا"],
+fc_complaint:["A complaint","شکایت"],fc_safety:["A safety concern","حفاظت کا خدشہ"],fc_privacy:["A privacy or data request","رازداری یا ڈیٹا کی درخواست"],fc_praise:["Something you liked","کوئی بات جو پسند آئی"],fc_other:["Something else","کچھ اور"],
+fbMsg:["Your message","آپ کا پیغام"],fbMsgPh:["Write as much or as little as you like. What happened, or what would make this better?","جتنا چاہیں لکھیں۔ کیا ہوا، یا کیا بہتر ہو سکتا ہے؟"],
+fbCt:["How can we reach you? (optional)","ہم آپ سے کیسے رابطہ کریں؟ (اختیاری)"],
+ct_none:["Don't contact me","رابطہ نہ کریں"],ct_email:["Email","ای میل"],ct_whatsapp:["WhatsApp number","واٹس ایپ نمبر"],ct_phone:["SMS / call number","ایس ایم ایس / کال نمبر"],ct_instagram:["Instagram handle","انسٹاگرام ہینڈل"],ct_x:["X (Twitter) handle","ایکس (ٹوئٹر) ہینڈل"],ct_facebook:["Facebook name or link","فیس بک نام یا لنک"],ct_other:["Other","کوئی اور"],
+ctp_email:["you@example.com","you@example.com"],ctp_whatsapp:["+92 3xx xxxxxxx","+92 3xx xxxxxxx"],ctp_phone:["+92 3xx xxxxxxx","+92 3xx xxxxxxx"],ctp_instagram:["@yourname","@yourname"],ctp_x:["@yourname","@yourname"],ctp_facebook:["name or profile link","نام یا پروفائل لنک"],ctp_other:["how to reach you","رابطے کا طریقہ"],
+fbOk:["OK to contact me about this","اس بارے میں رابطہ کرنا ٹھیک ہے"],
+fbCtx:["Attach anonymous game details (version, language, round, ending)","گیم کی گمنام تفصیلات شامل کریں (ورژن، زبان، راؤنڈ، انجام)"],
+fbSend:["Send","بھیجیں"],fbSending:["Sending...","بھیجا جا رہا ہے..."],
+fbSafe:["This form is not watched in real time. If someone is in danger, call your local emergency number or a helpline now.","یہ فارم فوری طور پر نہیں دیکھا جاتا۔ اگر کسی کو خطرہ ہے تو فوراً اپنی مقامی ایمرجنسی لائن یا ہیلپ لائن پر کال کریں۔"],
+fbPriv:["We keep your message, the optional contact detail and the game details only to improve this game and to reply. Ask us to delete them at any time using this same form (choose privacy).","ہم آپ کا پیغام، اختیاری رابطہ اور گیم کی تفصیلات صرف گیم بہتر بنانے اور جواب دینے کے لیے رکھتے ہیں۔ اسی فارم (رازداری) سے کسی بھی وقت حذف کرنے کا کہہ سکتے ہیں۔"],
+fbSent:["Thank you. Your reference is {id}. We aim to respond within {n} day(s).","شکریہ۔ آپ کا حوالہ نمبر {id} ہے۔ ہم {n} دن کے اندر جواب دینے کی کوشش کریں گے۔"],
+fbSentNC:["Thank you. Your reference is {id}. We aim to review it within {n} day(s). You gave no contact detail, so we can't reply.","شکریہ۔ آپ کا حوالہ نمبر {id} ہے۔ ہم {n} دن کے اندر دیکھنے کی کوشش کریں گے۔ آپ نے رابطہ نہیں دیا اس لیے جواب نہیں دے سکیں گے۔"],
+fbErr:["Couldn't send ({e}). Your text is still here. Please try again in a minute.","بھیج نہ سکے ({e})۔ آپ کا متن یہیں ہے۔ ایک منٹ بعد دوبارہ کوشش کریں۔"],
+fbShort:["Please write a few words first.","پہلے چند الفاظ لکھیں۔"],fbBadCt:["That contact detail doesn't look right.","یہ رابطہ درست نہیں لگتا۔"],fbWait:["You just sent one. Please wait a minute before another.","آپ نے ابھی بھیجا ہے۔ دوسرے سے پہلے ایک منٹ انتظار کریں۔"],
+fbAgain:["Send another","ایک اور بھیجیں"]
+};for(var _g in _F)T[_g]=_F[_g];
 function t(k,o){var a=T[k];if(!a)return k;var s=(LG=="ur"&&a[1])?a[1]:a[0];if(o)for(var q in o)s=s.split("{"+q+"}").join(o[q]);return s}

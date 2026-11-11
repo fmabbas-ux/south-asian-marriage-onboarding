@@ -87,3 +87,12 @@ Extreme meters trigger a one-off story twist (`game/crises.js`), checked after e
 | C11 | Self >= 88 and Parents <= 45 | Too independent?: voice plus warmth (positive) |
 
 Guardrails: divorce is neither pushed nor shamed; the skilled option is always a pause plus information plus an outside helper. C2 and C2b carry legal content and need lawyer review before launch; C7 is educational, not diagnostic. No twist frames control or abuse as something to adjust to (S40 remains the safety scenario).
+
+## v0.6: gossip, wishlists, treasures, auto stress (added 2026-11-10)
+- **Stress rating removed.** Tapping an option now commits it; the "stress felt" number is derived from the option's own stress effect, and the stress-gap warning still works from those.
+- **Option cards** are lettered A-D with a bold lead phrase, and show chips: green/red for how each person in the room will likely react, gold for how the option moves you toward a treasure ("helps your chances", "hurts your chances", "counts as a favour toward it", "weakens your rival's pull").
+- **Gossip chains (G1-G4, `story.js`).** Triggered by the private ledger: G1 Aunty tells the bride what Ammi-ji and Sana said (mil or sana cold toward the bride); G2 Hamza tells the groom what the bride's mother said (bride's side cold toward the groom); G3 the bride's confided vent travels (3+ bottled-up picks); G4 one sentence becomes two stories between the two mothers (Parents or Standing <= 50). Unless both players handle it skilfully, an **echo** scene follows two rounds later (G1e, G2e) and the couple get a **chill**: -3 trust and +3 stress for 2-3 rounds until a skilled repair option clears it.
+- **Wishlist (W1-W8).** Each person asks for something small that costs the helper (time, money, self). Only warm relationships ask. Doing it credits the player who picked the helping option (favours: skilled = 2, pleasing = 1). Visible in the ledger panel.
+- **Treasures (T1-T3).** Dadi's gold set (Ammi-ji: bride vs Sana), Abbu-ji's seed money (groom vs Hamza), Ammi's heirloom bangles (bride vs a cousin). Winner = regard + 5 x favours (+ half of the partner's favours) against the rival's pull, plus a handling modifier from the options. Needs favours >= 2. Outcomes: yours, someone else, or still undecided. The result card explains why.
+- Specials (crises, gossip, echoes, wishes, treasures) are capped at 6 per 12-round game and 14 per 40-round game, with at least two normal rounds between them.
+- All triggers use only shared state (meters, ledger, both players' picks), so two phones stay in sync.

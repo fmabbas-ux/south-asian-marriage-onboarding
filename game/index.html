@@ -66,7 +66,23 @@ body.ur #tip{direction:rtl;font-family:"Noto Nastaliq Urdu",serif;line-height:2}
 .lg .lh{font-size:.66rem;font-weight:700;color:var(--mute);text-align:center}
 .lg .ln{font-weight:700}.lg .lc{text-align:center;white-space:nowrap}
 .lg .lw{grid-column:1/-1;font-size:.72rem;color:var(--mute);margin:-2px 0 2px}
-.pv{margin-top:2px;font-size:.75rem}
+.pv{margin-top:5px;font-size:.78rem;line-height:1.7}
+.pv .pl{color:var(--mute);margin-right:2px}
+.pv span.pu,.pv span.pd{display:inline-block;padding:0 8px;border-radius:99px;margin:1px 3px 1px 0;font-weight:600}
+.pv .pu{background:#dff3e4;color:#1d6b35}.pv .pd{background:#fbe0e0;color:#9b2323}
+.pv .pt{background:#fff1c7;color:#6b4a00;border:1px solid #f2a900}.pv .pt.pd{background:#fbe0e0;color:#9b2323;border-color:#e3a0a0}
+.btn.opt{display:flex;gap:10px;align-items:flex-start;padding:11px 12px;font-size:.97rem;line-height:1.5}
+.btn.opt .ob{flex:0 0 auto;width:24px;height:24px;border-radius:50%;background:var(--maroon);color:#fff;font-weight:700;font-size:.8rem;display:flex;align-items:center;justify-content:center;margin-top:1px}
+.btn.opt .otx{flex:1;min-width:0}
+.btn.opt b{color:var(--maroon)}
+.fl{display:block;font-weight:700;font-size:.85rem;margin:10px 0 3px}
+.fi{width:100%;box-sizing:border-box;font:inherit;padding:9px 10px;border:2px solid var(--line);border-radius:10px;background:#fff;color:var(--ink)}
+textarea.fi{resize:vertical}
+.fk{display:flex;gap:8px;align-items:flex-start;margin:8px 0;font-size:.85rem}
+.fk input[type=checkbox]{width:auto;flex:0 0 18px;height:18px;margin:2px 0 0;padding:0;text-align:start}.fk{text-align:start;justify-content:flex-start}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+.xl{margin:6px 0;padding:6px 10px;border-radius:10px;background:#fff6dd;border-left:4px solid var(--gold);font-size:.9rem}
+.wl{margin:3px 0;font-size:.85rem;line-height:1.45}
 #menu{position:absolute;inset:0;z-index:7;display:flex;justify-content:center;align-items:center;background:linear-gradient(rgba(255,246,230,.55),rgba(255,246,230,.8));padding:44px 10px 10px}
 #menu.bot{align-items:flex-end;background:linear-gradient(transparent 35%,rgba(255,246,230,.55))}
 @media (prefers-color-scheme:dark){#menu{background:linear-gradient(rgba(28,18,22,.5),rgba(28,18,22,.8))}#menu.bot{background:linear-gradient(transparent 35%,rgba(28,18,22,.55))}}
@@ -94,6 +110,7 @@ body.ur #tip{direction:rtl;font-family:"Noto Nastaliq Urdu",serif;line-height:2}
 <script src="scenarios.js"></script>
 <script src="scenarios2.js"></script>
 <script src="crises.js"></script>
+<script src="story.js"></script>
 <script>
 var LG="en";try{LG=localStorage.getItem("aat_lg")||"en"}catch(e){}
 </script>
@@ -239,7 +256,7 @@ function stageHome(){stage.room=null;stage.kh=0;stage.catPin=0;stage.foc={cx:8,c
 /* ===================== STATE ===================== */
 var S=null,V="home",NET=null,PEER=null,OOPS="";
 var $n=document.getElementById("narr"),$o=document.getElementById("opts"),$h=document.getElementById("hud"),$m=document.getElementById("menu"),$s=document.getElementById("sheet"),$c=document.getElementById("chip");
-function fresh(keep){var r=keep&&S?S:{};S={role:r.role||null,mode:r.mode||"solo",code:r.code||"",len:r.len||12,seed:r.seed||1,m:[50,50,50,50,50,30],dl:null,list:[],pos:0,cur:null,sel:null,rt:0,phase:"intro",mine:{},theirs:{},done:{},styles:{k:0,r:0,a:0,p:0},kc:0,lastK:-9,cc:0,lastC:-9,cdone:{},online:false,R:initR(),why:{}}}
+function fresh(keep){var r=keep&&S?S:{};S={role:r.role||null,mode:r.mode||"solo",code:r.code||"",len:r.len||12,seed:r.seed||1,m:[50,50,50,50,50,30],dl:null,list:[],pos:0,cur:null,sel:null,rt:0,phase:"intro",mine:{},theirs:{},done:{},styles:{k:0,r:0,a:0,p:0},kc:0,lastK:-9,cc:0,lastC:-9,cdone:{},hist:[],q:{},echo:[],chill:0,F:initF(),W:{},T:{},nsp:0,cnt:{g:0,w:0,t:0,e:0},online:false,R:initR(),why:{}}}
 function initR(){var R={};NPC.forEach(function(c){R[c]={B:0,G:0,fB:0,fG:0}});R.bmom.B=8;R.bdad.B=8;R.mil.G=8;R.fil.G=8;return R}
 function lensI(id,o){var raw=0,w=LENS[id];for(var k=0;k<6;k++)raw+=w[k]*o.e[k];return Math.max(-9,Math.min(9,Math.round(raw*1.1)))}
 function clampR(v){return Math.max(-30,Math.min(30,v))}
@@ -265,17 +282,17 @@ function rng(a){return function(){a|=0;a=a+0x6D2B79F5|0;var x=Math.imul(a^a>>>15
 function buildList(seed,len){var ix=SC.map(function(c,i){return i}).filter(function(i){return !SC[i].cr}).sort(function(a,b){return SC[a].mo-SC[b].mo||(SC[a].id<SC[b].id?-1:1)});if(len>=40)return ix;
 var R=rng(seed),out=[];for(var m=0;m<12;m++){var pool=m==11?ix.filter(function(i){return SC[i].id=="S40"}):ix.filter(function(i){return SC[i].mo==m});if(pool.length)out.push(pool[Math.floor(R()*pool.length)])}return out}
 function flags(){var f=0;for(var i=0;i<5;i++)if(S.m[i]<=35)f++;if(S.m[5]>=65)f++;return f}
-function ai(r){if(r.type=="kh")return{o:Math.random()<.6?0:Math.floor(Math.random()*4),r:0};var o=SC[r.i].o,w=o.map(function(x){return{k:.4,r:.15,a:.2,p:.25}[x.s]}),tt=Math.random(),a=0,ix=0;for(var i=0;i<w.length;i++){a+=w[i];if(tt<=a){ix=i;break}}return{o:ix,r:2+Math.floor(Math.random()*3)}}
+function ai(r){if(r.type=="kh")return{o:Math.random()<.6?0:Math.floor(Math.random()*4),r:0};var o=SC[r.i].o,w=o.map(function(x){return{k:.4,r:.15,a:.2,p:.25}[x.s]}),tt=Math.random(),a=0,ix=0;for(var i=0;i<w.length;i++){a+=w[i];if(tt<=a){ix=i;break}}return{o:ix,r:autoR(o[ix])}}
 function rnd4(){var a="ABCDEFGHJKMNPQRSTUVWXYZ23456789",s="";for(var i=0;i<4;i++)s+=a[Math.floor(Math.random()*a.length)];return s}
 
 /* ===================== VIEWS ===================== */
 function menu(html,bot){$lb.hidden=true;$l.hidden=true;$t.hidden=true;$s.innerHTML=html;$m.className=bot?"bot":"";$m.hidden=false;$n.hidden=true;$o.hidden=true;$h.hidden=true;$c.hidden=true;$s.scrollTop=0}
 function render(){document.body.className=LG=="ur"?"ur":"";document.getElementById("lg").textContent=LG=="ur"?"EN":"اردو";document.documentElement.lang=LG=="ur"?"ur":"en";
-if(V=="home")homeV();else if(V=="role")roleV();else if(V=="host")hostV();else if(V=="join")joinV();else if(V=="joining")joiningV();else if(V=="oops")oopsV();else if(V=="end")endV();else roundV();
+if(V=="home")homeV();else if(V=="role")roleV();else if(V=="host")hostV();else if(V=="join")joinV();else if(V=="joining")joiningV();else if(V=="oops")oopsV();else if(V=="end")endV();else if(V=="fb")fbV();else roundV();
 setTimeout(fit,30)}
 function toggleLang(){LG=LG=="ur"?"en":"ur";try{localStorage.setItem("aat_lg",LG)}catch(e){}render()}
 function goHome(){closeNet();fresh();stageHome();V="home";render()}
-function homeV(){stageHome();menu('<span class="chip" style="background:var(--gold);display:inline-block">'+t("brand")+'</span><h1>'+t("title")+'</h1>'+(LG=="ur"?'<div style="color:var(--maroon)">Aaghaaz Tamasha</div>':'<div class="mute" style="font-family:\'Noto Nastaliq Urdu\',serif;font-size:1.3rem;direction:rtl;text-align:left;color:var(--maroon)">آغاز تماشا</div>')+'<p><b>'+t("tagline")+'</b></p><p class="mute">'+t("intro")+'</p><button class="btn main" onclick="pickMode(\'solo\')">'+t("solo")+'</button><button class="btn main" onclick="pickMode(\'host\')">'+t("host")+'</button><button class="btn alt" onclick="V=\'join\';render()">'+t("join")+'</button><div class="how"><b>'+t("how")+'</b><ol><li>'+t("how1")+'</li><li>'+t("how2")+'</li><li>'+t("how3")+'</li><li>'+t("how4")+'</li></ol><p style="margin:6px 0 2px"><b>👥</b> '+t("howO")+'</p></div><p class="mute foot">'+t("foot")+"</p>")}
+function homeV(){stageHome();menu('<span class="chip" style="background:var(--gold);display:inline-block">'+t("brand")+'</span><h1>'+t("title")+'</h1>'+(LG=="ur"?'<div style="color:var(--maroon)">Aaghaaz Tamasha</div>':'<div class="mute" style="font-family:\'Noto Nastaliq Urdu\',serif;font-size:1.3rem;direction:rtl;text-align:left;color:var(--maroon)">آغاز تماشا</div>')+'<p><b>'+t("tagline")+'</b></p><p class="mute">'+t("intro")+'</p><button class="btn main" onclick="pickMode(\'solo\')">'+t("solo")+'</button><button class="btn main" onclick="pickMode(\'host\')">'+t("host")+'</button><button class="btn alt" onclick="V=\'join\';render()">'+t("join")+'</button><button class="btn alt" onclick="openFB(\'home\')">'+t("fbBtn")+'</button><div class="how"><b>'+t("how")+'</b><ol><li>'+t("how1")+'</li><li>'+t("how2")+'</li><li>'+t("how3")+'</li><li>'+t("how4")+'</li></ol><p style="margin:6px 0 2px"><b>👥</b> '+t("howO")+'</p></div><p class="mute foot">'+t("foot")+"</p>")}
 function pickMode(m){var l=S&&S.len||12;fresh();S.len=l;S.mode=m;V="role";render()}
 function roleV(){menu('<h2>'+t("whoT")+'</h2><p class="mute">'+(S.mode=="host"?t("partnerHuman"):t("partnerAI"))+" "+t("whoN")+'</p><button class="btn" onclick="chooseRole(\'B\')"><b>👰 '+t("bride")+'</b><br><span class="mute">'+t("brideD")+'</span></button><button class="btn" onclick="chooseRole(\'G\')"><b>🤵 '+t("groom")+'</b><br><span class="mute">'+t("groomD")+'</span></button><p style="margin:10px 0 2px"><b>'+t("lenT")+'</b></p><button class="btn alt'+(S.len==12?" on":"")+'" onclick="S.len=12;render()">'+t("len12")+'</button><button class="btn alt'+(S.len==40?" on":"")+'" onclick="S.len=40;render()">'+t("len40")+'</button><button class="btn alt" onclick="goHome()">'+t("back")+"</button>")}
 function chooseRole(r){S.role=r;S.seed=1+Math.floor(Math.random()*1e9);if(S.mode=="solo"){S.online=false;begin()}else{S.online=true;S.code=rnd4();V="host";render();openNet(true)}}
@@ -295,24 +312,27 @@ if(!S.online&&!S.theirs[r.id])S.theirs[r.id]=ai(r);V="round";render()}
 function roundV(){$m.hidden=true;$h.hidden=false;$c.hidden=false;$lb.hidden=false;if(!$l.hidden)ledV();var r=S.cur,h;
 $c.textContent=r.type=="sc"?(r.cr?"⚡":t("chip",{n:S.pos+1,m:S.list.length}))+" · "+SC[r.i].w:t("khR");
 if(S.phase=="result"){resultV();renderHUD();$o.hidden=true;return}
-if(r.type=="sc"){var c=SC[r.i];h='<span class="tag">'+c.w+" · "+rn(c.r)+" · "+rname(S.role)+(S.online?" · 🌐":"")+'</span><h2>'+title(c)+"</h2>"+(LG=="ur"?'<div class="mute">'+t("enBody")+"</div>":"")+"<p>"+en(S.role=="B"?c.b:c.g)+"</p>"+warnHTML(c)}
+if(r.type=="sc"){var c=SC[r.i];h='<span class="tag">'+c.w+" · "+rn(c.r)+" · "+rname(S.role)+(S.online?" · 🌐":"")+'</span><h2>'+title(c)+"</h2>"+(LG=="ur"?'<div class="mute">'+t("enBody")+"</div>":"")+"<p>"+en(S.role=="B"?c.b:c.g)+"</p>"+warnHTML(c)+chillHTML()}
 else h='<div class="k"><h2>'+t("khT")+'</h2></div><p>'+t("khS")+"</p>";
 if(S.phase=="intro"){h+='<div class="hint"><span>'+t("tapme",{e:S.role=="B"?"👰":"🤵"})+'</span><button class="btn main sm" onclick="openOpts()">'+t("choose")+"</button></div>";$n.innerHTML=h;$n.hidden=false;$o.hidden=true}
 else if(S.phase=="waiting"){h+='<div class="hint"><span>'+t("waitT")+'</span></div>'+(S.online?'<button class="btn alt" onclick="useAI()">'+t("useAI")+"</button>":"");$n.innerHTML=h;$n.hidden=false;$o.hidden=true}
 else{$n.innerHTML=h;$n.hidden=false;optsV()}
 renderHUD()}
 function warnHTML(c){var w="";(c.x||[]).forEach(function(id){var v=S.R[id][S.role];if(v<=-5)w+='<div class="warn">💔 '+t("ledCold",{n:nm(id),v:v})+"</div>";else if(v>=10)w+='<div class="mute">💗 '+t("ledWarm",{n:nm(id),v:"+"+v})+"</div>"});return w}
-function prev(c,o){var s="";(c.x||[]).forEach(function(id){var I=lensI(id,o);if(I>=2)s+=nm(id)+" ↑ &nbsp;";else if(I<=-2)s+=nm(id)+" ↓ &nbsp;"});return s?'<div class="mute pv">'+t("prevH")+" "+s+"</div>":""}
+function prev(c,o){var ch="";(c.x||[]).forEach(function(id){var I=lensI(id,o);if(I>=2)ch+='<span class="pu">'+nm(id)+" ↑</span>";else if(I<=-2)ch+='<span class="pd">'+nm(id)+" ↓</span>"});
+tAdvice(c,o).forEach(function(a){var T=TREAS[a.k],n=LG=="ur"?T.n[1]:T.n[0];ch+='<span class="pt '+(a.x=="down"?"pd":"pu")+'">🎁 '+n+": "+t("t_"+a.x)+"</span>"});
+return ch?'<div class="pv">'+(ch.indexOf('class="pt')!=ch.indexOf('<span')||ch.indexOf('class="pu">')>-1&&ch.indexOf('class="pu">')<ch.indexOf('class="pt')||ch.indexOf('class="pd">')>-1?'<span class="pl">'+t("prevH")+"</span> ":"")+ch+"</div>":""}
+function optHTML(tx){var lead="",rest=tx,ix=tx.indexOf(": ");if(ix>0&&ix<46)lead=tx.slice(0,ix+1),rest=tx.slice(ix+2);else{var d=tx.indexOf(". ");if(d>10&&d<90&&tx.length>d+30)lead=tx.slice(0,d+1),rest=tx.slice(d+2)}
+return lead?"<b>"+lead+"</b> "+rest:tx}
+function autoR(o){return Math.max(1,Math.min(5,3+Math.round(((o&&o.e&&o.e[5])||0)/1.5)))}
 function openOpts(){if(S.phase!="intro")return;S.phase="choosing";render()}
 function optsV(){var r=S.cur,h="";
 if(hint){$o.style.setProperty("--tx",Math.max(24,Math.min(W-24,hint.x))+"px")}
-if(S.phase=="choosing"){h='<p style="margin:0 0 4px"><b>'+(r.type=="sc"?t("whatdo"):t("khQ"))+"</b></p>";
-(r.type=="sc"?SC[r.i].o:KO).forEach(function(o,i){h+='<button class="btn" onclick="pickOpt('+i+')">'+(r.type=="sc"?en(otext(o,S.role))+prev(SC[r.i],o):t("ko"+i))+"</button>"});
-h+='<button class="btn alt" onclick="S.phase=\'intro\';render()">'+t("back")+"</button>"}
-else{var o=SC[r.i].o[S.sel];h='<span class="tag">'+sn(o.s)+'</span><p><b>'+t("youChose")+':</b></p>'+en(otext(o,S.role))+'<p style="margin:8px 0 2px"><b>'+t("stressQ")+'</b></p><div class="rate">'+[1,2,3,4,5].map(function(n){return'<button class="'+(S.rt==n?"on":"")+'" onclick="rate('+n+')">'+n+"</button>"}).join("")+'</div><p class="mute" style="margin:0">'+t("stressH")+'</p><button class="btn main" '+(S.rt?"":"disabled")+' onclick="lock(S.rt)">'+t("lock")+'</button><button class="btn alt" onclick="S.phase=\'choosing\';render()">'+t("change")+"</button>"}
+h='<p style="margin:0 0 4px"><b>'+(r.type=="sc"?t("whatdo"):t("khQ"))+"</b></p>";
+(r.type=="sc"?SC[r.i].o:KO).forEach(function(o,i){h+='<button class="btn opt" onclick="pickOpt('+i+')"><span class="ob">'+"ABCD"[i]+'</span><span class="otx">'+(r.type=="sc"?en(optHTML(otext(o,S.role)))+prev(SC[r.i],o):t("ko"+i))+"</span></button>"});
+h+='<button class="btn alt" onclick="S.phase=\'intro\';render()">'+t("back")+"</button>";
 $o.innerHTML='<div class="in">'+h+"</div>";$o.hidden=false}
-function pickOpt(i){S.sel=i;if(S.cur.type=="kh")return lock(0);S.phase="rating";render()}
-function rate(n){S.rt=n;render()}
+function pickOpt(i){S.sel=i;if(S.cur.type=="kh")return lock(0);lock(autoR(SC[S.cur.i].o[i]))}
 function lock(rt){var id=S.cur.id;if(S.mine[id])return;S.mine[id]={o:S.sel,r:rt};var pc=CHR[S.role=="B"?"bride":"groom"];if(S.cur.type=="sc"){var st=SC[S.cur.i].o[S.sel].s;S.styles[st]++;pc.emo=EM[st];pc.et=3}
 if(S.online&&NET)NET.send({t:"pick",id:id,o:S.sel,r:rt});check()}
 function check(){var id=S.cur.id;if(S.theirs[id])reveal();else{S.phase="waiting";render()}}
@@ -323,8 +343,8 @@ if(r.type=="sc"){c=SC[r.i];var oa=c.o[a.o],ob=c.o[b.o];for(var j=0;j<6;j++)eff[j
 if(oa.s=="k"&&ob.s=="k"){eff[0]+=5;eff[5]-=5;note=t("team")}else if((oa.s=="k"&&ob.s=="r")||(oa.s=="r"&&ob.s=="k")){eff[0]-=5;note=t("fric")}else if(oa.s=="r"&&ob.s=="r"){eff[0]-=5;eff[5]+=5;note=t("dbl")}
 mood=RANK[oa.s]>=RANK[ob.s]?oa.s:ob.s}
 else{var ka=KO[a.o],kb=KO[b.o];for(var j2=0;j2<6;j2++)eff[j2]=Math.round((ka.e[j2]+kb.e[j2])/2);if(a.o==0&&b.o==0){eff[0]+=5;note=t("khTeam")}mood=(a.o==0||b.o==0)?"k":"a"}
-if(!S.done[id]){S.done[id]=1;var adj=[0,0,0,0,0,0],led={};if(r.type=="sc"){adj=grudgeAdj(c.x||[]);for(var j3=0;j3<6;j3++)eff[j3]+=adj[j3];led=ledgerUpdate(c,S.role=="B"?c.o[a.o]:c.o[b.o],S.role=="B"?c.o[b.o]:c.o[a.o])}
-S.dl=eff;for(var q=0;q<6;q++)S.m[q]=clamp(S.m[q]+eff[q]);S.res={eff:eff,note:note,adj:adj,led:led};
+if(!S.done[id]){S.done[id]=1;var adj=[0,0,0,0,0,0],led={},ex=[];if(r.type=="sc"){adj=grudgeAdj(c.x||[]);for(var j3=0;j3<6;j3++)eff[j3]+=adj[j3];var oBB=S.role=="B"?c.o[a.o]:c.o[b.o],oGG=S.role=="B"?c.o[b.o]:c.o[a.o];led=ledgerUpdate(c,oBB,oGG);ex=storyHook(c,oBB,oGG,eff,led)}
+S.dl=eff;for(var q=0;q<6;q++)S.m[q]=clamp(S.m[q]+eff[q]);S.res={eff:eff,note:note,adj:adj,led:led,ex:ex};
 if(r.type=="sc")react(c,a,b,mood);else{stage.kh=0;stage.shake=0;stageSet("yard",["mil","fil"],null,false,false);stage.room=null;stage.foc={cx:5.6,cy:5,w:9.6,h:8.6}}}
 S.phase="result";render()}
 function react(c,a,b,mood){var br=S.role=="B"?a:b,gr=S.role=="B"?b:a;CHR.bride.mood=c.o[br.o].s;CHR.bride.emo=EM[c.o[br.o].s];CHR.bride.et=8;CHR.groom.mood=c.o[gr.o].s;CHR.groom.emo=EM[c.o[gr.o].s];CHR.groom.et=8;CHR.bride.say="";CHR.groom.say="";
@@ -336,7 +356,7 @@ var tx=function(x,role){return sc?en(otext(c.o[x.o],role)):t("ko"+x.o)},st=funct
 var h='<span class="tag">'+(sc?title(c):t("khR"))+'</span><div class="two" style="margin-top:6px"><div><b>'+t("you")+" · "+rname(S.role)+" · "+st(a)+"</b><br>"+tx(a,S.role)+(sc?'<br><span class="mute">'+t("stress",{n:a.r})+"</span>":"")+'</div><div><b>'+t("partner")+" · "+rname(other())+" · "+st(b)+"</b><br>"+tx(b,other())+(sc?'<br><span class="mute">'+t("stress",{n:b.r})+"</span>":"")+"</div></div>";
 h+='<p style="margin:8px 0 2px"><b>'+t("happened")+":</b></p>"+en(cs(a))+(cs(a)!=cs(b)?'<div class="mute">'+en(cs(b))+"</div>":"")+'<div class="chips">';
 for(var z=0;z<6;z++)if(eff[z]){var good=z==5?eff[z]<0:eff[z]>0;h+='<span class="'+(good?"up":"dn")+'">'+MN[z]+" "+t("m"+z)+" "+(eff[z]>0?"+":"")+eff[z]+"</span>"}
-h+="</div>"+(note?'<div class="mute">'+note+"</div>":"");
+h+="</div>"+(note?'<div class="mute">'+note+"</div>":"");(S.res.ex||[]).forEach(function(l){h+='<div class="xl">'+en(l)+"</div>"});
 var adj=S.res.adj||[],ap=[];for(var z2=0;z2<6;z2++)if(adj[z2])ap.push(MN[z2]+" "+t("m"+z2)+" "+(adj[z2]>0?"+":"")+adj[z2]);if(ap.length)h+='<div class="mute">'+t("carry",{x:ap.join(", ")})+"</div>";
 var led=S.res.led||{},lh="",ot=S.role=="B"?"G":"B",sg=function(v){return'<b class="'+(v>=0?"up":"dn")+'">'+(v>0?"+":"")+v+"</b>"};Object.keys(led).forEach(function(i2){var d=led[i2],me=d[S.role],pa=d[ot];lh+="<span>"+nm(i2)+": "+t("you")+" "+sg(me)+" · "+t("partner")+" "+sg(pa)+"</span>"});
 if(lh)h+='<p style="margin:8px 0 2px"><b>💞 '+t("ledChg")+':</b></p><div class="chips">'+lh+"</div>";
@@ -354,11 +374,11 @@ function toggleLedger(){if(!$l.hidden){$l.hidden=true;return}ledV();$l.hidden=fa
 function ledV(){if(!S||!S.R)return;var me=S.role,ot=me=="B"?"G":"B",cell=function(v){return face(v)+" "+(v>0?"+":"")+v},h='<h2>💞 '+t("ledT")+'</h2><p class="mute" style="margin:0 0 6px">'+t("ledS")+'</p><div class="lg"><div></div><div class="lh">'+t("toYou")+'</div><div class="lh">'+t("toPartner")+'</div><div class="lh">'+t("youTo")+"</div>";
 NPC.forEach(function(id){var r=S.R[id];if(id=="kid"&&!r.B&&!r.G&&!r.fB&&!r.fG)return;h+='<div class="ln">'+nm(id)+'</div><div class="lc">'+cell(r[me])+'</div><div class="lc">'+cell(r[ot])+'</div><div class="lc">'+cell(r["f"+me])+"</div>";
 var w=S.why[id];if(w&&r[w.p]<=-3)h+='<div class="lw">↳ '+t("ledSince",{t:(LG=="ur"&&w.u?w.u:w.t)})+"</div>"});
-h+='</div><button class="btn alt" style="margin-top:8px" onclick="toggleLedger()">'+t("ledClose")+"</button>";$l.innerHTML=h}
+h+='</div>'+storyPanel()+'<button class="btn alt" style="margin-top:8px" onclick="toggleLedger()">'+t("ledClose")+"</button>";$l.innerHTML=h}
 function pickCrisis(){if(S.cc>=2||S.pos-S.lastC<3)return -1;var pos=-1;for(var i=0;i<SC.length;i++){var c=SC[i];if(!c.cr||S.cdone[c.id]!=null)continue;if(c.pos&&0)continue;try{if(c.trig())return i}catch(e){}}return pos}
 function nextRound(){var r=S.cur;if(r.cr){startRound({id:"s"+S.pos,type:"sc",i:S.list[S.pos]});return}
 if(r.type=="kh"){startRound({id:"s"+S.pos,type:"sc",i:S.list[S.pos]});return}
-S.pos++;if(S.pos>=S.list.length)return end();var ci=pickCrisis();if(ci>=0){S.cc++;S.lastC=S.pos;S.cdone[SC[ci].id]=S.pos;startRound({id:"c"+S.pos,type:"sc",i:ci,cr:1});return}
+S.pos++;if(S.pos>=S.list.length)return end();var sp=pickSpecial();if(sp){S.nsp++;S.lastC=S.pos;S.cdone[SC[sp.i].id]=S.pos;if(sp.k=="c")S.cc++;else S.cnt[sp.k]=(S.cnt[sp.k]||0)+1;startRound({id:"c"+S.pos,type:"sc",i:sp.i,cr:1});return}
 if((flags()>=3||(flags()>=2&&coldCount()>=2))&&S.kc<2&&S.pos-S.lastK>1){S.kc++;S.lastK=S.pos;startRound({id:"k"+S.kc,type:"kh"})}else startRound({id:"s"+S.pos,type:"sc",i:S.list[S.pos]})}
 function end(){V="end";stageHome();var ei=5,cc=coldCount();for(var i=0;i<ENDS.length;i++)if(ENDS[i][1](S.m,cc)){ei=ENDS[i][0];break}S.ei=ei;
 Object.keys(CHR).forEach(function(id){var mm=ei==1||ei==2?"k":(ei==0?"s":"a");CHR[id].mood=mm;CHR[id].emo=mm=="k"?"😊":(mm=="s"?"😢":"😐");CHR[id].et=999});parrot.say=ei==1?"Mubarak ho! Mubarak ho!":"Phir se khelo!";parrot.st=999;render()}
@@ -367,8 +387,36 @@ var link=location.origin+location.pathname,wa="https://wa.me/?text="+encodeURICo
 var ts={k:0,r:0,a:0,p:0};Object.keys(S.theirs).forEach(function(id){if(id[0]=="s"){var ix=S.list[+id.slice(1)];if(ix!=null){ts[SC[ix].o[S.theirs[id].o].s]++}}});
 var hadS=S.list.some(function(i){return SC[i].ser}),al=NPC.filter(function(id){return avgR(id)>=8&&(S.R[id].B>=8&&S.R[id].G>=8||avgR(id)>=10)}).map(nm),co=NPC.filter(function(id){return coldOf(id)<=-6}).map(nm);
 var lg2=(al.length||co.length)?'<div class="card"><b>💞 '+t("ledT")+"</b>"+(al.length?'<p style="margin:2px 0">💗 '+t("allies")+": "+al.join(", ")+"</p>":"")+(co.length?'<p style="margin:2px 0">💔 '+t("coldL")+": "+co.join(", ")+"</p>":"")+"</div>":"";
-menu('<div class="k"><div style="opacity:.8">'+t("endH")+'</div><h2>'+t("e"+ei+"n")+"</h2><p style='margin:4px 0 0'>"+t("e"+ei+"d")+'</p></div><div class="card"><b>'+t("inst")+'</b><p class="mute" style="margin:2px 0">'+sn("k")+" "+S.styles.k+" · "+sn("r")+" "+S.styles.r+" · "+sn("a")+" "+S.styles.a+" · "+sn("p")+" "+S.styles.p+"</p><p style='margin:2px 0'>"+t("p_"+top)+'</p><p class="mute" style="margin:2px 0">'+t("partnerPat")+": "+sn("k")+" "+ts.k+" · "+sn("r")+" "+ts.r+" · "+sn("a")+" "+ts.a+" · "+sn("p")+" "+ts.p+"</p></div>"+lg2+(hadS?'<div class="warn">'+t("safety")+"</div>":"")+'<a class="btn main" style="text-align:center" href="'+wa+'" target="_blank" rel="noopener">'+t("share")+'</a><button class="btn alt" onclick="'+(S.online?"replayOnline()":"again()")+'">'+t("again")+'</button><button class="btn alt" onclick="goHome()">'+t("home")+"</button>",true)}
+menu('<div class="k"><div style="opacity:.8">'+t("endH")+'</div><h2>'+t("e"+ei+"n")+"</h2><p style='margin:4px 0 0'>"+t("e"+ei+"d")+'</p></div><div class="card"><b>'+t("inst")+'</b><p class="mute" style="margin:2px 0">'+sn("k")+" "+S.styles.k+" · "+sn("r")+" "+S.styles.r+" · "+sn("a")+" "+S.styles.a+" · "+sn("p")+" "+S.styles.p+"</p><p style='margin:2px 0'>"+t("p_"+top)+'</p><p class="mute" style="margin:2px 0">'+t("partnerPat")+": "+sn("k")+" "+ts.k+" · "+sn("r")+" "+ts.r+" · "+sn("a")+" "+ts.a+" · "+sn("p")+" "+ts.p+"</p></div>"+lg2+treasuresHTML()+(hadS?'<div class="warn">'+t("safety")+"</div>":"")+'<a class="btn main" style="text-align:center" href="'+wa+'" target="_blank" rel="noopener">'+t("share")+'</a><button class="btn alt" onclick="openFB(\'end\')">'+t("fbBtn")+'</button><button class="btn alt" onclick="'+(S.online?"replayOnline()":"again()")+'">'+t("again")+'</button><button class="btn alt" onclick="goHome()">'+t("home")+"</button>",true)}
 function again(){S.seed=1+Math.floor(Math.random()*1e9);begin()}
+
+/* ===================== FEEDBACK ===================== */
+var FB=null,FBCATS=["suggestion","bug","content","complaint","safety","privacy","praise","other"],FBCTS=["none","email","whatsapp","phone","instagram","x","facebook","other"],VER="0.7";
+function escH(x){return String(x==null?"":x).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}
+function openFB(back){var keep=FB&&FB.st!="sent"?FB:null;FB=keep||{cat:"suggestion",msg:"",ct:"none",cv:"",ok:true,ctx:true,st:"form",err:"",id:"",n:7,back:back};FB.back=back;V="fb";render()}
+function fbBack(){V=(FB&&FB.back=="end"&&S&&S.ei!=null)?"end":"home";if(V=="home")stageHome();render()}
+function fbCtxObj(){var c={ver:VER,lang:LG,screen:FB.back};if(S&&S.role){c.mode=S.mode;c.role=S.role;c.round=S.pos+1;c.rounds=S.list?S.list.length:0}if(S&&S.ei!=null)c.ending="e"+S.ei;return c}
+function fbValid(){var v=FB.cv.trim();if(FB.ct=="none"||!v)return true;if(FB.ct=="email")return/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v);if(FB.ct=="whatsapp"||FB.ct=="phone")return v.replace(/\D/g,"").length>=7;return v.length>=2}
+function fbV(){var f=FB,h;
+if(f.st=="sent"){menu('<h2>'+t("fbT")+'</h2><div class="card">'+t(f.cv.trim()&&f.ct!="none"?"fbSent":"fbSentNC",{id:"<b>"+escH(f.id)+"</b>",n:f.n})+'</div><button class="btn alt" onclick="var b=FB.back;FB=null;openFB(b)">'+t("fbAgain")+'</button><button class="btn main" onclick="fbBack()">'+t("back")+"</button>");return}
+h='<h2>'+t("fbT")+'</h2><p class="mute">'+t("fbS")+'</p><label class="fl">'+t("fbCat")+'</label><select class="fi" onchange="FB.cat=this.value;render()">'+FBCATS.map(function(c){return'<option value="'+c+'"'+(f.cat==c?" selected":"")+">"+t("fc_"+c)+"</option>"}).join("")+"</select>";
+if(f.cat=="safety")h+='<div class="warn">'+t("fbSafe")+"</div>";
+h+='<label class="fl">'+t("fbMsg")+'</label><textarea class="fi" rows="5" maxlength="2000" placeholder="'+escH(t("fbMsgPh"))+'" oninput="FB.msg=this.value">'+escH(f.msg)+'</textarea>';
+h+='<label class="fl">'+t("fbCt")+'</label><select class="fi" onchange="FB.ct=this.value;render()">'+FBCTS.map(function(c){return'<option value="'+c+'"'+(f.ct==c?" selected":"")+">"+t("ct_"+c)+"</option>"}).join("")+"</select>";
+if(f.ct!="none")h+='<input class="fi" id="fcv" maxlength="120" autocomplete="off" placeholder="'+escH(t("ctp_"+f.ct))+'" value="'+escH(f.cv)+'" oninput="FB.cv=this.value" style="margin-top:6px"><label class="fk"><input type="checkbox" '+(f.ok?"checked":"")+' onchange="FB.ok=this.checked"> '+t("fbOk")+"</label>";
+h+='<label class="fk"><input type="checkbox" '+(f.ctx?"checked":"")+' onchange="FB.ctx=this.checked"> '+t("fbCtx")+'</label><input class="hp" tabindex="-1" autocomplete="off" id="fhp" aria-hidden="true">';
+if(f.err)h+='<div class="warn">'+f.err+"</div>";
+h+='<button class="btn main" '+(f.st=="sending"?"disabled":"")+' onclick="fbSend()">'+(f.st=="sending"?t("fbSending"):t("fbSend"))+'</button><button class="btn alt" onclick="fbBack()">'+t("back")+'</button><p class="mute" style="font-size:.75rem">'+t("fbPriv")+"</p>";
+menu(h,false)}
+function fbSend(){var f=FB;if(f.st=="sending")return;f.err="";
+if(f.msg.trim().length<5){f.err=t("fbShort");return render()}
+if(!fbValid()){f.err=t("fbBadCt");return render()}
+try{var last=+localStorage.getItem("aat_fb")||0;if(Date.now()-last<60000){f.err=t("fbWait");return render()}}catch(e){}
+var hp=(document.getElementById("fhp")||{}).value||"";f.st="sending";render();
+var body={cat:f.cat,msg:f.msg,ct:f.ct,cv:f.ct=="none"?"":f.cv,ok:f.ok,ctx:f.ctx?fbCtxObj():{ver:VER,lang:LG},website:hp};
+fetch("/api/feedback",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)}).then(function(r){return r.json().catch(function(){return{ok:false,error:"http "+r.status}})}).then(function(j){
+if(j&&j.ok){try{localStorage.setItem("aat_fb",String(Date.now()))}catch(e){}f.st="sent";f.id=j.id;f.n=j.ackDays||7;render()}
+else{f.st="form";f.err=t("fbErr",{e:escH(j&&j.error||"error")});render()}}).catch(function(){f.st="form";f.err=t("fbErr",{e:"network"});render()})}
 
 /* ===================== ONLINE (couple) ===================== */
 function closeNet(){try{if(PEER)PEER.destroy()}catch(e){}PEER=null;NET=null;try{if(window.BC)window.BC.close()}catch(e){}window.BC=null}
