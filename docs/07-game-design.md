@@ -111,3 +111,8 @@ Guardrails: divorce is neither pushed nor shamed; the skilled option is always a
 - Treasure progress bar: per treasure, 0-99% from how close the three win conditions are (score gap, regard, favours), shown in the ledger and as a compact strip above the options. Win shows 100%.
 - Confetti: full-screen canvas burst (about 4 seconds) when you win a treasure.
 - Grudge: at the end, a role that was offered treasures and won none gets stress +8 and trust -3 (shared meters), and the end screen says so.
+
+## v0.10 (player suggestion FB-20261111-4N72)
+- Bigger world: ground grid grown to 30 x 20 tiles (same tile size and alignment), lawn with trees and flower beds, outer tiles fade smoothly into the sky; tiles are drawn with a same-colour hairline so no seams show. Object positions and gameplay unchanged.
+- Camera: mouse drag or one-finger swipe pans, wheel or two-finger pinch zooms. Manual navigation is never overridden by the game's auto-focus. A "Focus" button (bottom right) appears while navigating manually and snaps back to the current gameplay focus; auto-focus also resumes after 10 seconds of no input. A tap without dragging on your character still opens the options.
+- Feedback box: live word counter under the message box (for example 85/150 words) and a hard cap at 150 words.
