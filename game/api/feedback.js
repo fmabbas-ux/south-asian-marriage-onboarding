@@ -1,6 +1,7 @@
 /* POST /api/feedback  - receives suggestions, complaints, bugs, praise from the game.
-   Sink: set env FEEDBACK_WEBHOOK to the Google Apps Script web-app URL from tracker/apps-script/Code.gs
-   (it appends to the tracker sheet with SLA dates). Without a webhook we refuse, so nothing is silently lost. */
+   Sink A (preferred, free): GitHub Issues in a PRIVATE repo. Env: GITHUB_FEEDBACK_TOKEN (fine-grained, Issues write on that repo only) + FEEDBACK_REPO ("owner/name").
+   Sink B: FEEDBACK_WEBHOOK = Google Apps Script URL (tracker/apps-script/Code.gs).
+   With neither set we refuse, so nothing is silently lost. */
 var CATS={
  suggestion:{ack:7,fix:60},bug:{ack:2,fix:14},content:{ack:3,fix:14},complaint:{ack:2,fix:14},
  safety:{ack:1,fix:3},privacy:{ack:3,fix:30},praise:{ack:14,fix:0},other:{ack:7,fix:30}};
@@ -27,10 +28,19 @@ module.exports=async function(req,res){
   okToContact:!!b.ok&&!!cv,ackDue:add(CATS[cat].ack),targetDue:add(CATS[cat].fix),
   ctx:{ver:clip(c.ver,12),lang:clip(c.lang,4),screen:clip(c.screen,12),mode:clip(c.mode,8),role:clip(c.role,2),round:+c.round||0,rounds:+c.rounds||0,ending:clip(c.ending,24)},
   status:"New"};
- var hook=process.env.FEEDBACK_WEBHOOK;
- if(!hook){res.status(503).json({ok:false,error:"not_configured"});return}
- try{var r=await fetch(hook,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(rec),redirect:"follow"});
-  if(!r.ok)throw new Error("sink "+r.status)}catch(e){res.status(502).json({ok:false,error:"sink"});return}
+ var hook=process.env.FEEDBACK_WEBHOOK,gh=process.env.GITHUB_FEEDBACK_TOKEN,repo=process.env.FEEDBACK_REPO;
+ if(!hook&&!(gh&&repo)){res.status(503).json({ok:false,error:"not_configured"});return}
+ try{
+  if(gh&&repo){
+   var P={safety:"P1",privacy:"P1",bug:"P2",content:"P2",complaint:"P2",suggestion:"P3",other:"P3",praise:"P4"}[cat];
+   var body="**Ref:** "+id+"\n**Received (UTC):** "+rec.received+"\n**Category:** "+cat+" ("+P+")\n**First response due:** "+rec.ackDue+"\n**Target resolution:** "+(rec.targetDue||"none")+"\n\n"+
+    "### Message\n"+msg.replace(/@/g,"@\u200b")+"\n\n### Contact\n"+(cv?ct+": "+cv+(rec.okToContact?" (OK to contact)":" (not OK to contact)"):"none given")+"\n\n### Game details\n```\n"+JSON.stringify(rec.ctx)+"\n```\n";
+   var r=await fetch("https://api.github.com/repos/"+repo+"/issues",{method:"POST",headers:{"Authorization":"Bearer "+gh,"Accept":"application/vnd.github+json","User-Agent":"dehleez-feedback","Content-Type":"application/json"},
+    body:JSON.stringify({title:"["+cat+"] "+id+" "+msg.replace(/\s+/g," ").slice(0,60),body:body,labels:["cat:"+cat,P,"status:new"].concat(P=="P1"?["urgent"]:[])})});
+   if(!r.ok)throw new Error("gh "+r.status)}
+  else{var r2=await fetch(hook,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(rec),redirect:"follow"});
+   if(!r2.ok)throw new Error("sink "+r2.status)}
+ }catch(e){res.status(502).json({ok:false,error:"sink"});return}
  hits[ip].push(now);
  res.status(200).json({ok:true,id:id,ackDays:CATS[cat].ack});
 };
