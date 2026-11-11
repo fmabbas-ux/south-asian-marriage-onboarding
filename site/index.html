@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Dehleez | Aaghaaz Tamasha, play your first year of marriage</title>
+<meta name="description" content="Aaghaaz Tamasha is a free family game about the first year of marriage in a South Asian home. Play solo or with your partner, in English and Urdu.">
+<meta property="og:title" content="Aaghaaz Tamasha: play your first year before you live it">
+<meta property="og:description" content="A blocky family house, an aunty next door, a parrot and 40 real first-year situations. Free. English and Urdu.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="/img/home.webp">
+<meta name="theme-color" content="#7a1f3d">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fff9ef;--card:#fffdf8;--ink:#2b1a1f;--mute:#7a6a6a;--maroon:#7a1f3d;--gold:#e9b44c;--teal:#2f7f86;--line:#ecd9bd;--on-maroon:#fff6e6}
+@media (prefers-color-scheme:dark){:root{--bg:#1c1216;--card:#2a1c22;--ink:#f7ebe0;--mute:#b9a59c;--maroon:#e58aa6;--line:#43303a;--on-maroon:#2b1a1f}}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.65 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+a{color:var(--maroon)}
+.wrap{max-width:980px;margin:0 auto;padding:0 20px}
+header{padding:18px 0}
+header .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand{font-weight:700;letter-spacing:.04em;color:var(--maroon);text-decoration:none}
+nav a{margin-left:18px;font-size:.95rem;text-decoration:none;color:var(--ink)}
+nav a:hover{color:var(--maroon)}
+.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:36px;align-items:center;padding:28px 0 56px}
+.chip{display:inline-block;background:var(--gold);color:#2b1a1f;border-radius:999px;padding:3px 12px;font-size:.82rem;font-weight:700}
+h1{font-size:clamp(2rem,5vw,3.1rem);line-height:1.1;margin:.4em 0 .2em;color:var(--maroon)}
+.ur{font-family:"Noto Nastaliq Urdu",serif;font-size:1.6rem;direction:rtl;text-align:left;color:var(--maroon);margin:0 0 10px}
+.lead{font-size:1.15rem;margin:.4em 0 1.2em}
+.btns{display:flex;flex-wrap:wrap;gap:10px}
+.btn{display:inline-block;padding:12px 22px;border-radius:12px;font-weight:700;text-decoration:none;border:2px solid var(--maroon)}
+.btn.main{background:var(--maroon);color:var(--on-maroon)}
+.btn.alt{background:transparent;color:var(--maroon)}
+.note{color:var(--mute);font-size:.9rem;margin-top:12px}
+.phones{display:flex;gap:14px;justify-content:center}
+.phones img{width:46%;max-width:210px;border-radius:22px;border:6px solid #2b1a1f;box-shadow:0 14px 30px rgba(43,26,31,.25);background:#2b1a1f}
+.phones img:nth-child(2){margin-top:34px}
+section{padding:44px 0;border-top:1px solid var(--line)}
+h2{font-size:1.6rem;color:var(--maroon);margin:0 0 .6em}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px}
+.card h3{margin:.1em 0 .3em;font-size:1.05rem}
+.card p{margin:0;color:var(--mute);font-size:.95rem}
+.shots{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.shots img{width:100%;border-radius:14px;border:1px solid var(--line)}
+.meters{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 0}
+.meters span{background:var(--card);border:1px solid var(--line);border-radius:999px;padding:4px 14px;font-size:.9rem}
+form{display:grid;gap:10px;max-width:520px}
+input[type=email],input[type=text]{font:inherit;padding:12px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);width:100%}
+label{font-size:.9rem;color:var(--mute)}
+button{font:inherit;cursor:pointer}
+.safety{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--teal);border-radius:12px;padding:16px 18px}
+footer{padding:36px 0 60px;border-top:1px solid var(--line);color:var(--mute);font-size:.92rem}
+footer a{margin-right:14px}
+@media (max-width:780px){.hero{grid-template-columns:1fr}.grid{grid-template-columns:1fr}.shots{grid-template-columns:repeat(2,1fr)}nav a{margin-left:12px}}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <a class="brand" href="/">DEHLEEZ</a>
+  <nav><a href="#how">How it works</a><a href="#screens">Screens</a><a href="#testers">Android testers</a><a href="#contact">Contact</a></nav>
+</div></header>
+
+<main class="wrap">
+  <div class="hero">
+    <div>
+      <span class="chip">Free · English and Urdu · 18+</span>
+      <h1>Play your first year of marriage before you live it.</h1>
+      <p class="ur">آغاز تماشا</p>
+      <p class="lead">Aaghaaz Tamasha is a blocky family-house game about the situations new couples really face: the wedding night, the aunty next door, who decides the budget, whose parents to visit. One house, one parrot, forty real situations. Play solo, or each play your own side with your partner.</p>
+      <div class="btns">
+        <a class="btn main" href="https://aaghaaz-tamasha.vercel.app/?source=site">Play in your browser</a>
+        <a class="btn alt" id="playstore" href="#testers">Get the Android app</a>
+      </div>
+      <p class="note">No account. No ads. No purchases. Works offline for solo play.</p>
+    </div>
+    <div class="phones" aria-hidden="true">
+      <img src="/img/home.webp" alt="" width="640" height="1138">
+      <img src="/img/choices.webp" alt="" width="640" height="1138" loading="lazy">
+    </div>
+  </div>
+
+  <section id="how">
+    <h2>How it works</h2>
+    <div class="grid">
+      <div class="card"><h3>1. Pick a side</h3><p>Play the bride or the groom, through 12 situations or the full journey of 40.</p></div>
+      <div class="card"><h3>2. Read, tap, choose</h3><p>Each card is a real moment. Tap your character and decide how you respond. No single answer pleases everyone.</p></div>
+      <div class="card"><h3>3. Compare with your partner</h3><p>Share a room code on WhatsApp and each play your own side of the same year. The point is not the score. It is seeing where you read the same moment differently, and talking about it.</p></div>
+    </div>
+    <div class="meters" aria-label="Six meters you balance">
+      <span>Trust</span><span>Self</span><span>Parents</span><span>Family standing</span><span>Money</span><span>Stress</span>
+    </div>
+  </section>
+
+  <section id="screens">
+    <h2>A look inside</h2>
+    <div class="shots">
+      <img src="/img/home.webp" alt="Home screen of Aaghaaz Tamasha with the house and the choice of solo or online play" width="640" height="1138" loading="lazy">
+      <img src="/img/scene.webp" alt="A situation card inside the family house" width="640" height="1138" loading="lazy">
+      <img src="/img/choices.webp" alt="Choices you can make in a situation" width="640" height="1138" loading="lazy">
+      <img src="/img/ending.webp" alt="End of the year summary" width="640" height="1138" loading="lazy">
+    </div>
+  </section>
+
+  <section>
+    <h2>Made for South Asian families</h2>
+    <div class="grid">
+      <div class="card"><h3>English and Urdu</h3><p>Full Nastaliq Urdu support, switchable any time.</p></div>
+      <div class="card"><h3>Real family dynamics</h3><p>In-laws, siblings, money, ambition and expectations, written from real situations.</p></div>
+      <div class="card"><h3>Private by design</h3><p>No accounts, no ads, no tracking. Your choices stay on your phone. <a href="https://aaghaaz-tamasha.vercel.app/privacy.html">Read the policy</a>.</p></div>
+    </div>
+  </section>
+
+  <section id="testers">
+    <h2>Help us test the Android app</h2>
+    <p>Google asks every new developer to test with at least 12 real people for 14 days before an app can go on the Play Store. If you have an Android phone and 10 minutes across two weeks, you can help. Send us the Gmail address you use on your phone and we will add you to the test group.</p>
+    <form id="tf">
+      <label for="em">Your Gmail address (the one on your Android phone)</label>
+      <input id="em" type="email" required placeholder="you@gmail.com" autocomplete="email">
+      <label for="nm">Your first name (optional)</label>
+      <input id="nm" type="text" placeholder="First name" autocomplete="given-name">
+      <button class="btn main" type="submit">Request a test invite</button>
+      <p class="note">This opens your email app with a ready message to us. We use your address only to add you to the test group and will remove it afterwards if you ask.</p>
+    </form>
+  </section>
+
+  <section>
+    <div class="safety">
+      <b>A note on safety.</b> The game is about ordinary conflict and learning to talk. It never treats abuse or control as something to adjust to. If you or someone you know is being hurt, threatened or controlled, please contact local emergency services or a trusted person. Aaghaaz Tamasha is for learning and conversation, not legal, medical, religious or counselling advice.
+    </div>
+  </section>
+</main>
+
+<footer id="contact"><div class="wrap">
+  <p><b>Dehleez</b> is a project to prepare couples for the first year of marriage. Aaghaaz Tamasha is published by PolyMat Studio, Pakistan.</p>
+  <p><a href="https://aaghaaz-tamasha.vercel.app/?source=site">Play</a><a href="https://aaghaaz-tamasha.vercel.app/privacy.html">Privacy policy</a><a href="mailto:hello@polymat-consulting.com">hello@polymat-consulting.com</a></p>
+</div></footer>
+
+<script>
+/* Set PLAY_URL when the Play Store listing goes live. Set FORM_URL to use a Google Form instead of email. */
+var PLAY_URL="", FORM_URL="";
+(function(){
+  var a=document.getElementById("playstore");
+  if(PLAY_URL){a.href=PLAY_URL;a.textContent="Get it on Google Play"}
+  var f=document.getElementById("tf");
+  f.addEventListener("submit",function(e){
+    e.preventDefault();
+    if(FORM_URL){location.href=FORM_URL;return}
+    var em=document.getElementById("em").value.trim(), nm=document.getElementById("nm").value.trim();
+    var body="Salam,%0D%0A%0D%0APlease add me as an Android tester for Aaghaaz Tamasha.%0D%0A%0D%0AMy Gmail: "+encodeURIComponent(em)+(nm?"%0D%0AName: "+encodeURIComponent(nm):"")+"%0D%0A%0D%0AThanks";
+    location.href="mailto:hello@polymat-consulting.com?subject="+encodeURIComponent("Aaghaaz Tamasha tester request")+"&body="+body;
+  });
+})();
+</script>
+</body>
+</html>
