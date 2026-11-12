@@ -48,8 +48,8 @@ A Dehleez project.
 
 ## Store settings
 - Privacy policy URL: https://aaghaaz-tamasha.vercel.app/privacy.html
-- Website: https://aaghaaz-tamasha.vercel.app
-- Support email: (your public developer email; it is shown on the store page)
+- Website: https://dehleez-delta.vercel.app
+- Support email: hello@polymat-consulting.com (shown on the store page)
 
 ## App content declarations (suggested answers; you confirm each)
 - Privacy policy: the URL above.
@@ -68,7 +68,7 @@ A Dehleez project.
     - Messages > Other in-app messages (the feedback message)
     - App info and performance > Diagnostics (game version, language, screen, round; can be switched off)
 - Content rating questionnaire (IARC), category Game:
-  - Violence: none shown. Sexuality: no sexual content; one chapter refers to a wedding night in non-graphic text. Language: mild. Controlled substances: none. Gambling: none.
+  - Violence: mild and non-graphic. A few text references to threats or a slap inside family-conflict scenes, presented as situations to handle, never depicted. Blood or gore: none. Sexuality: no sexual content; one chapter refers to a wedding night in non-graphic text. Language: mild. Controlled substances: none. Gambling: none.
   - Mature themes: yes, the text deals with family conflict, emotional pressure, and references to emotional abuse and legal rights in marriage.
   - Users can interact or exchange content: yes, online play shares each player's choices with one invited partner (no free-text chat). Shares location: no. Digital purchases: no.
   - Expect a Teen or Mature 17+ style rating. Answer truthfully; the rating is computed by the questionnaire.
