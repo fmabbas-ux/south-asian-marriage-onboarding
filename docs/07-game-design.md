@@ -116,3 +116,20 @@ Guardrails: divorce is neither pushed nor shamed; the skilled option is always a
 - Bigger world: ground grid grown to 30 x 20 tiles (same tile size and alignment), lawn with trees and flower beds, outer tiles fade smoothly into the sky; tiles are drawn with a same-colour hairline so no seams show. Object positions and gameplay unchanged.
 - Camera: mouse drag or one-finger swipe pans, wheel or two-finger pinch zooms. Manual navigation is never overridden by the game's auto-focus. A "Focus" button (bottom right) appears while navigating manually and snaps back to the current gameplay focus; auto-focus also resumes after 10 seconds of no input. A tap without dragging on your character still opens the options.
 - Feedback box: live word counter under the message box (for example 85/150 words) and a hard cap at 150 words.
+
+## v0.11 house rebuild (owner brief, 11 Nov 2026)
+- Footprint: house grown from 9 x 8 to 14 x 9 tiles. Rooms: bedroom, living room, Ammi-ji and Abbu-ji's room, a corridor, kitchen, dining, and the aangan (paved courtyard with charpai, tree, pots, water cooler and a gate). Scenes still use the same four room keys (bed, liv, kit, yard), so gameplay and story are unchanged.
+- Walls: tall back walls with windows, half-height interior walls with wooden door posts so characters stay visible, low front walls and a courtyard parapet.
+- Floors: a colour and texture per room (kitchen checker, dining planks, courtyard brick, corridor stone), rugs, window light on the floor, soft shadows under furniture.
+- Movement: characters and the cat route through doorways (room graph in DOORS, route(), stepTo()); 3,660 point-to-point routes tested with no wall crossings. Legs and arms swing while walking. People not needed in a scene potter between their own spots (SPOT) with a small emoji; visual only, not shared state.
+- Outdoors: garden with pond, bench, swing, flower beds, hedges, stone paths; neighbours' houses further east, reached by a path from the courtyard gate. Tap the parrot or the cat for a small reaction.
+- Interface: intro card is compact (3-line preview, tap the text to expand); name labels avoid overlapping; status bar has clearer spacing and a centred max width on desktop.
+
+## v0.13 learning and safety layer (from the Nov 2026 research report)
+- Explained feedback: every result shows "Why it landed this way" for the style chosen, the skilled option's wording when you didn't pick it, and a "Think about it / Talk about it together" prompt. Basis: explanatory feedback roughly doubles learning versus points-only feedback (Clark et al. 2016).
+- Safety: Help button (🛟) on every screen with helplines (Pakistan, India, UAE, UK, US, Australia, Canada; checked Nov 2026), a note that the phone may be seen by others, and Exit quickly (also double-press Escape) which clears the save and leaves the game. The abuse scene (S40) shows a dedicated "this is abuse, not a communication problem" panel instead of style labels or communication tips.
+- Private answers: in couple play, scenes S01, S37, S40, C1, C3, C7 hide the partner's answer (both answers on a shared phone); meters still react.
+- Save and resume: the game saves on the device after every choice and when the app goes to the background; the home screen offers Continue. Online games resume against the AI partner. A save from a different game version is discarded.
+- Guess your partner: in online and same-phone play, after choosing you guess what your partner chose; results show hits and misses with "ask them why" prompts, and the end screen shows how well you know each other.
+- Same-phone mode: "Play together on one phone" with pass-the-phone screens between turns.
+- Privacy policy updated: game progress is stored on the device only.
