@@ -9,6 +9,7 @@
 <meta property="og:description" content="A blocky family house, an aunty next door, a parrot and 40 real first-year situations. Play with your partner online.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8D%B2%3C/text%3E%3C/svg%3E">
 <link rel="manifest" href="manifest.webmanifest">
+<script defer src="https://cloud.umami.is/script.js" data-website-id="e7d97079-66bc-4b83-91cd-ce89c856d2eb" data-domains="aaghaaz-tamasha.vercel.app"></script>
 <meta name="theme-color" content="#7a1f3d">
 <link rel="apple-touch-icon" href="icons/icon-192.png">
 <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
@@ -477,7 +478,7 @@ menu('<div class="k"><div style="opacity:.8">'+t("endH")+'</div><h2>'+t("e"+ei+"
 function again(){S.seed=1+Math.floor(Math.random()*1e9);begin()}
 
 /* ===================== FEEDBACK ===================== */
-var FB=null,FBCATS=["suggestion","bug","content","complaint","safety","privacy","praise","other"],FBCTS=["none","email","whatsapp","phone","instagram","x","facebook","other"],VER="0.13";
+var FB=null,FBCATS=["suggestion","bug","content","complaint","safety","privacy","praise","other"],FBCTS=["none","email","whatsapp","phone","instagram","x","facebook","other"],VER="0.14";
 function escH(x){return String(x==null?"":x).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}
 function openFB(back){var keep=FB&&FB.st!="sent"?FB:null;FB=keep||{cat:"suggestion",msg:"",ct:"none",cv:"",ok:true,ctx:true,st:"form",err:"",id:"",n:7,back:back};FB.back=back;V="fb";render()}
 function fbBack(){V=(FB&&FB.back=="end"&&S&&S.ei!=null)?"end":"home";if(V=="home")stageHome();render()}
@@ -540,6 +541,7 @@ cv.addEventListener("wheel",function(e){e.preventDefault();manZoom(Math.exp(-e.d
 rs();stageHome();cam.z=ct.z=.5;requestAnimationFrame(frame);
 fresh();var qm=location.search.match(/room=([A-Za-z0-9]{4})/);if(qm){V="join";render();joinV(qm[1].toUpperCase());doJoin()}else render();
 </script>
+<script src="analytics.js"></script>
 <script>if("serviceWorker" in navigator)window.addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){})});</script>
 </body>
 </html>
