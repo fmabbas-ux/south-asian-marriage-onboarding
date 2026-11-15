@@ -133,3 +133,11 @@ Guardrails: divorce is neither pushed nor shamed; the skilled option is always a
 - Guess your partner: in online and same-phone play, after choosing you guess what your partner chose; results show hits and misses with "ask them why" prompts, and the end screen shows how well you know each other.
 - Same-phone mode: "Play together on one phone" with pass-the-phone screens between turns.
 - Privacy policy updated: game progress is stored on the device only.
+
+## 3D preview (branch feature/3d, Nov 2026)
+- `game/3d.html`: the whole house rebuilt in real 3D with Three.js 0.160 (loaded from jsDelivr): rounded furniture, soft sun shadows, ACES tone mapping, warm lamps at night.
+- `game/world3d.js`: generated from the 2D layout in index.html (341 furniture/wall boxes, floor tiles, rooms, doors, homes, idle spots), so both views share one floor plan. Regenerate with the scratch script `extract3d.js` whenever the 2D layout changes.
+- Smooth low-poly characters (capsule bodies, round heads, hair, dupattas for the women, topi for the elders) with walk and idle animation; they route through doorways using the same door graph as the 2D game.
+- Toys to judge the feel: tap anyone for a line and an emoji, Day/Night, a camera Tour of every room, "Khichdi!" chaos (everyone runs to the kitchen, steaming pot), and "Find the gold set" (a hidden treasure, confetti when found).
+- Controls: drag to orbit, pinch or wheel to zoom, two-finger pan. FPS counter in the corner for phone testing.
+- Not yet wired to gameplay: scenarios, meters and two-player still run in the 2D game. Next step after sign-off: render the round scenes in 3D.
